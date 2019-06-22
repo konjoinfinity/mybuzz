@@ -1,11 +1,11 @@
-// const express = require("express");
-// const router = express.Router();
-// const mongoose = require("../db/connection");
-// const User = require("../models/user");
-//
-// router.get("/", (req, res) => {
-//   User.find({}).then(users => res.json(users));
-// });
+const express = require("express");
+const router = express.Router();
+const mongoose = require("../db/connection");
+const User = require("../models/user");
+
+router.get("/", (req, res) => {
+  User.find({}).then(users => res.json(users));
+});
 
 // function getBAC(weight, gender, drinks, drinkType, hours) {
 //   var distribution;
@@ -25,3 +25,5 @@
 //
 //   return BAC;
 // }
+
+module.exports = router;
