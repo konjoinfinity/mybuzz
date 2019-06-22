@@ -7,7 +7,7 @@ User.deleteMany({})
   .then(() => {
     User.create({
       name: "Charles",
-      gender: "Male",
+      gender: "M",
       weight: 180,
       email: "c.blundon@gmail.com",
       password: "Test123",
@@ -24,7 +24,7 @@ User.deleteMany({})
 
 User.create({
   name: "Wesley",
-  gender: "Male",
+  gender: "M",
   weight: 210,
   email: "wesleyscholl@gmail.com",
   password: "konjo1234",
