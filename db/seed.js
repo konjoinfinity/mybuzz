@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 mongoose.Promise = Promise;
 
+// add date for buzzes and user created
 User.deleteMany({})
   .then(() => {
     User.create({
