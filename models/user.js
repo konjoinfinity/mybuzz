@@ -1,6 +1,7 @@
 const mongoose = require("../db/connection");
 const Schema = mongoose.Schema;
 
+// add date for buzzes
 const Buzz = new Schema({
   numberOfDrinks: Number,
   drinkType: String,

@@ -5,7 +5,7 @@ const User = require("../models/user");
 
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
-  if (gender == "F") {
+  if (gender == "Female") {
     distribution = 0.66;
   } else {
     distribution = 0.73;
@@ -35,7 +35,7 @@ router.get("/bac", (req, res) => {
       user.buzzes[0].hours
     );
     console.log(total);
-    res.json(total);
+    res.json(parseFloat(total.toFixed(4)));
   });
 });
 
