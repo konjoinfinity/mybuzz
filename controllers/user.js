@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/bac", (req, res) => {
-  User.findOne({ name: "Charles" }).then(user => {
+  User.findOne({ name: "Wesley" }).then(user => {
     var total = getBAC(
       user.weight,
       user.gender,
