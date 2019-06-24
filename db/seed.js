@@ -11,6 +11,7 @@ User.deleteMany({})
       weight: 180,
       email: "c.blundon@gmail.com",
       password: "Test123",
+      bac: 0,
       buzzes: [
         {
           numberOfDrinks: 2,
@@ -28,6 +29,7 @@ User.create({
   weight: 210,
   email: "wesleyscholl@gmail.com",
   password: "konjo1234",
+  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 4,

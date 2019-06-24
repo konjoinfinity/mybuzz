@@ -13,6 +13,7 @@ const User = new Schema({
   weight: Number,
   email: String,
   password: String,
+  bac: Number,
   buzzes: [Buzz]
 });
 
