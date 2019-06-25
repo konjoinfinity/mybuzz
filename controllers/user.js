@@ -3,7 +3,26 @@ const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
 
-// Declaring the BAC function up top for usage down below
+// Blood Alcohol Calculator
+
+// An individual's Blood Alcohol Content may be calculated as follows:
+
+// BAC% = (A × 5.14) / (W × r) - .015 × H
+
+// A: Total alcohol consumed, in ounces (oz)
+// W: Body weight, in pounds (lbs)
+// r: The alcohol distribution ratio, 0.73 for man, and 0.66 for women
+// H: Time passed since drinking, in hours
+// Create a function getBAC(weight, gender, drinks, drinkType, hours) that takes the following:
+
+// weight - a person's body weight,
+// gender - their gender as a string "M" or "F",
+// drinks - the number of drinks they've had
+// drinkType - a string "beer" or "whiskey" representing the type of drinks
+// hours - hours since last drink
+// Note:
+// Beers are 8oz and 4% alcohol by volume - ** No they are more often 5%
+// Whiskeys are 4oz and 32% alcohol by volume - ** No they are more often 40%
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
