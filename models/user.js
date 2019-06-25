@@ -18,7 +18,10 @@ const User = new Schema({
   weight: Number,
   email: String,
   password: String,
-  bac: Number,
+  bac: {
+    type: Number,
+    default: 0
+  },
   dateCreated: {
     type: Date,
     default: Date.now()

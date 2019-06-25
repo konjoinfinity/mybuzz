@@ -11,7 +11,6 @@ User.deleteMany({})
       weight: 180,
       email: "c.blundon@gmail.com",
       password: "Test123",
-      bac: 0,
       buzzes: [
         {
           numberOfDrinks: 2,
@@ -29,7 +28,6 @@ User.create({
   weight: 210,
   email: "wesleyscholl@gmail.com",
   password: "777bmx777",
-  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 4,
@@ -45,7 +43,6 @@ User.create({
   weight: 150,
   email: "julie@julie.com",
   password: "whywhywhy",
-  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 5,
@@ -61,7 +58,6 @@ User.create({
   weight: 190,
   email: "brian@brian.com",
   password: "hellohello",
-  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 6,
@@ -77,7 +73,6 @@ User.create({
   weight: 210,
   email: "tim@tim.com",
   password: "byebyebye",
-  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 2,
@@ -93,7 +88,6 @@ User.create({
   weight: 140,
   email: "kate@kate.com",
   password: "sighsighsigh",
-  bac: 0,
   buzzes: [
     {
       numberOfDrinks: 3,
