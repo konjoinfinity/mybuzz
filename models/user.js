@@ -5,7 +5,11 @@ const Schema = mongoose.Schema;
 const Buzz = new Schema({
   numberOfDrinks: Number,
   drinkType: String,
-  hours: Number
+  hours: Number,
+  dateCreated: {
+    type: Date,
+    default: Date.now()
+  }
 });
 
 const User = new Schema({
@@ -15,6 +19,10 @@ const User = new Schema({
   email: String,
   password: String,
   bac: Number,
+  dateCreated: {
+    type: Date,
+    default: Date.now()
+  },
   buzzes: [Buzz]
 });
 
