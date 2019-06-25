@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 });
 
 // To test the function within a route, added the /:id - req.params.id = user's name (case sensitive)
-// Once the request is received at the localhost:5000/bac/name route
+// Once the request is received at the localhost:5000/bac/username route ex. http://localhost:5000/bac/Tim
 router.get("/bac/:id", (req, res) => {
   User.findOne({ name: req.params.id }).then(user => {
     // The weight, gender, numberOfDrinks, drinkType, and hours for buzzes[0] are passed
@@ -41,11 +41,15 @@ router.get("/bac/:id", (req, res) => {
       user.buzzes[0].hours
     );
     console.log(total);
-    // the response is converted to json format 0.14166862361382912
-    // To reduce the number of decimal points use toFixed(number)
+    user.bac = parseFloat(total.toFixed(4));
+    // this sets the bac property of the user object to the total
+    // To reduce the number of decimal points (0.14166862361382912) use toFixed(number)
     // the number will be the number of decimal points in string format "0.1417"
     // to convert back to a number, we use parse float for decimals - output 0.1417
-    res.json(parseFloat(total.toFixed(4)));
+    user.save((err, user) => {
+      // the user object is saved in the database
+      res.json(user);
+    });
   });
 });
 
