@@ -26,10 +26,10 @@ router.get("/", (req, res) => {
   User.find({}).then(users => res.json(users));
 });
 
-// To test the function within a route, hardcoded a user name "Wesley"
-// Once the request is received at the localhost:5000/bac route
-router.get("/bac", (req, res) => {
-  User.findOne({ name: "Wesley" }).then(user => {
+// To test the function within a route, added the /:id - req.params.id = user's name (case sensitive)
+// Once the request is received at the localhost:5000/bac/name route
+router.get("/bac/:id", (req, res) => {
+  User.findOne({ name: req.params.id }).then(user => {
     // The weight, gender, numberOfDrinks, drinkType, and hours for buzzes[0] are passed
     // as arguments to the getBAC function and set the return value to variable total
     // We have to specifiy which index in the array of buzzes i.e. [0] [1] [2] etc.
