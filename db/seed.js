@@ -96,3 +96,18 @@ User.create({
     }
   ]
 }).then(console.log("User Created"));
+
+User.create({
+  name: "James",
+  gender: "Male",
+  weight: 200,
+  email: "james@james.com",
+  password: "hihihi",
+  buzzes: [
+    {
+      numberOfDrinks: 6,
+      drinkType: "Wine",
+      hours: 3
+    }
+  ]
+}).then(console.log("User Created"));
