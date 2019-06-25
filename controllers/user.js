@@ -21,20 +21,27 @@ const User = require("../models/user");
 // drinkType - a string "beer" or "whiskey" representing the type of drinks
 // hours - hours since last drink
 // Note:
-// Beers are 8oz and 4% alcohol by volume - ** No they are more often 5%
-// Whiskeys are 4oz and 32% alcohol by volume - ** No they are more often 40%
+// -- Standard drink serving sizes and alcohol by volume --
+// Beer is typically 12oz and 5% alcohol by volume
+// Wine is typically 5oz and 12% alcohol by volume
+// Liquor is typically 1.5oz and 40% alcohol by volume
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
     distribution = 0.66;
-  } else {
+  }
+  if (gener == "Male") {
     distribution = 0.73;
   }
   var totalAlc;
   if (drinkType == "beer") {
-    totalAlc = 8 * drinks * 0.04;
-  } else {
-    totalAlc = 4 * drinks * 0.32;
+    totalAlc = 12 * drinks * 0.05;
+  }
+  if (drinkType == "wine") {
+    totalAlc = 5 * drinks * 0.12;
+  }
+  if (drinkType == "liquor") {
+    totalAlc = 1.5 * drinks * 0.4;
   }
   var bac = (totalAlc * 5.14) / (weight * distribution) - 0.015 * hours;
   console.log(bac);
