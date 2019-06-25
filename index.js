@@ -1,7 +1,13 @@
 const express = require("express");
 const userController = require("./controllers/user.js");
+const cors = require("cors");
+const parser = require("body-parser");
 
 const app = express();
+
+app.use(cors());
+app.use(parser.urlencoded({ extended: true }));
+app.use(parser.json());
 
 app.use("/", userController);
 

@@ -3,28 +3,22 @@ const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
 
-// Blood Alcohol Calculator
+// Widmark formula
+// BAC = (0.806 * SD * 1.2)/(BW * Wt)-(MR * DP)
+//
+// 0.806 is a constant for body water in the blood (mean 80.6%),
+// SD is the number of standard drinks, that being 10 grams of ethanol each,
+// 1.2 is a factor to convert the amount in grams to Swedish standards set by
+// The Swedish National Institute of Public Health,
+// BW is a body water constant (0.58 for males and 0.49 for females),
+// Wt is body weight (kilogram),
+// MR is the metabolism constant (0.015 for males and 0.017 for females) and
+// DP is the drinking period in hours.[2]
+// 10 converts the result to permillage of alcohol
 
-// An individual's Blood Alcohol Content may be calculated as follows:
+// Time is a variable - ideally a chron job that runs every minute to
+// update the BAC, for now we could ask how long ago did you have the drink
 
-// BAC% = (A × 5.14) / (W × r) - .015 × H
-
-// A: Total alcohol consumed, in ounces (oz)
-// W: Body weight, in pounds (lbs)
-// r: The alcohol distribution ratio, 0.73 for man, and 0.66 for women
-// H: Time passed since drinking, in hours
-// Create a function getBAC(weight, gender, drinks, drinkType, hours) that takes the following:
-
-// weight - a person's body weight,
-// gender - their gender as a string "M" or "F",
-// drinks - the number of drinks they've had
-// drinkType - a string "beer" or "whiskey" representing the type of drinks
-// hours - hours since last drink
-// Note:
-// -- Standard drink serving sizes and alcohol by volume --
-// Beer is typically 12oz and 5% alcohol by volume
-// Wine is typically 5oz and 12% alcohol by volume
-// Liquor is typically 1.5oz and 40% alcohol by volume
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
@@ -78,6 +72,20 @@ router.get("/bac/:id", (req, res) => {
       // The user object is sent back to the browser in json format
     });
   });
+});
+
+router.post("/bac/total", (req, res) => {
+  console.log(req.body);
+  var total = getBAC(
+    req.body.weight,
+    req.body.gender,
+    req.body.numberOfDrinks,
+    req.body.drinkType,
+    req.body.hours
+  );
+  console.log(total);
+  bactotal = parseFloat(total.toFixed(4));
+  res.json(bactotal);
 });
 
 module.exports = router;
