@@ -30,17 +30,17 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
   if (gender == "Female") {
     distribution = 0.66;
   }
-  if (gener == "Male") {
+  if (gender == "Male") {
     distribution = 0.73;
   }
   var totalAlc;
-  if (drinkType == "beer") {
+  if (drinkType == "Beer") {
     totalAlc = 12 * drinks * 0.05;
   }
-  if (drinkType == "wine") {
+  if (drinkType == "Wine") {
     totalAlc = 5 * drinks * 0.12;
   }
-  if (drinkType == "liquor") {
+  if (drinkType == "Liquor") {
     totalAlc = 1.5 * drinks * 0.4;
   }
   var bac = (totalAlc * 5.14) / (weight * distribution) - 0.015 * hours;
