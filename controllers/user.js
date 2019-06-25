@@ -49,6 +49,7 @@ router.get("/bac/:id", (req, res) => {
     user.save((err, user) => {
       // the user object is saved in the database
       res.json(user);
+      // The user object is sent back to the browser in json format
     });
   });
 });
