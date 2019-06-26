@@ -72,15 +72,17 @@ router.get("/bac/:id", (req, res) => {
     if (user.buzzes.length >= 2) {
       console.log(user.buzzes.length);
       for (i = 0; i < user.buzzes.length - 1; i++) {
-        var date2_ms = user.buzzes[i + 1].dateCreated.getTime();
+        var date2_ms = user.buzzes[
+          user.buzzes.length - 1
+        ].dateCreated.getTime();
         var date1_ms = user.buzzes[i].dateCreated.getTime();
-        var difference_ms = date2_ms - date1_ms;
-        difference_ms = difference_ms / 1000;
-        var seconds = Math.floor(difference_ms % 60);
-        difference_ms = difference_ms / 60;
-        var minutes = Math.floor(difference_ms % 60);
-        difference_ms = difference_ms / 60;
-        var hours = Math.floor(difference_ms % 24);
+        var diff_ms = date2_ms - date1_ms;
+        diff_ms = diff_ms / 1000;
+        var seconds = Math.floor(diff_ms % 60);
+        diff_ms = diff_ms / 60;
+        var minutes = Math.floor(diff_ms % 60);
+        diff_ms = diff_ms / 60;
+        var hours = Math.floor(diff_ms % 24);
         console.log(hours + " hours, " + minutes + " minutes");
         if (hours == 0) {
           buzzDuration = minutes / 60;
@@ -104,7 +106,7 @@ router.get("/bac/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(parseFloat(buzzTotal.toFixed(4)) + ` BAC loop ${i}`);
+        console.log(buzzTotal + ` BAC loop ${i}`);
         totals.push(buzzTotal);
       }
       console.log(durations);
