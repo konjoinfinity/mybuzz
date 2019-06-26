@@ -50,12 +50,14 @@ router.get("/", (req, res) => {
   User.find({}).then(users => res.json(users));
 });
 
-//Have to calculate based on current date/timestamp - add later
+// Have to calculate based on current date/timestamp - add later
+// Calculate all BAC's from latest buzz drink date/timestamp
 
 router.get("/bac/:id", (req, res) => {
   User.findOne({ name: req.params.id }).then(user => {
     let total;
     let buzzDuration;
+    let buzzHours;
     var durations = [];
     var totals = [];
     if (user.buzzes.length == 1) {
@@ -68,6 +70,7 @@ router.get("/bac/:id", (req, res) => {
       );
     }
     if (user.buzzes.length >= 2) {
+      console.log(user.buzzes.length);
       for (i = 0; i < user.buzzes.length - 1; i++) {
         var date2_ms = user.buzzes[i + 1].dateCreated.getTime();
         var date1_ms = user.buzzes[i].dateCreated.getTime();
@@ -81,31 +84,32 @@ router.get("/bac/:id", (req, res) => {
         console.log(hours + " hours, " + minutes + " minutes");
         if (hours == 0) {
           buzzDuration = minutes / 60;
-          console.log(minutes);
+          console.log(minutes + ` duration loop ${i}`);
         } else {
           buzzDuration = hours + minutes / 60;
         }
-        console.log(buzzDuration);
+        console.log(buzzDuration + ` duration loop ${i}`);
         durations.push(buzzDuration);
-        for (i = 0; i < user.buzzes.length - 1; i++) {
-          if ((i = 0)) {
-            var buzzHours = durations[i];
-          } else {
-            buzzHours = 0;
-          }
-          buzzTotal = getBAC(
-            user.weight,
-            user.gender,
-            user.buzzes[i].numberOfDrinks,
-            user.buzzes[i].drinkType,
-            buzzHours
-          );
-          console.log(buzzTotal);
-          totals.push(buzzTotal);
+      }
+      for (i = 0; i < user.buzzes.length; i++) {
+        if (i == user.buzzes.length - 1) {
+          buzzHours = 0;
+        } else {
+          buzzHours = durations[i];
         }
+        buzzTotal = getBAC(
+          user.weight,
+          user.gender,
+          user.buzzes[i].numberOfDrinks,
+          user.buzzes[i].drinkType,
+          buzzHours
+        );
+        console.log(parseFloat(buzzTotal.toFixed(4)) + ` BAC loop ${i}`);
+        totals.push(buzzTotal);
       }
       console.log(durations);
       console.log(totals);
+      console.log(totals.reduce((a, b) => a + b, 0));
       // console.log(total);
       // user.bac = parseFloat(total.toFixed(4));
       // user.save((err, user) => {
