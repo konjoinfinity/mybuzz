@@ -5,6 +5,7 @@ const parser = require("body-parser");
 
 const app = express();
 
+app.set("view engine", "hbs");
 app.use(cors());
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());

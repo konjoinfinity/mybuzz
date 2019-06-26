@@ -47,7 +47,7 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 router.get("/", (req, res) => {
-  User.find({}).then(users => res.json(users));
+  User.find({}).then(users => res.render("index", { users }));
 });
 
 // Have to calculate based on current date/timestamp - add later
