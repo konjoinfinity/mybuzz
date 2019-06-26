@@ -3,26 +3,6 @@ const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
 
-// Widmark formula
-// BAC = (0.806 * SD * 1.2)/(BW * Wt)-(MR * DP)
-//
-// 0.806 is a constant for body water in the blood (mean 80.6%),
-// SD is the number of standard drinks, that being 10 grams of ethanol each,
-// 1.2 is a factor to convert the amount in grams to Swedish standards set by
-// The Swedish National Institute of Public Health,
-// BW is a body water constant (0.58 for males and 0.49 for females),
-// Wt is body weight (kilogram),
-// MR is the metabolism constant (0.015 for males and 0.017 for females) and
-// DP is the drinking period in hours.[2]
-// 10 converts the result to permillage of alcohol
-
-// Time is a variable - ideally a chron job that runs every minute to
-// update the BAC, for now we could ask how long ago did you have the drink
-
-// If user.buzzes.length == 1 run function as normal
-// If user.buzzes.length >= 2, run function with time elapsed included and
-// Loop through buzzes based on buzz.length and run function for each
-
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
@@ -49,9 +29,6 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 router.get("/", (req, res) => {
   User.find({}).then(users => res.render("index", { users }));
 });
-
-// Have to calculate based on current date/timestamp - add later
-// Calculate all BAC's from latest buzz drink date/timestamp
 
 router.get("/user/:id", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
