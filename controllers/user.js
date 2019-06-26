@@ -62,7 +62,7 @@ router.get("/bac/:id", (req, res) => {
         user.buzzes[0].hours
       );
     }
-    if (user.buzzes.length == 2) {
+    if (user.buzzes.length >= 2) {
       var date2_ms = user.buzzes[1].dateCreated.getTime();
       var date1_ms = user.buzzes[0].dateCreated.getTime();
       var difference_ms = date2_ms - date1_ms;
@@ -77,23 +77,21 @@ router.get("/bac/:id", (req, res) => {
         minutes = minutes / 60;
         console.log(minutes);
       }
-      total0 = getBAC(
-        user.weight,
-        user.gender,
-        user.buzzes[0].numberOfDrinks,
-        user.buzzes[0].drinkType,
-        minutes
-      );
-      console.log(total0);
-      total1 = getBAC(
-        user.weight,
-        user.gender,
-        user.buzzes[1].numberOfDrinks,
-        user.buzzes[1].drinkType,
-        0
-      );
-      console.log(total1);
-      total = total0 + total1;
+      for (i = 0; i < user.buzzes.length - 1; i++) {
+        if ((i = 0)) {
+          var buzzHours = minutes;
+        } else {
+          buzzHours = 0;
+        }
+        buzzTotal = getBAC(
+          user.weight,
+          user.gender,
+          user.buzzes[i].numberOfDrinks,
+          user.buzzes[i].drinkType,
+          buzzHours
+        );
+        total = total0 + total1;
+      }
     }
     console.log(total);
     user.bac = parseFloat(total.toFixed(4));
