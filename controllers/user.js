@@ -112,12 +112,13 @@ router.get("/bac/:id", (req, res) => {
       console.log(durations);
       console.log(totals);
       console.log(totals.reduce((a, b) => a + b, 0));
-      // console.log(total);
-      // user.bac = parseFloat(total.toFixed(4));
-      // user.save((err, user) => {
-      //   res.json(user);
-      // });
+      total = totals.reduce((a, b) => a + b, 0);
     }
+    console.log(total);
+    user.bac = total;
+    user.save((err, user) => {
+      res.json(user);
+    });
   });
 });
 
