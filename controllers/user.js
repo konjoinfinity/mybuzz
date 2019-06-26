@@ -19,6 +19,10 @@ const User = require("../models/user");
 // Time is a variable - ideally a chron job that runs every minute to
 // update the BAC, for now we could ask how long ago did you have the drink
 
+// If user.buzzes.length == 1 run function as normal
+// If user.buzzes.length >= 2, run function with time elapsed included and
+// Loop through buzzes based on buzz.length and run function for each
+
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
@@ -48,28 +52,49 @@ router.get("/", (req, res) => {
 
 router.get("/bac/:id", (req, res) => {
   User.findOne({ name: req.params.id }).then(user => {
-    var total = getBAC(
-      user.weight,
-      user.gender,
-      user.buzzes[0].numberOfDrinks,
-      user.buzzes[0].drinkType,
-      user.buzzes[0].hours
-    );
-    // Testing new time difference function
-    var date2_ms = user.buzzes[1].dateCreated.getTime();
-    var date1_ms = user.buzzes[0].dateCreated.getTime();
-    // Calculate the difference in milliseconds
-    var difference_ms = date2_ms - date1_ms;
-    //take out milliseconds
-    difference_ms = difference_ms / 1000;
-    var seconds = Math.floor(difference_ms % 60);
-    difference_ms = difference_ms / 60;
-    var minutes = Math.floor(difference_ms % 60);
-    difference_ms = difference_ms / 60;
-    var hours = Math.floor(difference_ms % 24);
-    console.log(
-      hours + " hours, " + minutes + " minutes, and " + seconds + " seconds"
-    );
+    let total;
+    if (user.buzzes.length == 1) {
+      total = getBAC(
+        user.weight,
+        user.gender,
+        user.buzzes[0].numberOfDrinks,
+        user.buzzes[0].drinkType,
+        user.buzzes[0].hours
+      );
+    }
+    if (user.buzzes.length == 2) {
+      var date2_ms = user.buzzes[1].dateCreated.getTime();
+      var date1_ms = user.buzzes[0].dateCreated.getTime();
+      var difference_ms = date2_ms - date1_ms;
+      difference_ms = difference_ms / 1000;
+      var seconds = Math.floor(difference_ms % 60);
+      difference_ms = difference_ms / 60;
+      var minutes = Math.floor(difference_ms % 60);
+      difference_ms = difference_ms / 60;
+      var hours = Math.floor(difference_ms % 24);
+      console.log(hours + " hours, " + minutes + " minutes");
+      if (hours == 0) {
+        minutes = minutes / 60;
+        console.log(minutes);
+      }
+      total0 = getBAC(
+        user.weight,
+        user.gender,
+        user.buzzes[0].numberOfDrinks,
+        user.buzzes[0].drinkType,
+        minutes
+      );
+      console.log(total0);
+      total1 = getBAC(
+        user.weight,
+        user.gender,
+        user.buzzes[1].numberOfDrinks,
+        user.buzzes[1].drinkType,
+        0
+      );
+      console.log(total1);
+      total = total0 + total1;
+    }
     console.log(total);
     user.bac = parseFloat(total.toFixed(4));
     user.save((err, user) => {
@@ -99,7 +124,6 @@ router.post("/bac/:id/buzz", (req, res) => {
     drinkType: req.body.drinkType,
     hours: req.body.hours
   };
-  //findOne
   User.findOneAndUpdate(
     { name: req.params.id },
     { $push: { buzzes: newBuzz } }
