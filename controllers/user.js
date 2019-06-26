@@ -53,8 +53,8 @@ router.get("/", (req, res) => {
 // Have to calculate based on current date/timestamp - add later
 // Calculate all BAC's from latest buzz drink date/timestamp
 
-router.get("/bac/:id", (req, res) => {
-  User.findOne({ name: req.params.id }).then(user => {
+router.get("/user/:id", (req, res) => {
+  User.findOne({ _id: req.params.id }).then(user => {
     let total;
     let buzzDuration;
     let buzzHours;
@@ -117,7 +117,7 @@ router.get("/bac/:id", (req, res) => {
     console.log(total);
     user.bac = total;
     user.save((err, user) => {
-      res.json(user);
+      res.render("user/show", { user });
     });
   });
 });
