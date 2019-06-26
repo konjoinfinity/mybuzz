@@ -46,13 +46,8 @@ router.get("/", (req, res) => {
   User.find({}).then(users => res.json(users));
 });
 
-// To test the function within a route, added the /:id - req.params.id = user's name (case sensitive)
-// Once the request is received at the localhost:5000/bac/username route ex. http://localhost:5000/bac/Tim
 router.get("/bac/:id", (req, res) => {
   User.findOne({ name: req.params.id }).then(user => {
-    // The weight, gender, numberOfDrinks, drinkType, and hours for buzzes[0] are passed
-    // as arguments to the getBAC function and set the return value to variable total
-    // We have to specifiy which index in the array of buzzes i.e. [0] [1] [2] etc.
     var total = getBAC(
       user.weight,
       user.gender,
@@ -60,16 +55,25 @@ router.get("/bac/:id", (req, res) => {
       user.buzzes[0].drinkType,
       user.buzzes[0].hours
     );
+    // Testing new time difference function
+    var date2_ms = user.buzzes[1].dateCreated.getTime();
+    var date1_ms = user.buzzes[0].dateCreated.getTime();
+    // Calculate the difference in milliseconds
+    var difference_ms = date2_ms - date1_ms;
+    //take out milliseconds
+    difference_ms = difference_ms / 1000;
+    var seconds = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms / 60;
+    var minutes = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms / 60;
+    var hours = Math.floor(difference_ms % 24);
+    console.log(
+      hours + " hours, " + minutes + " minutes, and " + seconds + " seconds"
+    );
     console.log(total);
     user.bac = parseFloat(total.toFixed(4));
-    // this sets the bac property of the user object to the total
-    // To reduce the number of decimal points (0.14166862361382912) use toFixed(number)
-    // the number will be the number of decimal points in string format "0.1417"
-    // to convert back to a number, we use parse float for decimals - output 0.1417
     user.save((err, user) => {
-      // the user object is saved in the database
       res.json(user);
-      // The user object is sent back to the browser in json format
     });
   });
 });
@@ -86,6 +90,24 @@ router.post("/bac/total", (req, res) => {
   console.log(total);
   bactotal = parseFloat(total.toFixed(4));
   res.json(bactotal);
+});
+
+router.post("/bac/:id/buzz", (req, res) => {
+  console.log(req.body);
+  var newBuzz = {
+    numberOfDrinks: req.body.numberOfDrinks,
+    drinkType: req.body.drinkType,
+    hours: req.body.hours
+  };
+  //findOne
+  User.findOneAndUpdate(
+    { name: req.params.id },
+    { $push: { buzzes: newBuzz } }
+  ).then(user => {
+    user.save((err, user) => {
+      res.json(user);
+    });
+  });
 });
 
 module.exports = router;
