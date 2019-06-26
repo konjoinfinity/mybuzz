@@ -3,7 +3,7 @@
       <div class="col s6">
         <div class="card blue lighten-5">
           <div class="card-content white-black center">
-<h3>{{user.name}}</h3>
+<h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
 <p>Weight - {{user.weight}}</p>
 <p>Email - {{user.email}}</p>
@@ -26,6 +26,21 @@
 <h4>Current BAC</h4>
 <h5>{{user.bac}}</h5>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+      <div class="col s6">
+        <div class="card blue lighten-5">
+          <div class="card-content white-black center">
+<form action="/user/{{user.id}}/" method="post">
+  <h6>Add a Drink</h6>
+  <button name="drinkType" type="submit" value="Beer">Beer</button>
+  <button name="drinkType" type="submit" value="Wine">Wine</button>
+  <button name="drinkType" type="submit" value="Liquor">Liquor</button>
+</form>
 </div>
 </div>
 </div>
