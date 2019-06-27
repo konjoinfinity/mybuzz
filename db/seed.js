@@ -27,14 +27,7 @@ User.create({
   gender: "Male",
   weight: 210,
   email: "wesleyscholl@gmail.com",
-  password: "777bmx777",
-  buzzes: [
-    {
-      numberOfDrinks: 4,
-      drinkType: "Beer",
-      hours: 2
-    }
-  ]
+  password: "777bmx777"
 }).then(console.log("User Created"));
 
 User.create({
