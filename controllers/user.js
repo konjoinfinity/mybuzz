@@ -135,16 +135,16 @@ router.post("/user/:id", (req, res) => {
       if (user.buzzes.length == 0) {
         total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 1);
       }
-      if (user.buzzes.length == 1) {
-        total = getBAC(
-          user.weight,
-          user.gender,
-          user.buzzes[0].numberOfDrinks,
-          user.buzzes[0].drinkType,
-          user.buzzes[0].hours
-        );
-      }
-      if (user.buzzes.length >= 2) {
+      // if (user.buzzes.length == 1) {
+      //   total = getBAC(
+      //     user.weight,
+      //     user.gender,
+      //     user.buzzes[0].numberOfDrinks,
+      //     user.buzzes[0].drinkType,
+      //     user.buzzes[0].hours
+      //   );
+      // }
+      if (user.buzzes.length >= 1) {
         console.log(user.buzzes.length);
         for (i = 0; i < user.buzzes.length - 1; i++) {
           var date2_ms = user.buzzes[
