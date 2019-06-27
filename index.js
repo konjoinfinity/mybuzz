@@ -9,6 +9,7 @@ app.set("view engine", "hbs");
 app.use(cors());
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
+app.use(express.static(__dirname + "/public"));
 
 app.use("/", userController);
 

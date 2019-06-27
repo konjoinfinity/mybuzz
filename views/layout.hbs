@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Buzzin'</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
     @media (min-width: 37em) {
@@ -14,7 +14,10 @@
     }
 @media (max-width: 36em) {
   body {
-zoom: 130%
+zoom: 125%
+},
+.navside {
+  max-width: 250px
 }
 }
     .container-card {
@@ -39,7 +42,7 @@ zoom: 130%
           </ul>
         </div>
       </nav>
-      <ul class="sidenav" id="mobile-demo">
+      <ul class="sidenav" id="mobile-demo" class="navside">
         <li><a href="/">Home</a></li>
         <li><a href="/buzz/new">New Buzz<i class="material-icons right">add_circle_outline</i></a></li>
         <li><a href="/about">About</a></li>
