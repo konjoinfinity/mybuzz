@@ -22,7 +22,6 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
     totalAlc = 1.5 * drinks * 0.4;
   }
   var bac = (totalAlc * 5.14) / (weight * distribution) - 0.015 * hours;
-  console.log(bac);
   return bac;
 }
 
@@ -38,7 +37,6 @@ router.get("/user/:id", (req, res) => {
     var durations = [];
     var totals = [];
     if (user.buzzes.length >= 1) {
-      console.log(user.buzzes.length);
       for (i = 0; i < user.buzzes.length - 1; i++) {
         var date2_ms = user.buzzes[
           user.buzzes.length - 1
@@ -51,14 +49,11 @@ router.get("/user/:id", (req, res) => {
         var minutes = Math.floor(diff_ms % 60);
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
-        console.log(hours + " hours, " + minutes + " minutes");
         if (hours == 0) {
           buzzDuration = minutes / 60;
-          console.log(minutes + ` duration loop ${i}`);
         } else {
           buzzDuration = hours + minutes / 60;
         }
-        console.log(buzzDuration + ` duration loop ${i}`);
         durations.push(buzzDuration);
       }
       for (i = 0; i < user.buzzes.length; i++) {
@@ -74,15 +69,10 @@ router.get("/user/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(buzzTotal + ` BAC loop ${i}`);
         totals.push(buzzTotal);
       }
-      console.log(durations);
-      console.log(totals);
-      console.log(totals.reduce((a, b) => a + b, 0));
       total = totals.reduce((a, b) => a + b, 0);
     }
-    console.log(total);
     user.bac = total;
     user.save((err, user) => {
       res.render("user/show", { user });
@@ -90,22 +80,7 @@ router.get("/user/:id", (req, res) => {
   });
 });
 
-router.post("/bac/total", (req, res) => {
-  console.log(req.body);
-  var total = getBAC(
-    req.body.weight,
-    req.body.gender,
-    req.body.numberOfDrinks,
-    req.body.drinkType,
-    req.body.hours
-  );
-  console.log(total);
-  bactotal = parseFloat(total.toFixed(4));
-  res.json(bactotal);
-});
-
 router.post("/user/:id", (req, res) => {
-  console.log(req.body);
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
@@ -119,13 +94,10 @@ router.post("/user/:id", (req, res) => {
       let buzzHours;
       var durations = [];
       var totals = [];
-      console.log(user);
-      console.log(user.buzzes.length);
       if (user.buzzes.length == 0) {
         total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 1);
       }
       if (user.buzzes.length >= 1) {
-        console.log(user.buzzes.length);
         for (i = 0; i < user.buzzes.length - 1; i++) {
           var date2_ms = user.buzzes[
             user.buzzes.length - 1
@@ -138,14 +110,11 @@ router.post("/user/:id", (req, res) => {
           var minutes = Math.floor(diff_ms % 60);
           diff_ms = diff_ms / 60;
           var hours = Math.floor(diff_ms % 24);
-          console.log(hours + " hours, " + minutes + " minutes");
           if (hours == 0) {
             buzzDuration = minutes / 60;
-            console.log(minutes + ` duration loop ${i}`);
           } else {
             buzzDuration = hours + minutes / 60;
           }
-          console.log(buzzDuration + ` duration loop ${i}`);
           durations.push(buzzDuration);
         }
         for (i = 0; i < user.buzzes.length; i++) {
@@ -161,15 +130,10 @@ router.post("/user/:id", (req, res) => {
             user.buzzes[i].drinkType,
             buzzHours
           );
-          console.log(buzzTotal + ` BAC loop ${i}`);
           totals.push(buzzTotal);
         }
-        console.log(durations);
-        console.log(totals);
-        console.log(totals.reduce((a, b) => a + b, 0));
         total = totals.reduce((a, b) => a + b, 0);
       }
-      console.log(total);
       user.bac = total;
       user.save((err, user) => {
         res.render("user/show", { user });
@@ -185,10 +149,7 @@ router.get("/user/:id/bac", (req, res) => {
 });
 
 router.put("/user/:id/del", (req, res) => {
-  console.log(req.body.index);
-  console.log(req.params.id);
   const buzzId = { _id: req.body.index };
-  console.log(buzzId);
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
