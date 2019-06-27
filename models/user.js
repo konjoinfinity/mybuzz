@@ -19,7 +19,7 @@ const User = new Schema({
   password: String,
   bac: {
     type: Number,
-    default: 0
+    default: 0.0
   },
   dateCreated: {
     type: Date,
