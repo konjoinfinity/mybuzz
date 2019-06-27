@@ -187,15 +187,16 @@ router.get("/user/:id/bac", (req, res) => {
 router.put("/user/:id/del", (req, res) => {
   console.log(req.body.index);
   console.log(req.params.id);
-  // const buzzId = { _id: req.body.index };
-  // console.log(buzzId);
-  //   User.findOneAndUpdate(
-  //     { _id: req.params.id },
-  //     { $pull: { buzzes: buzzId } }
-  //   ).then(user => {
-  //     user.save();
-  //     res.render("user/show", { user });
-  //   });
+  const buzzId = { _id: req.body.index };
+  console.log(buzzId);
+  User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { buzzes: buzzId } }
+  ).then(user => {
+    user.save((err, user) => {
+      res.redirect("back");
+    });
+  });
 });
 
 module.exports = router;
