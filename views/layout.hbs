@@ -5,24 +5,40 @@
     <title>Buzzin'</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+    .container-card {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+</style>
   </head>
   <body>
     <nav>
-    <div class="nav-wrapper teal lighten-4">
-      <a href="/#" class="brand-logo right"><i class="material-icons">local_bar</i>Buzzin'</a>
-      <ul id="nav-mobile" class="left">
-        <li class="nav-item">
-          <a class="nav-link" href="#"> Welcome</a>
-        </li>
-        <li class="nav-item">
-        <i class="material-icons">add_circle_outline</i>
-        </li>
-        <li class="nav-item"><a href="/buzz/new">New Buzz</a>
-      </li>
-    </div>
-  </nav>
+        <div class="nav-wrapper teal lighten-3">
+          <a href="/" class="brand-logo right">
+          <i class="material-icons">local_bar</i>Buzzin'
+          </a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul class="left hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/buzz/new">New Buzz<i class="material-icons left">add_circle_outline</i></a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+        </div>
+      </nav>
+      <ul class="sidenav" id="mobile-demo">
+        <li><a href="/">Home</a></li>
+        <li><a href="/buzz/new">New Buzz<i class="material-icons right">add_circle_outline</i></a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
     {{{ body }}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $(".sidenav").sidenav();
+      });
+    </script>
   </body>
 </html>
