@@ -184,4 +184,14 @@ router.get("/user/:id/bac", (req, res) => {
   });
 });
 
+router.put("/user/:id/del", (req, res) => {
+  console.log(req.body);
+  // User.findOne({ _id: req.params.id }).then(user => {
+  //   user.buzzes.splice(req.body.index, 1);
+  //   user.save().then(user => {
+  //     res.render("user/show", { user });
+  //   });
+  // });
+});
+
 module.exports = router;

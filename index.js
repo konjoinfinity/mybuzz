@@ -2,6 +2,7 @@ const express = require("express");
 const userController = require("./controllers/user.js");
 const cors = require("cors");
 const parser = require("body-parser");
+const methodOverride = require("method-override");
 
 const app = express();
 
@@ -9,7 +10,7 @@ app.set("view engine", "hbs");
 app.use(cors());
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
-app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 
 app.use("/", userController);
 

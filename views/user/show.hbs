@@ -32,6 +32,9 @@
           <p>Number of Drinks - {{numberOfDrinks}}</p>
       <p>Drink Type - {{drinkType}}</p>
       <p>Number of Hours - {{hours}}</p>
+      <form action="/user/{{this.id}}/del?_method=PUT" method="post">
+        <button class="btn waves-effect waves-light orange lighten-1" type="submit" name="index" value="{{@index}}">Delete<i class="material-icons right">delete</i></button>
+      </form>
       </div>
         </div>
               {{/each}}
