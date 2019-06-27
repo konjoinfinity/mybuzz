@@ -50,84 +50,91 @@ router.post("/bac/total", (req, res) => {
   res.json(bactotal);
 });
 
-router.post("/user/:id", (req, res) => {
+router.post("/user/:id/add", (req, res) => {
   console.log(req.body);
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
     hours: 1
   };
-  User.findOneAndUpdate({ _id: req.params.id }, { $push: { buzzes: newBuzz } })
-    .then(user => {
-      user.save((err, user) => {
-        let total;
-        let buzzDuration;
-        let buzzHours;
-        var durations = [];
-        var totals = [];
-        if (user.buzzes.length == 1) {
-          total = getBAC(
+  User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { buzzes: newBuzz } }
+  ).then(user => {
+    user.save().then(user => {
+      let total;
+      let buzzDuration;
+      let buzzHours;
+      var durations = [];
+      var totals = [];
+      console.log(user);
+      console.log(user.buzzes.length);
+      if (user.buzzes.length == 0) {
+        total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 1);
+      }
+      if (user.buzzes.length == 1) {
+        total = getBAC(
+          user.weight,
+          user.gender,
+          user.buzzes[0].numberOfDrinks,
+          user.buzzes[0].drinkType,
+          user.buzzes[0].hours
+        );
+      }
+      if (user.buzzes.length >= 2) {
+        console.log(user.buzzes.length);
+        for (i = 0; i < user.buzzes.length - 1; i++) {
+          var date2_ms = user.buzzes[
+            user.buzzes.length - 1
+          ].dateCreated.getTime();
+          var date1_ms = user.buzzes[i].dateCreated.getTime();
+          var diff_ms = date2_ms - date1_ms;
+          diff_ms = diff_ms / 1000;
+          var seconds = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var minutes = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var hours = Math.floor(diff_ms % 24);
+          console.log(hours + " hours, " + minutes + " minutes");
+          if (hours == 0) {
+            buzzDuration = minutes / 60;
+            console.log(minutes + ` duration loop ${i}`);
+          } else {
+            buzzDuration = hours + minutes / 60;
+          }
+          console.log(buzzDuration + ` duration loop ${i}`);
+          durations.push(buzzDuration);
+        }
+        for (i = 0; i < user.buzzes.length; i++) {
+          if (i == user.buzzes.length - 1) {
+            buzzHours = 0;
+          } else {
+            buzzHours = durations[i];
+          }
+          buzzTotal = getBAC(
             user.weight,
             user.gender,
-            user.buzzes[0].numberOfDrinks,
-            user.buzzes[0].drinkType,
-            user.buzzes[0].hours
+            user.buzzes[i].numberOfDrinks,
+            user.buzzes[i].drinkType,
+            buzzHours
           );
+          console.log(buzzTotal + ` BAC loop ${i}`);
+          totals.push(buzzTotal);
         }
-        if (user.buzzes.length >= 2) {
-          console.log(user.buzzes.length);
-          for (i = 0; i < user.buzzes.length - 1; i++) {
-            var date2_ms = user.buzzes[
-              user.buzzes.length - 1
-            ].dateCreated.getTime();
-            var date1_ms = user.buzzes[i].dateCreated.getTime();
-            var diff_ms = date2_ms - date1_ms;
-            diff_ms = diff_ms / 1000;
-            var seconds = Math.floor(diff_ms % 60);
-            diff_ms = diff_ms / 60;
-            var minutes = Math.floor(diff_ms % 60);
-            diff_ms = diff_ms / 60;
-            var hours = Math.floor(diff_ms % 24);
-            console.log(hours + " hours, " + minutes + " minutes");
-            if (hours == 0) {
-              buzzDuration = minutes / 60;
-              console.log(minutes + ` duration loop ${i}`);
-            } else {
-              buzzDuration = hours + minutes / 60;
-            }
-            console.log(buzzDuration + ` duration loop ${i}`);
-            durations.push(buzzDuration);
-          }
-          for (i = 0; i < user.buzzes.length; i++) {
-            if (i == user.buzzes.length - 1) {
-              buzzHours = 0;
-            } else {
-              buzzHours = durations[i];
-            }
-            buzzTotal = getBAC(
-              user.weight,
-              user.gender,
-              user.buzzes[i].numberOfDrinks,
-              user.buzzes[i].drinkType,
-              buzzHours
-            );
-            console.log(buzzTotal + ` BAC loop ${i}`);
-            totals.push(buzzTotal);
-          }
-          console.log(durations);
-          console.log(totals);
-          console.log(totals.reduce((a, b) => a + b, 0));
-          total = totals.reduce((a, b) => a + b, 0);
-        }
-        console.log(total);
-        user.bac = total;
-      });
-    })
-    .then(user => {
-      user.save((err, user) => {
-        res.render("user/show", { user });
-      });
+        console.log(durations);
+        console.log(totals);
+        console.log(totals.reduce((a, b) => a + b, 0));
+        total = totals.reduce((a, b) => a + b, 0);
+      }
+      console.log(total);
+      // user.bac = total;
+      User.findOneAndUpdate({ _id: req.params.id }, { bac: total }).then(
+        user.save((err, user) => {
+          res.render("user/show", { user });
+        })
+      );
     });
+  });
 });
 
 module.exports = router;
