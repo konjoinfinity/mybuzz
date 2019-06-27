@@ -6,22 +6,11 @@
 <p>Weight - {{user.weight}}</p>
 <p>Email - {{user.email}}</p>
 <p># of Buzzes - {{user.buzzes.length}}</p>
-{{#if user.buzzes}}
-  {{#each user.buzzes }}
-        <div class="card orange lighten-5" style="margin:20px">
-          <div class="card-content white-black center">
-    <p>Number of Drinks - {{numberOfDrinks}}</p>
-<p>Drink Type - {{drinkType}}</p>
-<p>Number of Hours - {{hours}}</p>
-</div>
-  </div>
-        {{/each}}
-          {{/if}}
-          <h4>Current BAC</h4>
-          <h5>{{user.bac}}</h5>
+          <h5>Current BAC</h5>
+          <h6>{{user.bac}}</h6>
         </div>
       </div>
-        <div class="card blue lighten-5" style="margin:25px; height:150px">
+        <div class="card blue lighten-5" style="margin:25px; height:208px">
           <div class="card-content white-black center">
 <form action="/user/{{user.id}}/" method="post">
   <h6>Add a Drink</h6>
@@ -31,4 +20,19 @@
           </form>
         </div>
       </div>
+      <div class="container-card">
+              <div class="card blue lighten-5" style="margin:25px">
+      {{#if user.buzzes}}
+        {{#each user.buzzes }}
+              <div class="card orange lighten-5" style="margin:15px">
+                <div class="card-content white-black center">
+          <p>Number of Drinks - {{numberOfDrinks}}</p>
+      <p>Drink Type - {{drinkType}}</p>
+      <p>Number of Hours - {{hours}}</p>
+      </div>
+        </div>
+              {{/each}}
+                {{/if}}
+              </div>
+            </div>
     </div>
