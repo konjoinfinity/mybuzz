@@ -1,7 +1,5 @@
-<div class="container">
-  <div class="row">
-      <div class="col s6">
-        <div class="card blue lighten-5">
+<div class="container-card">
+        <div class="card blue lighten-5" style="margin:25px">
           <div class="card-content white-black center">
 <h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
@@ -10,17 +8,13 @@
 <p># of Buzzes - {{user.buzzes.length}}</p>
 {{#if user.buzzes}}
   {{#each user.buzzes }}
-  <div class="row">
-      <div class="col s12">
-        <div class="card orange lighten-5">
+        <div class="card orange lighten-5" style="margin:20px">
           <div class="card-content white-black center">
     <p>Number of Drinks - {{numberOfDrinks}}</p>
 <p>Drink Type - {{drinkType}}</p>
 <p>Number of Hours - {{hours}}</p>
 </div>
   </div>
-    </div>
-      </div>
         {{/each}}
           {{/if}}
           <h4>Current BAC</h4>
@@ -28,20 +22,15 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-      <div class="col s6">
-        <div class="card blue lighten-5">
+<div class="container-card">
+        <div class="card blue lighten-5" style="margin:10px">
           <div class="card-content white-black center">
 <form action="/user/{{user.id}}/" method="post">
   <h6>Add a Drink</h6>
-  <button class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
-  <button class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
-  <button class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
           </form>
         </div>
       </div>
     </div>
-</div>
