@@ -1,11 +1,11 @@
+<div class="container-card">
 {{#if users}}
   {{#each users }}
-    <div class="container-card">
-          <div style="width:250px" class="card orange lighten-5">
+          <div class="card orange lighten-5" style="margin:20px; padding: 20px">
             <div class="card-content white-black center">
               <span class="card-title"><a href="/user/{{id}}">{{name}}</a> - {{gender}}</span>
             </div>
           </div>
-      </div>
   {{/each}}
 {{/if}}
+</div>
