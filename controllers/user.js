@@ -111,10 +111,8 @@ router.post("/user/:id", (req, res) => {
     drinkType: req.body.drinkType,
     hours: 1
   };
-  User.findOneAndUpdate(
-    { _id: req.params.id },
-    { $push: { buzzes: newBuzz } }
-  ).then(user => {
+  User.findOne({ _id: req.params.id }).then(user => {
+    user.buzzes.push(newBuzz);
     user.save().then(user => {
       let total;
       let buzzDuration;
