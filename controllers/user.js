@@ -185,13 +185,17 @@ router.get("/user/:id/bac", (req, res) => {
 });
 
 router.put("/user/:id/del", (req, res) => {
-  console.log(req.body);
-  // User.findOne({ _id: req.params.id }).then(user => {
-  //   user.buzzes.splice(req.body.index, 1);
-  //   user.save().then(user => {
+  console.log(req.body.index);
+  console.log(req.params.id);
+  // const buzzId = { _id: req.body.index };
+  // console.log(buzzId);
+  //   User.findOneAndUpdate(
+  //     { _id: req.params.id },
+  //     { $pull: { buzzes: buzzId } }
+  //   ).then(user => {
+  //     user.save();
   //     res.render("user/show", { user });
   //   });
-  // });
 });
 
 module.exports = router;
