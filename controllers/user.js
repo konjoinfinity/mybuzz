@@ -29,6 +29,10 @@ router.get("/", (req, res) => {
   User.find({}).then(users => res.render("index", { users }));
 });
 
+router.get("/about", (req, res) => {
+  res.render("about");
+});
+
 router.get("/signup", (req, res) => {
   res.render("user/signup");
 });
