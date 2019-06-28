@@ -29,6 +29,14 @@ router.get("/", (req, res) => {
   User.find({}).then(users => res.render("index", { users }));
 });
 
+router.get("/signup", (req, res) => {
+  res.render("user/signup");
+});
+
+router.post("/signup", (req, res) => {
+  console.log(req.body);
+});
+
 router.get("/user/:id", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     let total;

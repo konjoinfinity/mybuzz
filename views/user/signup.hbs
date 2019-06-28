@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-content">
+  <h4>Sign Up</h4>
+  {{#if error}}
+  <p class="alert alert-danger p-2 text-red-light">{{error}}</p>
+  {{/if}}
+  {{#if info}}
+  <p class="alert alert-warning p-2 text-red-light">{{info}}</p>
+  {{/if}}
+  <form action="/signup" method="post">
+    <p class="form-group p-2">
+      <input type="text" name="name" id="name" placeholder="Name" class="form-control p-2 border-2 border-grey rounded">
+    </p>
+    <p class="form-group p-2">
+      <input type="text" name="email" id="email" placeholder="Email" class="form-control p-2 border-2 border-grey rounded">
+    </p>
+    <p class="form-group p-2">
+      Select Gender
+    <select name="gender">
+    <option value="Male">Male</option>
+    <option value="Male">Female</option>
+  </select>
+  </p>
+<p class="form-group p-2">
+  Select Weight
+  <input type="number" name="weight"
+  min="80" max="400" step="5" value="100">
+    </p>
+    <p class="form-group p-2">
+      <input type="password" name="password" id="password" placeholder="Password" class="form-control p-2 border-2 border-grey rounded">
+    </p>
+    <p class="form-group p-2">
+      <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" class="form-control p-2 border-2 border-grey rounded">
+    </p>
+    <p class="form-group p-3">
+      <button type="submit" class="btn waves-effect waves-light orange lighten-1">Sign Up</button>
+    </p>
+</form>
+</div>
+</div>
