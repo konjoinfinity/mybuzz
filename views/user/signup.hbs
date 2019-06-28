@@ -1,40 +1,36 @@
-<div class="card">
-  <div class="card-content">
+<div class="row">
+    <div class="col s12 m6">
   <h4>Sign Up</h4>
-  {{#if error}}
-  <p class="alert alert-danger p-2 text-red-light">{{error}}</p>
-  {{/if}}
-  {{#if info}}
-  <p class="alert alert-warning p-2 text-red-light">{{info}}</p>
-  {{/if}}
+  <div class="card">
   <form action="/signup" method="post">
-    <p class="form-group p-2">
-      <input type="text" name="name" id="name" placeholder="Name" class="form-control p-2 border-2 border-grey rounded">
-    </p>
-    <p class="form-group p-2">
-      <input type="text" name="email" id="email" placeholder="Email" class="form-control p-2 border-2 border-grey rounded">
-    </p>
-    <p class="form-group p-2">
-      Select Gender
-    <select name="gender">
-    <option value="Male">Male</option>
-    <option value="Male">Female</option>
-  </select>
-  </p>
-<p class="form-group p-2">
+    <div class="input-field col s12">
+      <input type="text" name="name" id="name" placeholder="Name">
+    </div>
+    <div class="input-field col s12">
+      <input type="text" name="email" id="email" placeholder="Email">
+    </div>
+      <div class="input-field col s12">
+    <select>
+      <option value="" disabled selected>Choose Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+<div class="input-field col s12">
   Select Weight
   <input type="number" name="weight"
   min="80" max="400" step="5" value="100">
-    </p>
-    <p class="form-group p-2">
-      <input type="password" name="password" id="password" placeholder="Password" class="form-control p-2 border-2 border-grey rounded">
-    </p>
-    <p class="form-group p-2">
-      <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" class="form-control p-2 border-2 border-grey rounded">
-    </p>
-    <p class="form-group p-3">
-      <button type="submit" class="btn waves-effect waves-light orange lighten-1">Sign Up</button>
-    </p>
+</div>
+    <div class="input-field col s12">
+      <input type="password" name="password" id="password" placeholder="Password">
+    </div>
+    <div class="input-field col s12">
+      <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password">
+    </div>
+    <div class="input-field col s12">
+      <button type="submit" class="btn waves-effect waves-light teal lighten-3">Sign Up</button>
+    </div>
 </form>
+</div>
 </div>
 </div>

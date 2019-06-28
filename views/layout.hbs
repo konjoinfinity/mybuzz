@@ -45,6 +45,7 @@ zoom: 120%
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="left hide-on-med-and-down">
             <li><a href="/">Home</a></li>
+            <li><a href="/signup">Signup</a></li>
             <li><a href="/buzz/new">New Buzz<i class="material-icons left">add_circle_outline</i></a></li>
             <li><a href="/about">About</a></li>
           </ul>
@@ -52,6 +53,7 @@ zoom: 120%
       </nav>
       <ul class="sidenav" id="mobile-demo" class="navside">
         <li><a href="/">Home</a></li>
+        <li><a href="/signup">Signup</a></li>
         <li><a href="/buzz/new">New Buzz<i class="material-icons right">add_circle_outline</i></a></li>
         <li><a href="/about">About</a></li>
       </ul>
@@ -61,6 +63,9 @@ zoom: 120%
     <script>
     $(document).ready(function(){
     $('.sidenav').sidenav();
+  });
+  $(document).ready(function(){
+    $('select').formSelect();
   });
     </script>
   </body>
