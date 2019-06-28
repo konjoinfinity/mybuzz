@@ -37,6 +37,14 @@ router.post("/signup", (req, res) => {
   console.log(req.body);
 });
 
+router.get("/login", (req, res) => {
+  res.render("user/login");
+});
+
+router.post("/login", (req, res) => {
+  console.log(req.body);
+});
+
 router.get("/user/:id", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     let total;
