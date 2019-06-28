@@ -82,9 +82,7 @@ router.get("/user/:id", (req, res) => {
   let buzzHours;
   var durations = [];
   var totals = [];
-  console.log(currentTime.getTime());
   User.findOne({ _id: req.params.id }).then(user => {
-    console.log(user.buzzes.length);
     if (user.buzzes.length >= 1) {
       for (i = 0; i < user.buzzes.length; i++) {
         var date2_ms = currentTime.getTime();
@@ -96,25 +94,19 @@ router.get("/user/:id", (req, res) => {
         var minutes = Math.floor(diff_ms % 60);
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
-        console.log(hours);
-        console.log(minutes);
         if (hours == 0) {
           buzzDuration = minutes / 60;
-          console.log(buzzDuration);
         } else {
           buzzDuration = hours + minutes / 60;
-          console.log(buzzDuration);
         }
         durations.push(buzzDuration);
       }
-      console.log(durations);
       for (i = 0; i < user.buzzes.length; i++) {
         if (i == user.buzzes.length) {
           buzzHours = 0;
         } else {
           buzzHours = durations[i];
         }
-        console.log(buzzHours);
         buzzTotal = getBAC(
           user.weight,
           user.gender,
@@ -122,12 +114,9 @@ router.get("/user/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(buzzTotal);
         totals.push(buzzTotal);
       }
-      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
-      console.log(total);
       if (total < 0) {
         user.bac = 0;
         user.save((err, user) => {
@@ -214,9 +203,7 @@ router.get("/user/:id/bac", (req, res) => {
   let buzzHours;
   var durations = [];
   var totals = [];
-  console.log(currentTime.getTime());
   User.findOne({ _id: req.params.id }).then(user => {
-    console.log(user.buzzes.length);
     if (user.buzzes.length >= 1) {
       for (i = 0; i < user.buzzes.length; i++) {
         var date2_ms = currentTime.getTime();
@@ -228,25 +215,19 @@ router.get("/user/:id/bac", (req, res) => {
         var minutes = Math.floor(diff_ms % 60);
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
-        console.log(hours);
-        console.log(minutes);
         if (hours == 0) {
           buzzDuration = minutes / 60;
-          console.log(buzzDuration);
         } else {
           buzzDuration = hours + minutes / 60;
-          console.log(buzzDuration);
         }
         durations.push(buzzDuration);
       }
-      console.log(durations);
       for (i = 0; i < user.buzzes.length; i++) {
         if (i == user.buzzes.length) {
           buzzHours = 0;
         } else {
           buzzHours = durations[i];
         }
-        console.log(buzzHours);
         buzzTotal = getBAC(
           user.weight,
           user.gender,
@@ -254,12 +235,9 @@ router.get("/user/:id/bac", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(buzzTotal);
         totals.push(buzzTotal);
       }
-      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
-      console.log(total);
       if (total < 0) {
         user.bac = 0;
         user.save((err, user) => {
