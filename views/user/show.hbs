@@ -1,5 +1,5 @@
 <div class="container-card">
-        <div class="card blue lighten-5" style="margin:25px">
+        <div class="card teal lighten-5" style="margin:25px">
           <div class="card-content white-black center">
 <h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
@@ -9,31 +9,31 @@
           <h5>Current BAC</h5>
           <h6>{{user.bac}}</h6>
           <form action="/user/{{user.id}}/bac" method="get">
-          <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="BAC">Calculate BAC<i class="material-icons right">send</i></button>
+          <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="BAC">Calculate BAC<i class="material-icons right">send</i></button>
           </form>
         </div>
       </div>
-        <div class="card blue lighten-5" style="margin:25px; height:208px">
+        <div class="card teal lighten-5" style="margin:25px; height:208px">
           <div class="card-content white-black center">
 <form action="/user/{{user.id}}" method="post">
   <h6>Add a Drink</h6>
-  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
-  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
-  <button style="margin:5px" class="btn waves-effect waves-light orange lighten-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
           </form>
         </div>
       </div>
       <div class="container-card">
-              <div class="card blue lighten-5" style="margin:25px">
+              <div class="card teal lighten-4" style="margin:25px">
       {{#if user.buzzes}}
         {{#each user.buzzes }}
-              <div class="card orange lighten-5" style="margin:15px">
+              <div class="card teal lighten-5" style="margin:15px">
                 <div class="card-content white-black center">
           <p>Number of Drinks - {{numberOfDrinks}}</p>
       <p>Drink Type - {{drinkType}}</p>
       <p>Number of Hours - {{hours}}</p>
       <form action="/user/{{@root.user.id}}/del?_method=PUT" method="post">
-        <button class="btn waves-effect waves-light orange lighten-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
+        <button class="btn waves-effect waves-light teal darken-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
       </form>
       </div>
         </div>
