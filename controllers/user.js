@@ -75,6 +75,7 @@ router.post("/login", (req, res) => {
     });
 });
 
+// updated this function like the bac button route
 router.get("/user/:id", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     let total;
