@@ -34,19 +34,18 @@ router.get("/signup", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  console.log(req.body);
   if (req.body.password === req.body.confirmpassword) {
     User.create({
       name: req.body.name,
       email: req.body.email,
+      gender: req.body.gender,
       weight: req.body.weight,
       password: req.body.password
     }).then(user => {
-      req.flash("success", "You created an account!");
       res.redirect(`/user/${user._id}`);
     });
   } else {
-    req.flash("error", "Passwords entered do not match.");
+    console.log("Passwords do not match.");
     res.redirect("/signup");
   }
 });

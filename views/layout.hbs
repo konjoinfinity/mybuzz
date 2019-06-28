@@ -68,6 +68,9 @@ zoom: 120%
   });
   $(document).ready(function(){
     $('select').formSelect();
+    $('#gender_select').on('change', function() {
+  $('#gender').val($('#gender_select').val());
+});
   });
     </script>
   </body>
