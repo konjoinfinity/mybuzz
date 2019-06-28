@@ -41,9 +41,14 @@ router.post("/signup", (req, res) => {
       gender: req.body.gender,
       weight: req.body.weight,
       password: req.body.password
-    }).then(user => {
-      res.redirect(`/user/${user._id}`);
-    });
+    })
+      .then(user => {
+        res.redirect(`/user/${user._id}`);
+      })
+      .catch(err => {
+        console.log(err.message);
+        res.redirect("/login");
+      });
   } else {
     console.log("Passwords do not match.");
     res.redirect("/signup");
@@ -55,7 +60,19 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  console.log(req.body);
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (user.password === req.body.password) {
+        res.redirect(`/user/${user._id}`);
+      } else {
+        console.log("Password does not match account.");
+        res.redirect("/login");
+      }
+    })
+    .catch(err => {
+      console.log(err.message);
+      res.redirect("/login");
+    });
 });
 
 router.get("/user/:id", (req, res) => {
