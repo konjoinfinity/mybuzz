@@ -13,7 +13,7 @@ User.deleteMany({})
       password: "Test123",
       buzzes: [
         {
-          numberOfDrinks: 2,
+          numberOfDrinks: 1,
           drinkType: "Beer",
           hours: 1
         }
@@ -38,9 +38,9 @@ User.create({
   password: "whywhywhy",
   buzzes: [
     {
-      numberOfDrinks: 5,
-      drinkType: "Liquor",
-      hours: 3
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1
     }
   ]
 }).then(console.log("User Created"));
@@ -53,9 +53,14 @@ User.create({
   password: "hellohello",
   buzzes: [
     {
-      numberOfDrinks: 6,
+      numberOfDrinks: 1,
       drinkType: "Liquor",
-      hours: 4
+      hours: 1
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Liquor",
+      hours: 1
     }
   ]
 }).then(console.log("User Created"));
@@ -68,7 +73,7 @@ User.create({
   password: "byebyebye",
   buzzes: [
     {
-      numberOfDrinks: 2,
+      numberOfDrinks: 1,
       drinkType: "Liquor",
       hours: 1
     }
@@ -83,7 +88,17 @@ User.create({
   password: "sighsighsigh",
   buzzes: [
     {
-      numberOfDrinks: 3,
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1
+    },
+    {
+      numberOfDrinks: 1,
       drinkType: "Beer",
       hours: 1
     }
@@ -98,9 +113,9 @@ User.create({
   password: "hihihi",
   buzzes: [
     {
-      numberOfDrinks: 6,
+      numberOfDrinks: 1,
       drinkType: "Wine",
-      hours: 3
+      hours: 1
     }
   ]
 }).then(console.log("User Created"));
