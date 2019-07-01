@@ -153,27 +153,35 @@ router.get("/user/:id", (req, res) => {
       console.log(total);
       if (total <= 0) {
         console.log("less than or equal to 0, render 1");
-        User.findOne({ _id: req.params.id }).then(user => {
-          var date2_ms = currentTime.getTime();
-          var date1_ms = user.oldbuzzes[
-            user.oldbuzzes.length - 1
-          ].dateCreated.getTime();
-          var diff_ms = date2_ms - date1_ms;
-          diff_ms = diff_ms / 1000;
-          var seconds = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var minutes = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var hours = Math.floor(diff_ms % 24);
-          var days = Math.floor(diff_ms / 24);
-          console.log(
-            days + " days " + hours + " hours " + minutes + " minutes"
-          );
+        if (user.oldbuzzes.length >= 1) {
+          User.findOne({ _id: req.params.id }).then(user => {
+            var date2_ms = currentTime.getTime();
+            var date1_ms = user.oldbuzzes[
+              user.oldbuzzes.length - 1
+            ].dateCreated.getTime();
+            var diff_ms = date2_ms - date1_ms;
+            diff_ms = diff_ms / 1000;
+            var seconds = Math.floor(diff_ms % 60);
+            diff_ms = diff_ms / 60;
+            var minutes = Math.floor(diff_ms % 60);
+            diff_ms = diff_ms / 60;
+            var hours = Math.floor(diff_ms % 24);
+            var days = Math.floor(diff_ms / 24);
+            console.log(
+              days + " days " + hours + " hours " + minutes + " minutes"
+            );
+            user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+            user.bac = 0;
+            user.save((err, user) => {
+              res.render("user/show", { user });
+            });
+          });
+        } else {
           user.bac = 0;
           user.save((err, user) => {
             res.render("user/show", { user });
           });
-        });
+        }
       } else {
         console.log("more than 0, render 2");
         User.findOne({ _id: req.params.id }).then(user => {

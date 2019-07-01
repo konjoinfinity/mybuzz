@@ -21,6 +21,7 @@
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
           </form>
+          <br>
         </div>
       </div>
       <div class="container-card">
@@ -58,9 +59,11 @@
               {{#each user.oldbuzzes }}
                     <div class="card teal lighten-5" style="margin:15px">
                       <div class="card-content white-black center">
-                <p>Number of Drinks - {{numberOfDrinks}}</p>
-            <p>Drink Type - {{drinkType}}</p>
-            <p>Number of Hours - {{hours}}</p>
+                <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
+                <br>
+            <p style="max-width:170px;
+    word-wrap:break-word">{{dateCreated}}</p>
+    <br>
             <form action="/user/{{@root.user.id}}/olddel?_method=PUT" method="post">
               <button class="btn waves-effect waves-light teal darken-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
             </form>
