@@ -156,6 +156,7 @@ router.get("/user/:id", (req, res) => {
       console.log(total);
       if (total <= 0) {
         console.log("less than or equal to 0, render 1");
+        console.log(user);
         if (user.oldbuzzes.length >= 1) {
           User.findOne({ _id: req.params.id }).then(user => {
             var date2_ms = currentTime.getTime();
@@ -197,7 +198,7 @@ router.get("/user/:id", (req, res) => {
         });
       }
     } else {
-      if (user.oldbuzzes.length > 1) {
+      if (user.oldbuzzes.length >= 1) {
         console.log("old buzz time , render 3");
         User.findOne({ _id: req.params.id }).then(user => {
           var date2_ms = currentTime.getTime();
