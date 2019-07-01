@@ -100,6 +100,15 @@ router.get("/user/:id", (req, res) => {
         var minutes = Math.floor(diff_ms % 60);
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
+        var days = Math.floor(diff_ms / 24);
+        // add days calculation
+        console.log(days + " days");
+        console.log(hours + " hours");
+        console.log(minutes + " minutes");
+        if (days >= 1) {
+          hours = hours + days * 24;
+        }
+        console.log(hours);
         if (hours == 0) {
           buzzDuration = minutes / 60;
         } else {
@@ -107,6 +116,7 @@ router.get("/user/:id", (req, res) => {
         }
         durations.push(buzzDuration);
       }
+      console.log(durations);
       for (i = 0; i < user.buzzes.length; i++) {
         if (i == user.buzzes.length) {
           buzzHours = 0;
@@ -120,6 +130,7 @@ router.get("/user/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
+        console.log(buzzTotal);
         if (buzzTotal > 0) {
           totals.push(buzzTotal);
         }
@@ -130,6 +141,8 @@ router.get("/user/:id", (req, res) => {
             hours: 1
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
+          console.log(oldBuzz);
+          console.log(oldBuzzId);
           User.findOneAndUpdate(
             { _id: req.params.id },
             { $pull: { buzzes: oldBuzzId } }
@@ -189,6 +202,15 @@ router.post("/user/:id", (req, res) => {
           var minutes = Math.floor(diff_ms % 60);
           diff_ms = diff_ms / 60;
           var hours = Math.floor(diff_ms % 24);
+          var days = Math.floor(diff_ms / 24);
+          // add days calculation
+          console.log(days + " days");
+          console.log(hours + " hours");
+          console.log(minutes + " minutes");
+          if (days >= 1) {
+            hours = hours + days * 24;
+          }
+          console.log(hours);
           if (hours == 0) {
             buzzDuration = minutes / 60;
           } else {
@@ -259,6 +281,15 @@ router.get("/user/:id/bac", (req, res) => {
         var minutes = Math.floor(diff_ms % 60);
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
+        var days = Math.floor(diff_ms / 24);
+        // add days calculation
+        console.log(days + " days");
+        console.log(hours + " hours");
+        console.log(minutes + " minutes");
+        if (days >= 1) {
+          hours = hours + days * 24;
+        }
+        console.log(hours);
         if (hours == 0) {
           buzzDuration = minutes / 60;
         } else {
@@ -279,6 +310,7 @@ router.get("/user/:id/bac", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
+        console.log(buzzTotal);
         if (buzzTotal > 0) {
           totals.push(buzzTotal);
         }
