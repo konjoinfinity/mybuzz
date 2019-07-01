@@ -41,4 +41,22 @@
                 {{/if}}
               </div>
             </div>
+            <div class="container-card">
+                    <div class="card teal lighten-4" style="margin:25px">
+            {{#if user.oldbuzzes}}
+              {{#each user.oldbuzzes }}
+                    <div class="card teal lighten-5" style="margin:15px">
+                      <div class="card-content white-black center">
+                <p>Number of Drinks - {{numberOfDrinks}}</p>
+            <p>Drink Type - {{drinkType}}</p>
+            <p>Number of Hours - {{hours}}</p>
+            <form action="/user/{{@root.user.id}}/del?_method=PUT" method="post">
+              <button class="btn waves-effect waves-light teal darken-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
+            </form>
+            </div>
+              </div>
+                    {{/each}}
+                      {{/if}}
+                    </div>
+                  </div>
     </div>
