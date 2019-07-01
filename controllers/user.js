@@ -79,6 +79,8 @@ router.post("/login", (req, res) => {
     });
 });
 
+// After 3 hours, pull old buzz drink and push to old buzz array
+
 router.get("/user/:id", (req, res) => {
   const currentTime = new Date();
   let total;
@@ -118,7 +120,26 @@ router.get("/user/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        totals.push(buzzTotal);
+        if (buzzTotal > 0) {
+          totals.push(buzzTotal);
+        }
+        if (buzzTotal < 0) {
+          const oldBuzz = {
+            numberOfDrinks: 1,
+            drinkType: user.buzzes[i].drinkType,
+            hours: 1
+          };
+          const oldBuzzId = { _id: user.buzzes[i]._id };
+          User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $pull: { buzzes: oldBuzzId } }
+          ).then(user => {
+            user.save((err, user) => {
+              user.oldbuzzes.push(oldBuzz);
+              user.save();
+            });
+          });
+        }
       }
       total = totals.reduce((a, b) => a + b, 0);
       if (total < 0) {
