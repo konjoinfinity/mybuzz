@@ -140,30 +140,28 @@ router.get("/user/:id", (req, res) => {
           const oldBuzzId = { _id: user.buzzes[i]._id };
           console.log(oldBuzz);
           console.log(oldBuzzId);
-          User.findOneAndUpdate(
-            { _id: req.params.id },
-            { $pull: { buzzes: oldBuzzId } }
-          ).then(user => {
-            user.save((err, user) => {
-              user.oldbuzzes.push(oldBuzz);
-              user.save();
-            });
-          });
+          // prettier-ignore
+          { $pull: { buzzes: oldBuzzId } }
+          user.oldbuzzes.push(oldBuzz);
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
+      console.log(total);
       if (total <= 0) {
+        console.log("less than or equal to 0, render 1");
         user.bac = 0;
         user.save((err, user) => {
           res.render("user/show", { user });
         });
       } else {
+        console.log("more than 0, render 2");
         user.bac = total;
         user.save((err, user) => {
           res.render("user/show", { user });
         });
       }
     } else {
+      console.log("else??? , render 3");
       res.render("user/show", { user });
     }
   });
@@ -237,17 +235,12 @@ router.post("/user/:id", (req, res) => {
               hours: 1
             };
             const oldBuzzId = { _id: user.buzzes[i]._id };
-            User.findOneAndUpdate(
-              { _id: req.params.id },
-              { $pull: { buzzes: oldBuzzId } }
-            ).then(user => {
-              user.save((err, user) => {
-                user.oldbuzzes.push(oldBuzz);
-                user.save();
-              });
-            });
+            // prettier-ignore
+            { $pull: { buzzes: oldBuzzId } }
+            user.oldbuzzes.push(oldBuzz);
           }
         }
+        console.log(total);
         total = totals.reduce((a, b) => a + b, 0);
       }
       user.bac = total;
@@ -316,15 +309,9 @@ router.get("/user/:id/bac", (req, res) => {
             hours: 1
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
-          User.findOneAndUpdate(
-            { _id: req.params.id },
-            { $pull: { buzzes: oldBuzzId } }
-          ).then(user => {
-            user.save((err, user) => {
-              user.oldbuzzes.push(oldBuzz);
-              user.save();
-            });
-          });
+          // prettier-ignore
+          { $pull: { buzzes: oldBuzzId } }
+          user.oldbuzzes.push(oldBuzz);
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
