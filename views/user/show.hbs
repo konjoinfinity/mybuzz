@@ -4,19 +4,19 @@
 <h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
 <p>Weight - {{user.weight}}</p>
-<p>Email - {{user.email}}</p>
-<p># of Buzzes - {{user.buzzes.length}}</p>
           <h5>Current BAC</h5>
           <h6>{{user.bac}}</h6>
+          <br>
           <form action="/user/{{user.id}}/bac" method="get">
           <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="BAC">Calculate BAC<i class="material-icons right">send</i></button>
           </form>
         </div>
       </div>
         <div class="card teal lighten-5" style="margin:25px; height:208px">
-          <div class="card-content white-black center">
+          <div class="card-content white-black center" style="padding:10px">
 <form action="/user/{{user.id}}" method="post">
   <h5>Add a Drink</h5>
+  <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
