@@ -79,8 +79,6 @@ router.post("/login", (req, res) => {
     });
 });
 
-// After 3 hours, pull old buzz drink and push to old buzz array
-
 router.get("/user/:id", (req, res) => {
   const currentTime = new Date();
   let total;
@@ -101,7 +99,6 @@ router.get("/user/:id", (req, res) => {
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
         var days = Math.floor(diff_ms / 24);
-        // add days calculation
         console.log(days + " days");
         console.log(hours + " hours");
         console.log(minutes + " minutes");
@@ -203,7 +200,6 @@ router.post("/user/:id", (req, res) => {
           diff_ms = diff_ms / 60;
           var hours = Math.floor(diff_ms % 24);
           var days = Math.floor(diff_ms / 24);
-          // add days calculation
           console.log(days + " days");
           console.log(hours + " hours");
           console.log(minutes + " minutes");
@@ -282,7 +278,6 @@ router.get("/user/:id/bac", (req, res) => {
         diff_ms = diff_ms / 60;
         var hours = Math.floor(diff_ms % 24);
         var days = Math.floor(diff_ms / 24);
-        // add days calculation
         console.log(days + " days");
         console.log(hours + " hours");
         console.log(minutes + " minutes");
