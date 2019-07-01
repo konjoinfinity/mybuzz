@@ -24,12 +24,12 @@
           <br>
         </div>
       </div>
+      </div>
+      <h5 style="text-align: center">Current Buzz</h5>
       <div class="container-card">
-              <div class="card teal lighten-4" style="margin:25px; padding: 10px; text-align: center">
-                <h5>Current Buzz</h5>
       {{#if user.buzzes}}
         {{#each user.buzzes }}
-              <div class="card teal lighten-5" style="margin:15px">
+              <div class="card teal lighten-5" style="margin:25px; padding: 10px; text-align: center">
                 <div class="card-content white-black center">
                   <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
                   <br>
@@ -43,17 +43,15 @@
         </div>
               {{/each}}
               {{else}}
-              <div style="">
+              <div class="card teal lighten-4" style="padding:10px; text-align: center">
               <h6>Congrats, keep up your</h6>
               <h6>streak without alcohol!</h6>
               <br>
                 <h6>It's been:
-                <h6 style="font-weight: bold;">{{user.timeSince}}</h6>
+                <h6 style="font-weight: bold">{{user.timeSince}}</h6>
                 <h6>since your last drink.</h6>
               </div>
                 {{/if}}
-              </div>
-            </div>
             </div>
               <h5 style="text-align: center">Historical Buzzes</h5>
             <div class="container-card">
