@@ -3,6 +3,19 @@ const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
 
+function getDayHourMin(date1, date2) {
+  var dateDiff = date2 - date1;
+  dateDiff = dateDiff / 1000;
+  var seconds = Math.floor(dateDiff % 60);
+  dateDiff = dateDiff / 60;
+  var minutes = Math.floor(dateDiff % 60);
+  dateDiff = dateDiff / 60;
+  var hours = Math.floor(dateDiff % 24);
+  var days = Math.floor(dateDiff / 24);
+  console.log(days + " days " + hours + " hours " + minutes + " minutes");
+  return [days, hours, minutes];
+}
+
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
@@ -89,23 +102,15 @@ router.get("/user/:id", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
       for (i = 0; i < user.buzzes.length; i++) {
-        var date2_ms = currentTime.getTime();
-        var date1_ms = user.buzzes[i].dateCreated.getTime();
-        var diff_ms = date2_ms - date1_ms;
-        diff_ms = diff_ms / 1000;
-        var seconds = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var minutes = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var hours = Math.floor(diff_ms % 24);
-        var days = Math.floor(diff_ms / 24);
-        console.log(days + " days");
-        console.log(hours + " hours");
-        console.log(minutes + " minutes");
+        var date2 = currentTime.getTime();
+        var date1 = user.buzzes[i].dateCreated.getTime();
+        var dayHourMin = getDayHourMin(date1, date2);
+        var days = dayHourMin[0];
+        var hours = dayHourMin[1];
+        var minutes = dayHourMin[2];
         if (days >= 1) {
           hours = hours + days * 24;
         }
-        console.log(hours);
         if (hours == 0) {
           buzzDuration = minutes / 60;
         } else {
@@ -113,7 +118,6 @@ router.get("/user/:id", (req, res) => {
         }
         durations.push(buzzDuration);
       }
-      console.log(durations);
       for (i = 0; i < user.buzzes.length; i++) {
         if (i == user.buzzes.length) {
           buzzHours = 0;
@@ -127,7 +131,6 @@ router.get("/user/:id", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(buzzTotal);
         if (buzzTotal > 0) {
           totals.push(buzzTotal);
         }
@@ -139,8 +142,6 @@ router.get("/user/:id", (req, res) => {
             dateCreated: user.buzzes[i].dateCreated
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
-          console.log(oldBuzz);
-          console.log(oldBuzzId);
           User.findOneAndUpdate(
             { _id: req.params.id },
             { $pull: { buzzes: oldBuzzId } }
@@ -153,31 +154,22 @@ router.get("/user/:id", (req, res) => {
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
-      console.log(total);
       if (total <= 0) {
         console.log("less than or equal to 0, render 1");
-        console.log(user);
         if (user.oldbuzzes.length >= 1) {
           User.findOne({ _id: req.params.id }).then(user => {
-            var date2_ms = currentTime.getTime();
-            var date1_ms = user.oldbuzzes[
+            var date2 = currentTime.getTime();
+            var date1 = user.oldbuzzes[
               user.oldbuzzes.length - 1
             ].dateCreated.getTime();
-            var diff_ms = date2_ms - date1_ms;
-            diff_ms = diff_ms / 1000;
-            var seconds = Math.floor(diff_ms % 60);
-            diff_ms = diff_ms / 60;
-            var minutes = Math.floor(diff_ms % 60);
-            diff_ms = diff_ms / 60;
-            var hours = Math.floor(diff_ms % 24);
-            var days = Math.floor(diff_ms / 24);
-            console.log(
-              days + " days " + hours + " hours " + minutes + " minutes"
-            );
+            var dayHourMin = getDayHourMin(date1, date2);
+            var days = dayHourMin[0];
+            var hours = dayHourMin[1];
+            var minutes = dayHourMin[2];
             user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
             user.bac = 0;
             user.save((err, user) => {
-              console.log(user);
+              console.log("Time since set");
               res.render("user/show", { user });
             });
           });
@@ -201,23 +193,14 @@ router.get("/user/:id", (req, res) => {
       if (user.oldbuzzes.length >= 1) {
         console.log("old buzz time , render 3");
         User.findOne({ _id: req.params.id }).then(user => {
-          var date2_ms = currentTime.getTime();
-          var date1_ms = user.oldbuzzes[
+          var date2 = currentTime.getTime();
+          var date1 = user.oldbuzzes[
             user.oldbuzzes.length - 1
           ].dateCreated.getTime();
-          console.log(date2_ms);
-          console.log(date1_ms);
-          var diff_ms = date2_ms - date1_ms;
-          diff_ms = diff_ms / 1000;
-          var seconds = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var minutes = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var hours = Math.floor(diff_ms % 24);
-          var days = Math.floor(diff_ms / 24);
-          console.log(
-            days + " days, " + hours + " hours, " + minutes + " and minutes"
-          );
+          var dayHourMin = getDayHourMin(date1, date2);
+          var days = dayHourMin[0];
+          var hours = dayHourMin[1];
+          var minutes = dayHourMin[2];
           if ((user.buzzes.length = 0)) {
             user.bac = 0;
           }
@@ -228,7 +211,6 @@ router.get("/user/:id", (req, res) => {
         });
       } else {
         console.log("no buzzes, render 3");
-        console.log(user.buzzes.length);
         if ((user.buzzes.length = 0)) {
           user.bac = 0;
         }
@@ -260,25 +242,15 @@ router.post("/user/:id", (req, res) => {
       }
       if (user.buzzes.length >= 1) {
         for (i = 0; i < user.buzzes.length - 1; i++) {
-          var date2_ms = user.buzzes[
-            user.buzzes.length - 1
-          ].dateCreated.getTime();
-          var date1_ms = user.buzzes[i].dateCreated.getTime();
-          var diff_ms = date2_ms - date1_ms;
-          diff_ms = diff_ms / 1000;
-          var seconds = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var minutes = Math.floor(diff_ms % 60);
-          diff_ms = diff_ms / 60;
-          var hours = Math.floor(diff_ms % 24);
-          var days = Math.floor(diff_ms / 24);
-          console.log(days + " days");
-          console.log(hours + " hours");
-          console.log(minutes + " minutes");
+          var date2 = user.buzzes[user.buzzes.length - 1].dateCreated.getTime();
+          var date1 = user.buzzes[i].dateCreated.getTime();
+          var dayHourMin = getDayHourMin(date1, date2);
+          var days = dayHourMin[0];
+          var hours = dayHourMin[1];
+          var minutes = dayHourMin[2];
           if (days >= 1) {
             hours = hours + days * 24;
           }
-          console.log(hours);
           if (hours == 0) {
             buzzDuration = minutes / 60;
           } else {
@@ -321,7 +293,6 @@ router.post("/user/:id", (req, res) => {
             });
           }
         }
-        console.log(total);
         total = totals.reduce((a, b) => a + b, 0);
       }
       user.bac = total;
@@ -342,23 +313,15 @@ router.get("/user/:id/bac", (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
       for (i = 0; i < user.buzzes.length; i++) {
-        var date2_ms = currentTime.getTime();
-        var date1_ms = user.buzzes[i].dateCreated.getTime();
-        var diff_ms = date2_ms - date1_ms;
-        diff_ms = diff_ms / 1000;
-        var seconds = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var minutes = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var hours = Math.floor(diff_ms % 24);
-        var days = Math.floor(diff_ms / 24);
-        console.log(days + " days");
-        console.log(hours + " hours");
-        console.log(minutes + " minutes");
+        var date2 = currentTime.getTime();
+        var date1 = user.buzzes[i].dateCreated.getTime();
+        var dayHourMin = getDayHourMin(date1, date2);
+        var days = dayHourMin[0];
+        var hours = dayHourMin[1];
+        var minutes = dayHourMin[2];
         if (days >= 1) {
           hours = hours + days * 24;
         }
-        console.log(hours);
         if (hours == 0) {
           buzzDuration = minutes / 60;
         } else {
@@ -379,7 +342,6 @@ router.get("/user/:id/bac", (req, res) => {
           user.buzzes[i].drinkType,
           buzzHours
         );
-        console.log(buzzTotal);
         if (buzzTotal > 0) {
           totals.push(buzzTotal);
         }
@@ -417,7 +379,6 @@ router.get("/user/:id/bac", (req, res) => {
     } else {
       user.bac = total;
       user.save((err, user) => {
-        console.log(user.bac);
         res.render("user/show", { user });
       });
     }
@@ -441,7 +402,6 @@ router.put("/user/:id/del", (req, res) => {
 
 router.put("/user/:id/olddel", (req, res) => {
   const buzzId = { _id: req.body.index };
-  console.log(req.body);
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { oldbuzzes: buzzId } }
