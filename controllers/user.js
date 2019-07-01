@@ -256,7 +256,7 @@ router.post("/user/:id", (req, res) => {
       var durations = [];
       var totals = [];
       if (user.buzzes.length == 0) {
-        total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 1);
+        total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
       }
       if (user.buzzes.length >= 1) {
         for (i = 0; i < user.buzzes.length - 1; i++) {
