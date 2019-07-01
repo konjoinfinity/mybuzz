@@ -6,9 +6,13 @@
 <p>Weight - {{user.weight}}</p>
           <h5>Current BAC</h5>
           {{#if user.bac}}
-          <h6>{{user.bac}}</h6>
+          <div style="border-radius: 15px; border: solid teal 2px; padding: 5px; background: white; color: teal">
+            <h6 style="font-weight: bold">{{user.bac}}</h6>
+          </div>
           {{else}}
-          <h6>0.0</h6>
+          <div style="border-radius: 15px; border: solid teal 2px; padding: 5px; background: white; color: teal">
+            <h6 style="font-weight: bold">0.0</h6>
+          </div>
           {{/if}}
           <br>
           <form action="/user/{{user.id}}/bac" method="get">
