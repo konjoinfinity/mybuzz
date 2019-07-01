@@ -24,8 +24,8 @@
         </div>
       </div>
       <div class="container-card">
-              <div class="card teal lighten-4" style="margin:25px">
-                <h5 style="text-align: center">Current Buzz</h5>
+              <div class="card teal lighten-4" style="margin:25px; padding: 10px; text-align: center">
+                <h5>Current Buzz</h5>
       {{#if user.buzzes}}
         {{#each user.buzzes }}
               <div class="card teal lighten-5" style="margin:15px">
@@ -39,6 +39,15 @@
       </div>
         </div>
               {{/each}}
+              {{else}}
+              <div style="">
+              <h6>Congrats, keep up your</h6>
+              <h6>streak without alcohol!</h6>
+              <br>
+                <h6>It's been:
+                <h6 style="font-weight: bold;">{{user.timeSince}}</h6>
+                <h6>since your last drink.</h6>
+              </div>
                 {{/if}}
               </div>
             </div>
@@ -52,7 +61,7 @@
                 <p>Number of Drinks - {{numberOfDrinks}}</p>
             <p>Drink Type - {{drinkType}}</p>
             <p>Number of Hours - {{hours}}</p>
-            <form action="/user/{{@root.user.id}}/del?_method=PUT" method="post">
+            <form action="/user/{{@root.user.id}}/olddel?_method=PUT" method="post">
               <button class="btn waves-effect waves-light teal darken-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
             </form>
             </div>

@@ -26,7 +26,8 @@ const User = new Schema({
     default: Date.now()
   },
   buzzes: [Buzz],
-  oldbuzzes: [Buzz]
+  oldbuzzes: [Buzz],
+  timeSince: String
 });
 
 module.exports = mongoose.model("User", User);

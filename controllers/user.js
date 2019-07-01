@@ -140,29 +140,74 @@ router.get("/user/:id", (req, res) => {
           const oldBuzzId = { _id: user.buzzes[i]._id };
           console.log(oldBuzz);
           console.log(oldBuzzId);
-          // prettier-ignore
-          { $pull: { buzzes: oldBuzzId } }
-          user.oldbuzzes.push(oldBuzz);
+          User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $pull: { buzzes: oldBuzzId } }
+          ).then(user => {
+            user.oldbuzzes.push(oldBuzz);
+            user.save();
+          });
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
       console.log(total);
       if (total <= 0) {
         console.log("less than or equal to 0, render 1");
-        user.bac = 0;
-        user.save((err, user) => {
-          res.render("user/show", { user });
+        User.findOne({ _id: req.params.id }).then(user => {
+          var date2_ms = currentTime.getTime();
+          var date1_ms = user.oldbuzzes[
+            user.oldbuzzes.length - 1
+          ].dateCreated.getTime();
+          var diff_ms = date2_ms - date1_ms;
+          diff_ms = diff_ms / 1000;
+          var seconds = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var minutes = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var hours = Math.floor(diff_ms % 24);
+          var days = Math.floor(diff_ms / 24);
+          console.log(
+            days + " days " + hours + " hours " + minutes + " minutes"
+          );
+          user.bac = 0;
+          user.save((err, user) => {
+            res.render("user/show", { user });
+          });
         });
       } else {
         console.log("more than 0, render 2");
-        user.bac = total;
-        user.save((err, user) => {
-          res.render("user/show", { user });
+        User.findOne({ _id: req.params.id }).then(user => {
+          user.bac = total;
+          user.save((err, user) => {
+            res.render("user/show", { user });
+          });
         });
       }
     } else {
       console.log("else??? , render 3");
-      res.render("user/show", { user });
+      User.findOne({ _id: req.params.id }).then(user => {
+        var date2_ms = currentTime.getTime();
+        var date1_ms = user.oldbuzzes[
+          user.oldbuzzes.length - 1
+        ].dateCreated.getTime();
+        console.log(date2_ms);
+        console.log(date1_ms);
+        var diff_ms = date2_ms - date1_ms;
+        diff_ms = diff_ms / 1000;
+        var seconds = Math.floor(diff_ms % 60);
+        diff_ms = diff_ms / 60;
+        var minutes = Math.floor(diff_ms % 60);
+        diff_ms = diff_ms / 60;
+        var hours = Math.floor(diff_ms % 24);
+        var days = Math.floor(diff_ms / 24);
+        console.log(
+          days + " days, " + hours + " hours, " + minutes + " and minutes"
+        );
+        user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+        user.save((err, user) => {
+          res.render("user/show", { user });
+        });
+      });
     }
   });
 });
@@ -337,6 +382,19 @@ router.put("/user/:id/del", (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
+  ).then(user => {
+    user.save((err, user) => {
+      res.redirect("back");
+    });
+  });
+});
+
+router.put("/user/:id/olddel", (req, res) => {
+  const buzzId = { _id: req.body.index };
+  console.log(req.body);
+  User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { oldbuzzes: buzzId } }
   ).then(user => {
     user.save((err, user) => {
       res.redirect("back");
