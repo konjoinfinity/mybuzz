@@ -16,7 +16,7 @@
         <div class="card teal lighten-5" style="margin:25px; height:208px">
           <div class="card-content white-black center">
 <form action="/user/{{user.id}}" method="post">
-  <h6>Add a Drink</h6>
+  <h5>Add a Drink</h5>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
@@ -25,6 +25,7 @@
       </div>
       <div class="container-card">
               <div class="card teal lighten-4" style="margin:25px">
+                <h5 style="text-align: center">Current Buzz</h5>
       {{#if user.buzzes}}
         {{#each user.buzzes }}
               <div class="card teal lighten-5" style="margin:15px">
@@ -41,8 +42,9 @@
                 {{/if}}
               </div>
             </div>
+            </div>
+              <h5 style="text-align: center">Historical Buzzes</h5>
             <div class="container-card">
-                    <div class="card teal lighten-4" style="margin:25px">
             {{#if user.oldbuzzes}}
               {{#each user.oldbuzzes }}
                     <div class="card teal lighten-5" style="margin:15px">
@@ -58,5 +60,3 @@
                     {{/each}}
                       {{/if}}
                     </div>
-                  </div>
-    </div>
