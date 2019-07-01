@@ -240,6 +240,7 @@ router.get("/user/:id", (req, res) => {
   });
 });
 
+// Add based off currentTime for differential timestamp
 router.post("/user/:id", (req, res) => {
   var newBuzz = {
     numberOfDrinks: 1,

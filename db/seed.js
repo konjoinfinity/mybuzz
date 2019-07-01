@@ -17,6 +17,14 @@ User.deleteMany({})
           drinkType: "Beer",
           hours: 1
         }
+      ],
+      oldbuzzes: [
+        {
+          numberOfDrinks: 1,
+          drinkType: "Beer",
+          hours: 1,
+          dateCreated: Date.now()
+        }
       ]
     }).then(console.log("User Created"));
   })
@@ -27,7 +35,21 @@ User.create({
   gender: "Male",
   weight: 210,
   email: "wesleyscholl@gmail.com",
-  password: "777bmx777"
+  password: "777bmx777",
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1,
+      dateCreated: Date.now()
+    }
+  ]
 }).then(console.log("User Created"));
 
 User.create({
@@ -41,6 +63,20 @@ User.create({
       numberOfDrinks: 1,
       drinkType: "Wine",
       hours: 1
+    }
+  ],
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1,
+      dateCreated: Date.now()
     }
   ]
 }).then(console.log("User Created"));
@@ -62,6 +98,20 @@ User.create({
       drinkType: "Liquor",
       hours: 1
     }
+  ],
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Liquor",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Liquor",
+      hours: 1,
+      dateCreated: Date.now()
+    }
   ]
 }).then(console.log("User Created"));
 
@@ -76,6 +126,20 @@ User.create({
       numberOfDrinks: 1,
       drinkType: "Liquor",
       hours: 1
+    }
+  ],
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1,
+      dateCreated: Date.now()
     }
   ]
 }).then(console.log("User Created"));
@@ -102,6 +166,20 @@ User.create({
       drinkType: "Beer",
       hours: 1
     }
+  ],
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Beer",
+      hours: 1,
+      dateCreated: Date.now()
+    }
   ]
 }).then(console.log("User Created"));
 
@@ -116,6 +194,20 @@ User.create({
       numberOfDrinks: 1,
       drinkType: "Wine",
       hours: 1
+    }
+  ],
+  oldbuzzes: [
+    {
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1,
+      dateCreated: Date.now()
+    },
+    {
+      numberOfDrinks: 1,
+      drinkType: "Wine",
+      hours: 1,
+      dateCreated: Date.now()
     }
   ]
 }).then(console.log("User Created"));
