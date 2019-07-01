@@ -147,7 +147,7 @@ router.get("/user/:id", (req, res) => {
           ).then(user => {
             user.oldbuzzes.push(oldBuzz);
             user.save((err, user) => {
-              console.log(user);
+              console.log("Moved buzz to old");
             });
           });
         }
@@ -181,6 +181,7 @@ router.get("/user/:id", (req, res) => {
             });
           });
         } else {
+          console.log("No Old Buzzes");
           user.bac = 0;
           user.save((err, user) => {
             res.render("user/show", { user });
@@ -197,29 +198,35 @@ router.get("/user/:id", (req, res) => {
       }
     } else {
       console.log("else??? , render 3");
-      User.findOne({ _id: req.params.id }).then(user => {
-        var date2_ms = currentTime.getTime();
-        var date1_ms = user.oldbuzzes[
-          user.oldbuzzes.length - 1
-        ].dateCreated.getTime();
-        console.log(date2_ms);
-        console.log(date1_ms);
-        var diff_ms = date2_ms - date1_ms;
-        diff_ms = diff_ms / 1000;
-        var seconds = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var minutes = Math.floor(diff_ms % 60);
-        diff_ms = diff_ms / 60;
-        var hours = Math.floor(diff_ms % 24);
-        var days = Math.floor(diff_ms / 24);
-        console.log(
-          days + " days, " + hours + " hours, " + minutes + " and minutes"
-        );
-        user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+      if (user.oldbuzzes.length > 1) {
+        User.findOne({ _id: req.params.id }).then(user => {
+          var date2_ms = currentTime.getTime();
+          var date1_ms = user.oldbuzzes[
+            user.oldbuzzes.length - 1
+          ].dateCreated.getTime();
+          console.log(date2_ms);
+          console.log(date1_ms);
+          var diff_ms = date2_ms - date1_ms;
+          diff_ms = diff_ms / 1000;
+          var seconds = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var minutes = Math.floor(diff_ms % 60);
+          diff_ms = diff_ms / 60;
+          var hours = Math.floor(diff_ms % 24);
+          var days = Math.floor(diff_ms / 24);
+          console.log(
+            days + " days, " + hours + " hours, " + minutes + " and minutes"
+          );
+          user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+          user.save((err, user) => {
+            res.render("user/show", { user });
+          });
+        });
+      } else {
         user.save((err, user) => {
           res.render("user/show", { user });
         });
-      });
+      }
     }
   });
 });
