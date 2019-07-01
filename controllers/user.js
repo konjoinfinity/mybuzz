@@ -245,7 +245,7 @@ router.post("/user/:id", (req, res) => {
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
-    hours: 1
+    hours: 0
   };
   User.findOne({ _id: req.params.id }).then(user => {
     user.buzzes.push(newBuzz);
