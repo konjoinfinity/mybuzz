@@ -197,8 +197,8 @@ router.get("/user/:id", (req, res) => {
         });
       }
     } else {
-      console.log("else??? , render 3");
       if (user.oldbuzzes.length > 1) {
+        console.log("old buzz time , render 3");
         User.findOne({ _id: req.params.id }).then(user => {
           var date2_ms = currentTime.getTime();
           var date1_ms = user.oldbuzzes[
@@ -217,12 +217,20 @@ router.get("/user/:id", (req, res) => {
           console.log(
             days + " days, " + hours + " hours, " + minutes + " and minutes"
           );
+          if ((user.buzzes.length = 0)) {
+            user.bac = 0;
+          }
           user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
           user.save((err, user) => {
             res.render("user/show", { user });
           });
         });
       } else {
+        console.log("no buzzes, render 3");
+        console.log(user.buzzes.length);
+        if ((user.buzzes.length = 0)) {
+          user.bac = 0;
+        }
         user.save((err, user) => {
           res.render("user/show", { user });
         });
@@ -300,9 +308,15 @@ router.post("/user/:id", (req, res) => {
               dateCreated: user.buzzes[i].dateCreated
             };
             const oldBuzzId = { _id: user.buzzes[i]._id };
-            // prettier-ignore
-            { $pull: { buzzes: oldBuzzId } }
-            user.oldbuzzes.push(oldBuzz);
+            User.findOneAndUpdate(
+              { _id: req.params.id },
+              { $pull: { buzzes: oldBuzzId } }
+            ).then(user => {
+              user.oldbuzzes.push(oldBuzz);
+              user.save((err, user) => {
+                console.log("Moved buzz to old");
+              });
+            });
           }
         }
         console.log(total);
@@ -375,9 +389,15 @@ router.get("/user/:id/bac", (req, res) => {
             dateCreated: user.buzzes[i].dateCreated
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
-          // prettier-ignore
-          { $pull: { buzzes: oldBuzzId } }
-          user.oldbuzzes.push(oldBuzz);
+          User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $pull: { buzzes: oldBuzzId } }
+          ).then(user => {
+            user.oldbuzzes.push(oldBuzz);
+            user.save((err, user) => {
+              console.log("Moved buzz to old");
+            });
+          });
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
@@ -393,7 +413,11 @@ router.get("/user/:id/bac", (req, res) => {
         });
       }
     } else {
-      res.render("user/show", { user });
+      user.bac = total;
+      user.save((err, user) => {
+        console.log(user.bac);
+        res.render("user/show", { user });
+      });
     }
   });
 });
@@ -404,6 +428,9 @@ router.put("/user/:id/del", (req, res) => {
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
   ).then(user => {
+    if ((user.buzzes.length = 0)) {
+      user.bac = 0;
+    }
     user.save((err, user) => {
       res.redirect("back");
     });
@@ -417,6 +444,9 @@ router.put("/user/:id/olddel", (req, res) => {
     { _id: req.params.id },
     { $pull: { oldbuzzes: buzzId } }
   ).then(user => {
+    if ((user.buzzes.length = 0)) {
+      user.bac = 0;
+    }
     user.save((err, user) => {
       res.redirect("back");
     });

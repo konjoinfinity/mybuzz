@@ -5,7 +5,11 @@
 <p>Gender - {{user.gender}}</p>
 <p>Weight - {{user.weight}}</p>
           <h5>Current BAC</h5>
+          {{#if user.bac}}
           <h6>{{user.bac}}</h6>
+          {{else}}
+          <h6>0.0</h6>
+          {{/if}}
           <br>
           <form action="/user/{{user.id}}/bac" method="get">
           <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="BAC">Calculate BAC<i class="material-icons right">send</i></button>
