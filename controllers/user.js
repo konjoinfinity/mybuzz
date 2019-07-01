@@ -161,7 +161,6 @@ router.get("/user/:id", (req, res) => {
       }
       total = totals.reduce((a, b) => a + b, 0);
       if (total <= 0) {
-        console.log("less than or equal to 0, render 1");
         if (user.oldbuzzes.length >= 1) {
           User.findOne({ _id: req.params.id }).then(user => {
             var date2 = currentTime.getTime();
@@ -175,12 +174,10 @@ router.get("/user/:id", (req, res) => {
             user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
             user.bac = 0;
             user.save((err, user) => {
-              console.log("Time since set");
               res.render("user/show", { user });
             });
           });
         } else {
-          console.log("No Old Buzzes");
           User.findOne({ _id: req.params.id }).then(user => {
             user.bac = 0;
             user.save((err, user) => {
@@ -189,7 +186,6 @@ router.get("/user/:id", (req, res) => {
           });
         }
       } else {
-        console.log("more than 0, render 2");
         User.findOne({ _id: req.params.id }).then(user => {
           user.bac = total;
           user.save((err, user) => {
@@ -199,7 +195,6 @@ router.get("/user/:id", (req, res) => {
       }
     } else {
       if (user.oldbuzzes.length >= 1) {
-        console.log("old buzz time , render 3");
         User.findOne({ _id: req.params.id }).then(user => {
           var date2 = currentTime.getTime();
           var date1 = user.oldbuzzes[
@@ -218,8 +213,7 @@ router.get("/user/:id", (req, res) => {
           });
         });
       } else {
-        console.log("no buzzes, render 3");
-        if ((user.buzzes.length = 0)) {
+        if (user.buzzes.length == 0) {
           user.bac = 0;
         }
         user.save((err, user) => {
@@ -398,7 +392,6 @@ router.put("/user/:id/del", (req, res) => {
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
   ).then(user => {
-    console.log(user.buzzes.length);
     if (user.buzzes.length == 1) {
       user.bac = 0;
     }
@@ -414,7 +407,6 @@ router.put("/user/:id/olddel", (req, res) => {
     { _id: req.params.id },
     { $pull: { oldbuzzes: buzzId } }
   ).then(user => {
-    console.log(user.buzzes.length);
     if (user.buzzes.length == 1) {
       user.bac = 0;
     }
