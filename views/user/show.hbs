@@ -31,9 +31,11 @@
         {{#each user.buzzes }}
               <div class="card teal lighten-5" style="margin:15px">
                 <div class="card-content white-black center">
-          <p>Number of Drinks - {{numberOfDrinks}}</p>
-      <p>Drink Type - {{drinkType}}</p>
-      <p>Number of Hours - {{hours}}</p>
+                  <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
+                  <br>
+              <p style="max-width:170px;
+        word-wrap:break-word">{{dateCreated}}</p>
+        <br>
       <form action="/user/{{@root.user.id}}/del?_method=PUT" method="post">
         <button class="btn waves-effect waves-light teal darken-1" type="submit" name="index" value="{{id}}">Delete<i class="material-icons right">delete</i></button>
       </form>
