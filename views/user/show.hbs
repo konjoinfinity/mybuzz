@@ -1,5 +1,5 @@
 <div class="container-card">
-        <div class="card teal lighten-5" style="margin:25px">
+        <div class="card teal lighten-5" style="margin:20px; padding:20px">
           <div class="card-content white-black center">
 <h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
@@ -12,24 +12,33 @@
           </form>
         </div>
       </div>
-        <div class="card teal lighten-5" style="margin:25px; height:208px">
-          <div class="card-content white-black center" style="padding:10px">
+        <div class="card teal lighten-5" style="margin:20px; padding:20px">
+          <div class="card-content white-black center">
 <form action="/user/{{user.id}}" method="post">
   <h5>Add a Drink</h5>
   <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
+  <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
+  <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
           </form>
           <br>
         </div>
       </div>
       </div>
-      <h5 style="text-align: center">Current Buzz</h5>
+      {{#if user.buzzes}}
       <div class="container-card">
+        <div class="card teal lighten-4" style="margin:20px; padding: 20px; text-align: center">
+          <br>
+          <br>
+          <br>
+          <h5>Current Buzz</h5>
+          </div>
+          {{/if}}
       {{#if user.buzzes}}
         {{#each user.buzzes }}
-              <div class="card teal lighten-5" style="margin:25px; padding: 10px; text-align: center">
+              <div class="card teal lighten-5" style="margin:20px; padding: 20px; text-align: center">
                 <div class="card-content white-black center">
                   <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
                   <br>
@@ -42,8 +51,12 @@
       </div>
         </div>
               {{/each}}
+              </div>
               {{else}}
-              <div class="card teal lighten-4" style="padding:10px; text-align: center">
+              <div class="container-card">
+              <div class="card teal lighten-4" style="padding:20px; text-align: center; margin:20px">
+                <h5 style="text-align: center">Current Buzz</h5>
+                <br>
               <h6>Congrats, keep up your</h6>
               <h6>streak without alcohol!</h6>
               <br>
@@ -51,13 +64,13 @@
                 <h6 style="font-weight: bold">{{user.timeSince}}</h6>
                 <h6>since your last drink.</h6>
               </div>
-                {{/if}}
             </div>
+                {{/if}}
               <h5 style="text-align: center">Historical Buzzes</h5>
             <div class="container-card">
             {{#if user.oldbuzzes}}
               {{#each user.oldbuzzes }}
-                    <div class="card teal lighten-5" style="margin:15px">
+                    <div class="card teal lighten-5" style="padding:20px; margin:20px">
                       <div class="card-content white-black center">
                 <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
                 <br>
