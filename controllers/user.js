@@ -135,7 +135,8 @@ router.get("/user/:id", (req, res) => {
           const oldBuzz = {
             numberOfDrinks: 1,
             drinkType: user.buzzes[i].drinkType,
-            hours: 1
+            hours: 1,
+            dateCreated: user.buzzes[i].dateCreated
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
           console.log(oldBuzz);
@@ -285,7 +286,8 @@ router.post("/user/:id", (req, res) => {
             const oldBuzz = {
               numberOfDrinks: 1,
               drinkType: user.buzzes[i].drinkType,
-              hours: 1
+              hours: 1,
+              dateCreated: user.buzzes[i].dateCreated
             };
             const oldBuzzId = { _id: user.buzzes[i]._id };
             // prettier-ignore
@@ -359,7 +361,8 @@ router.get("/user/:id/bac", (req, res) => {
           const oldBuzz = {
             numberOfDrinks: 1,
             drinkType: user.buzzes[i].drinkType,
-            hours: 1
+            hours: 1,
+            dateCreated: user.buzzes[i].dateCreated
           };
           const oldBuzzId = { _id: user.buzzes[i]._id };
           // prettier-ignore
