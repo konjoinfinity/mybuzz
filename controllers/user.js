@@ -146,7 +146,9 @@ router.get("/user/:id", (req, res) => {
             { $pull: { buzzes: oldBuzzId } }
           ).then(user => {
             user.oldbuzzes.push(oldBuzz);
-            user.save();
+            user.save((err, user) => {
+              console.log(user);
+            });
           });
         }
       }
@@ -174,6 +176,7 @@ router.get("/user/:id", (req, res) => {
             user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
             user.bac = 0;
             user.save((err, user) => {
+              console.log(user);
               res.render("user/show", { user });
             });
           });
