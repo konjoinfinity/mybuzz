@@ -145,12 +145,18 @@ router.get("/user/:id", (req, res) => {
           User.findOneAndUpdate(
             { _id: req.params.id },
             { $pull: { buzzes: oldBuzzId } }
-          ).then(user => {
-            user.oldbuzzes.push(oldBuzz);
-            user.save((err, user) => {
-              console.log("Moved buzz to old");
-            });
-          });
+          )
+            .then(user => {
+              user.oldbuzzes.push(oldBuzz);
+              user.save((err, user) => {
+                console.log("Moved buzz to old");
+              });
+            })
+            .then(
+              setTimeout(() => {
+                console.log("timeout");
+              }, 500)
+            );
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
@@ -175,9 +181,11 @@ router.get("/user/:id", (req, res) => {
           });
         } else {
           console.log("No Old Buzzes");
-          user.bac = 0;
-          user.save((err, user) => {
-            res.render("user/show", { user });
+          User.findOne({ _id: req.params.id }).then(user => {
+            user.bac = 0;
+            user.save((err, user) => {
+              res.render("user/show", { user });
+            });
           });
         }
       } else {
@@ -222,7 +230,6 @@ router.get("/user/:id", (req, res) => {
   });
 });
 
-// Add based off currentTime for differential timestamp
 router.post("/user/:id", (req, res) => {
   var newBuzz = {
     numberOfDrinks: 1,
@@ -391,7 +398,8 @@ router.put("/user/:id/del", (req, res) => {
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
   ).then(user => {
-    if ((user.buzzes.length = 0)) {
+    console.log(user.buzzes.length);
+    if (user.buzzes.length == 1) {
       user.bac = 0;
     }
     user.save((err, user) => {
@@ -406,7 +414,8 @@ router.put("/user/:id/olddel", (req, res) => {
     { _id: req.params.id },
     { $pull: { oldbuzzes: buzzId } }
   ).then(user => {
-    if ((user.buzzes.length = 0)) {
+    console.log(user.buzzes.length);
+    if (user.buzzes.length == 1) {
       user.bac = 0;
     }
     user.save((err, user) => {
