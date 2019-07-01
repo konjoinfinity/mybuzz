@@ -25,7 +25,8 @@ const User = new Schema({
     type: Date,
     default: Date.now()
   },
-  buzzes: [Buzz]
+  buzzes: [Buzz],
+  oldbuzzes: [Buzz]
 });
 
 module.exports = mongoose.model("User", User);
