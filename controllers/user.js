@@ -67,7 +67,7 @@ router.post("/signup", (req, res) => {
       .then(user => {
         const authenticate = passport.authenticate("local");
         authenticate(req, res, function() {
-          req.flash("success", "You created an account!");
+          req.flash("success", "You Successfully Logged In");
           res.redirect(`/user/${user._id}`);
         });
       })
@@ -90,6 +90,7 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
+  var success = "You Logged In";
   const authenticate = passport.authenticate("local", function(
     err,
     user,
@@ -106,7 +107,8 @@ router.post("/login", (req, res, next) => {
         req.flash("error", err.message);
         return res.redirect("/user/login");
       }
-      req.flash("success", "You logged in");
+      console.log(success);
+      req.flash("success", "You Successfully Logged In");
       return res.redirect(`/user/${user._id}`);
     });
   });
@@ -243,7 +245,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
           user.bac = 0;
         }
         user.save((err, user) => {
-          res.render("user/show", { user });
+          res.render("user/show", { user, success: req.flash("success") });
         });
       }
     }

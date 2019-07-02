@@ -4,7 +4,7 @@ module.exports = function authenticatedUser(req, res, next) {
     return next();
   } else {
     console.log("not authenticated");
-    req.flash("info", "You must be signed in to view that page");
+    req.flash("info", "Please Login or Signup");
     res.redirect("/login");
   }
 };
