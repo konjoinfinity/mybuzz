@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
+const passport = require("passport");
 
 function getDayHourMin(date1, date2) {
   var dateDiff = date2 - date1;
@@ -47,7 +48,7 @@ router.get("/about", (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-  res.render("user/signup");
+  res.render("user/signup", { error: req.flash("error") });
 });
 
 router.post("/signup", (req, res) => {
@@ -60,11 +61,15 @@ router.post("/signup", (req, res) => {
       password: req.body.password
     })
       .then(user => {
-        res.redirect(`/user/${user._id}`);
+        const authenticate = passport.authenticate("local");
+        authenticate(req, res, function() {
+          req.flash("success", "You created an account!");
+          res.redirect(`/user/${user._id}`);
+        });
       })
       .catch(err => {
-        console.log(err.message);
-        res.redirect("/login");
+        req.flash("error", err.message);
+        res.redirect("/signup");
       });
   } else {
     console.log("Passwords do not match.");
