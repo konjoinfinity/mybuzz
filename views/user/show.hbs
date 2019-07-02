@@ -1,9 +1,9 @@
 <div class="container-card">
-        <div class="card teal lighten-5" style="margin:10px; padding:10px">
+        <div class="card teal lighten-5" style="margin:20px; padding:20px">
           <div class="card-content white-black center">
 <h4>{{user.name}}</h4>
 <p>Gender - {{user.gender}}</p>
-<p>Weight - {{user.weight}}</p>
+<p>Weight - {{user.weight}} lbs.</p>
           <h5>Current BAC</h5>
           {{#if user.bac}}
           <div style="border-radius: 15px; border: solid teal 2px; padding: 5px; background: white; color: teal">
@@ -20,23 +20,23 @@
           </form>
         </div>
       </div>
-        <div class="card teal lighten-5" style="margin:10px; padding:10px">
+        <div class="card teal lighten-5" style="margin:20px; padding:20px">
           <div class="card-content white-black center">
 <form action="/user/{{user.id}}" method="post">
   <h5>Add a Drink</h5>
   <br>
-  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">Beer<i class="fas fa-beer right"></i><i class="material-icons right">plus_one</i></button>
   <br>
-  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">Wine<i class="fas fa-wine-glass-alt right"></i><i class="material-icons right">plus_one</i></button>
   <br>
-  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="material-icons right">plus_one</i></button>
+  <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">Liquor<i class="fas fa-glass-whiskey right"></i><i class="material-icons right">plus_one</i></button>
           </form>
           <br>
         </div>
       </div>
       {{#if user.buzzes}}
       <div class="container-card">
-        <div class="card teal lighten-4" style="margin:10px; padding: 10px; text-align: center">
+        <div class="card teal lighten-4" style="margin:20px; padding: 20px; text-align: center">
           <h5>Current Buzz</h5>
           <br>
           <h5><i class="fas fa-beer"></i></h5>
@@ -48,7 +48,7 @@
           {{/if}}
       {{#if user.buzzes}}
         {{#each user.buzzes }}
-              <div class="card teal lighten-5" style="margin:10px; padding: 10px; text-align: center">
+              <div class="card teal lighten-5" style="margin:20px; padding: 20px; text-align: center">
                 <div class="card-content white-black center">
                   <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
                   <br>
@@ -64,7 +64,7 @@
               </div>
               {{else}}
               <div class="container-card">
-              <div class="card teal lighten-4" style="padding:10px; text-align: center; margin:10px">
+              <div class="card teal lighten-4" style="padding:20px; text-align: center; margin:20px">
                 <h5 style="text-align: center">Current Buzz</h5>
                 <br>
               <h6>Congrats, keep up</h6>
@@ -81,7 +81,7 @@
             <div class="container-card">
             {{#if user.oldbuzzes}}
               {{#each user.oldbuzzes }}
-                    <div class="card teal lighten-5" style="padding:10px; margin:10px">
+                    <div class="card teal lighten-5" style="padding:20px; margin:20px">
                       <div class="card-content white-black center">
                 <h6>{{numberOfDrinks}} - {{drinkType}}</h6>
                 <br>
