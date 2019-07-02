@@ -1,5 +1,11 @@
 <div class="row">
     <div class="col s12 m6">
+      {{#if error}}
+      <p class="alert alert-danger p-2 text-red-light">{{error}}</p>
+      {{/if}}
+      {{#if info}}
+      <p class="alert alert-warning p-2 text-red-light">{{info}}</p>
+      {{/if}}
   <h4>Sign Up</h4>
   <div class="card">
   <form action="/signup" method="post">
