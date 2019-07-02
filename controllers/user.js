@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("../db/connection");
 const User = require("../models/user");
 const passport = require("passport");
+const authenticatedUser = require("../auth/authuser");
 
 function getDayHourMin(date1, date2) {
   var dateDiff = date2 - date1;
@@ -39,7 +40,7 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
   return bac;
 }
 
-router.get("/", (req, res) => {
+router.get("/", authenticatedUser, (req, res) => {
   User.find({}).then(users => res.render("index", { users }));
 });
 
@@ -47,11 +48,11 @@ router.get("/about", (req, res) => {
   res.render("about");
 });
 
-router.get("/signup", (req, res) => {
+router.get("/signup", authenticatedUser, (req, res) => {
   res.render("user/signup", { error: req.flash("error") });
 });
 
-router.post("/signup", (req, res) => {
+router.post("/signup", authenticatedUser, (req, res) => {
   if (req.body.password === req.body.confirmpassword) {
     User.create({
       name: req.body.name,
@@ -72,32 +73,41 @@ router.post("/signup", (req, res) => {
         res.redirect("/signup");
       });
   } else {
-    console.log("Passwords do not match.");
+    req.flash("error", "Passwords do not match.");
     res.redirect("/signup");
   }
 });
 
-router.get("/login", (req, res) => {
-  res.render("user/login");
+router.get("/login", authenticatedUser, (req, res) => {
+  res.render("user/login", {
+    error: req.flash("error"),
+    info: req.flash("info")
+  });
 });
 
-router.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then(user => {
-      if (user.password === req.body.password) {
-        res.redirect(`/user/${user._id}`);
-      } else {
-        console.log("Password does not match account.");
-        res.redirect("/login");
-      }
-    })
-    .catch(err => {
-      console.log(err.message);
+router.post("/login", authenticatedUser, (req, res, next) => {
+  const authenticate = passport.authenticate("local", function(
+    err,
+    user,
+    info
+  ) {
+    if (err || !user) {
+      req.flash("error", info.message);
       res.redirect("/login");
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        req.flash("error", err.message);
+        return res.redirect("/login");
+      }
+      req.flash("success", "You logged in");
+      return res.redirect(`/user/${user._id}`);
     });
+  });
+  authenticate(req, res, next);
 });
 
-router.get("/user/:id", (req, res) => {
+router.get("/user/:id", authenticatedUser, (req, res) => {
   const currentTime = new Date();
   let total;
   let buzzDuration;
@@ -229,7 +239,7 @@ router.get("/user/:id", (req, res) => {
   });
 });
 
-router.post("/user/:id", (req, res) => {
+router.post("/user/:id", authenticatedUser, (req, res) => {
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
@@ -309,7 +319,7 @@ router.post("/user/:id", (req, res) => {
   });
 });
 
-router.get("/user/:id/bac", (req, res) => {
+router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   const currentTime = new Date();
   let total;
   let buzzDuration;
@@ -391,7 +401,7 @@ router.get("/user/:id/bac", (req, res) => {
   });
 });
 
-router.put("/user/:id/del", (req, res) => {
+router.put("/user/:id/del", authenticatedUser, (req, res) => {
   const buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },
@@ -406,7 +416,7 @@ router.put("/user/:id/del", (req, res) => {
   });
 });
 
-router.put("/user/:id/olddel", (req, res) => {
+router.put("/user/:id/olddel", authenticatedUser, (req, res) => {
   const buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },

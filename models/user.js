@@ -1,5 +1,6 @@
 const mongoose = require("../db/connection");
 const Schema = mongoose.Schema;
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const Buzz = new Schema({
   numberOfDrinks: Number,
@@ -29,5 +30,7 @@ const User = new Schema({
   oldbuzzes: [Buzz],
   timeSince: String
 });
+
+User.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", User);
