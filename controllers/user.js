@@ -57,7 +57,7 @@ router.post("/signup", (req, res) => {
   if (req.body.password === req.body.confirmpassword) {
     User.create({
       name: req.body.name,
-      email: req.body.email,
+      username: req.body.username,
       gender: req.body.gender,
       weight: req.body.weight,
       password: req.body.password
@@ -87,7 +87,7 @@ router.get("/login", (req, res) => {
   });
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", authenticatedUser, (req, res, next) => {
   const authenticate = passport.authenticate("local", function(
     err,
     user,
