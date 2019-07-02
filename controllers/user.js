@@ -89,7 +89,7 @@ router.get("/login", (req, res) => {
   });
 });
 
-router.post("/login", authenticatedUser, (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const authenticate = passport.authenticate("local", function(
     err,
     user,
