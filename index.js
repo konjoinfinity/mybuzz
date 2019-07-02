@@ -3,7 +3,7 @@ const userController = require("./controllers/user.js");
 const cors = require("cors");
 const parser = require("body-parser");
 const methodOverride = require("method-override");
-
+const User = require("./models/user");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const session = require("express-session");

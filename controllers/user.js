@@ -41,6 +41,7 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 router.get("/", authenticatedUser, (req, res) => {
+  console.log("slash route");
   User.find({}).then(users => res.render("index", { users }));
 });
 
@@ -48,11 +49,11 @@ router.get("/about", (req, res) => {
   res.render("about");
 });
 
-router.get("/signup", authenticatedUser, (req, res) => {
+router.get("/signup", (req, res) => {
   res.render("user/signup", { error: req.flash("error") });
 });
 
-router.post("/signup", authenticatedUser, (req, res) => {
+router.post("/signup", (req, res) => {
   if (req.body.password === req.body.confirmpassword) {
     User.create({
       name: req.body.name,
@@ -70,41 +71,49 @@ router.post("/signup", authenticatedUser, (req, res) => {
       })
       .catch(err => {
         req.flash("error", err.message);
-        res.redirect("/signup");
+        res.redirect("/user/signup");
       });
   } else {
     req.flash("error", "Passwords do not match.");
-    res.redirect("/signup");
+    res.redirect("/user/signup");
   }
 });
 
-router.get("/login", authenticatedUser, (req, res) => {
+router.get("/login", (req, res) => {
+  console.log("login route");
   res.render("user/login", {
     error: req.flash("error"),
     info: req.flash("info")
   });
 });
 
-router.post("/login", authenticatedUser, (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const authenticate = passport.authenticate("local", function(
     err,
     user,
     info
   ) {
     if (err || !user) {
+      console.log("auth error or no user");
       req.flash("error", info.message);
-      res.redirect("/login");
+      res.redirect("/user/login");
     }
     req.logIn(user, function(err) {
       if (err) {
+        console.log("login error");
         req.flash("error", err.message);
-        return res.redirect("/login");
+        return res.redirect("/user/login");
       }
       req.flash("success", "You logged in");
       return res.redirect(`/user/${user._id}`);
     });
   });
   authenticate(req, res, next);
+});
+
+router.get("/logout", authenticatedUser, (req, res) => {
+  req.logout();
+  res.redirect("/");
 });
 
 router.get("/user/:id", authenticatedUser, (req, res) => {
