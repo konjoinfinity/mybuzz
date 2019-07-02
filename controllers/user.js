@@ -202,14 +202,14 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
             user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
             user.bac = 0;
             user.save((err, user) => {
-              res.render("user/show", { user });
+              res.render("user/show", { user, success: req.flash("success") });
             });
           });
         } else {
           User.findOne({ _id: req.params.id }).then(user => {
             user.bac = 0;
             user.save((err, user) => {
-              res.render("user/show", { user });
+              res.render("user/show", { user, success: req.flash("success") });
             });
           });
         }
@@ -217,7 +217,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         User.findOne({ _id: req.params.id }).then(user => {
           user.bac = total;
           user.save((err, user) => {
-            res.render("user/show", { user });
+            res.render("user/show", { user, success: req.flash("success") });
           });
         });
       }
@@ -237,7 +237,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
           }
           user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
           user.save((err, user) => {
-            res.render("user/show", { user });
+            res.render("user/show", { user, success: req.flash("success") });
           });
         });
       } else {
