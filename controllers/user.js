@@ -49,7 +49,6 @@ function durationLoop(user) {
     }
     durations.push(buzzDuration);
   }
-  console.log(durations);
   return durations;
 }
 
@@ -97,7 +96,6 @@ function buzzLoop(user, req, durations) {
         );
     }
   }
-  console.log(totals);
   return totals;
 }
 
