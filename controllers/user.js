@@ -41,7 +41,6 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 router.get("/", authenticatedUser, (req, res) => {
-  console.log("slash route");
   User.find({}).then(users => res.render("index", { users }));
 });
 
@@ -82,7 +81,6 @@ router.post("/signup", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  console.log("login route");
   res.render("user/login", {
     error: req.flash("error"),
     info: req.flash("info")
@@ -97,17 +95,14 @@ router.post("/login", (req, res, next) => {
     info
   ) {
     if (err || !user) {
-      console.log("auth error or no user");
       req.flash("error", info.message);
       res.redirect("/user/login");
     }
     req.logIn(user, function(err) {
       if (err) {
-        console.log("login error");
         req.flash("error", err.message);
         return res.redirect("/user/login");
       }
-      console.log(success);
       req.flash("success", "You Successfully Logged In");
       return res.redirect(`/user/${user._id}`);
     });
