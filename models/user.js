@@ -13,11 +13,9 @@ const Buzz = new Schema({
 });
 
 const User = new Schema({
-  name: String,
+  username: String,
   gender: String,
   weight: Number,
-  email: String,
-  password: String,
   bac: {
     type: Number,
     default: 0.0

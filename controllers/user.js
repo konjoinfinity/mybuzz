@@ -65,7 +65,6 @@ router.post("/signup", (req, res) => {
   if (req.body.password === req.body.confirmpassword) {
     User.register(
       {
-        name: req.body.name,
         username: req.body.username,
         gender: req.body.gender,
         weight: req.body.weight

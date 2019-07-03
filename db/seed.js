@@ -12,7 +12,6 @@ setTimeout(() => {
   User.register(
     {
       username: "c.blundon@gmail.com",
-      name: "Charles",
       gender: "Male",
       weight: 180,
       buzzes: [
@@ -51,7 +50,6 @@ setTimeout(() => {
   User.register(
     {
       username: "wesleyscholl@gmail.com",
-      name: "Wesley",
       gender: "Male",
       weight: 210,
       oldbuzzes: [
@@ -82,7 +80,6 @@ setTimeout(() => {
   User.register(
     {
       username: "julie@julie.com",
-      name: "Julie",
       gender: "Female",
       weight: 150,
       buzzes: [
@@ -120,7 +117,6 @@ setTimeout(() => {
   User.register(
     {
       username: "brian@brian.com",
-      name: "Brian",
       gender: "Male",
       weight: 190,
       buzzes: [
@@ -163,7 +159,6 @@ setTimeout(() => {
   User.register(
     {
       username: "tim@tim.com",
-      name: "Tim",
       gender: "Male",
       weight: 210,
       buzzes: [
@@ -201,7 +196,6 @@ setTimeout(() => {
   User.register(
     {
       username: "kate@kate.com",
-      name: "Kate",
       gender: "Female",
       weight: 140,
 
@@ -250,7 +244,6 @@ setTimeout(() => {
   User.register(
     {
       username: "james@james.com",
-      name: "James",
       gender: "Male",
       weight: 200,
       buzzes: [
@@ -288,7 +281,6 @@ setTimeout(() => {
   User.register(
     {
       username: "konjo@konjo.com",
-      name: "Konjo",
       gender: "Male",
       weight: 200,
       buzzes: [
@@ -318,7 +310,7 @@ setTimeout(() => {
       if (err) {
         console.log(err);
       } else {
-        console.log("User Created");
+        console.log("Last User Created");
       }
     }
   );
