@@ -1,11 +1,11 @@
 <div class="row">
-    <div class="col s12 m6">
-      {{#if error}}
-         <div class="red lighten-2" style="margin:10px; padding:10px; border-radius:15px; text-align: center">{{error}}</div>
-      {{/if}}
-      {{#if info}}
-        <div class="yellow lighten-4" style="margin:10px; padding:10px; border-radius:15px; text-align: center">{{info}}</div>
-      {{/if}}
+  <div class="col s12 m6" style="margin:20px; padding:20px">
+  {{#if error}}
+     <div class="red lighten-2" style="margin:10px; padding:10px; border-radius:15px; text-align: center">{{error}}</div>
+  {{/if}}
+  {{#if info}}
+    <div class="yellow lighten-4" style="margin:10px; padding:10px; border-radius:15px; text-align: center">{{info}}</div>
+  {{/if}}
   <h4>Login</h4>
   <div class="card">
   <form action="/login" method="post">
