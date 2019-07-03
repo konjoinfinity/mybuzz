@@ -85,9 +85,9 @@
             </div>
                 {{/if}}
                 </div>
+                {{#if user.oldbuzzes}}
               <h5 style="text-align: center">Historical Buzzes</h5>
             <div class="container-card">
-            {{#if user.oldbuzzes}}
               {{#each user.oldbuzzes }}
                     <div class="card teal lighten-5" style="padding:20px; margin:20px">
                       <div class="card-content white-black center">

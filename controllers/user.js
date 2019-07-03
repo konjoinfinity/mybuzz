@@ -215,6 +215,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         } else {
           User.findOne({ _id: req.params.id }).then(user => {
             user.bac = 0;
+            user.timeSince = "";
             user.save((err, user) => {
               res.render("user/show", { user, success: req.flash("success") });
             });
@@ -250,6 +251,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         });
       } else {
         if (user.buzzes.length == 0) {
+          user.timeSince = "";
           user.bac = 0;
         }
         user.save((err, user) => {
