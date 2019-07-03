@@ -53,6 +53,54 @@ function durationLoop(user) {
   return durations;
 }
 
+function buzzLoop(user, req, durations) {
+  let buzzHours;
+  var totals = [];
+  for (i = 0; i < user.buzzes.length; i++) {
+    if (i == user.buzzes.length) {
+      buzzHours = 0;
+    } else {
+      buzzHours = durations[i];
+    }
+    buzzTotal = getBAC(
+      user.weight,
+      user.gender,
+      user.buzzes[i].numberOfDrinks,
+      user.buzzes[i].drinkType,
+      buzzHours
+    );
+    if (buzzTotal > 0) {
+      totals.push(buzzTotal);
+    }
+    if (buzzTotal <= 0) {
+      const oldBuzz = {
+        numberOfDrinks: 1,
+        drinkType: user.buzzes[i].drinkType,
+        hours: 1,
+        dateCreated: user.buzzes[i].dateCreated
+      };
+      const oldBuzzId = { _id: user.buzzes[i]._id };
+      User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { buzzes: oldBuzzId } }
+      )
+        .then(user => {
+          user.oldbuzzes.push(oldBuzz);
+          user.save((err, user) => {
+            console.log("Moved buzz to old");
+          });
+        })
+        .then(
+          setTimeout(() => {
+            console.log("timeout");
+          }, 500)
+        );
+    }
+  }
+  console.log(totals);
+  return totals;
+}
+
 function getBAC(weight, gender, drinks, drinkType, hours) {
   var distribution;
   if (gender == "Female") {
@@ -159,47 +207,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
       durations = durationLoop(user);
-      for (i = 0; i < user.buzzes.length; i++) {
-        if (i == user.buzzes.length) {
-          buzzHours = 0;
-        } else {
-          buzzHours = durations[i];
-        }
-        buzzTotal = getBAC(
-          user.weight,
-          user.gender,
-          user.buzzes[i].numberOfDrinks,
-          user.buzzes[i].drinkType,
-          buzzHours
-        );
-        if (buzzTotal > 0) {
-          totals.push(buzzTotal);
-        }
-        if (buzzTotal <= 0) {
-          const oldBuzz = {
-            numberOfDrinks: 1,
-            drinkType: user.buzzes[i].drinkType,
-            hours: 1,
-            dateCreated: user.buzzes[i].dateCreated
-          };
-          const oldBuzzId = { _id: user.buzzes[i]._id };
-          User.findOneAndUpdate(
-            { _id: req.params.id },
-            { $pull: { buzzes: oldBuzzId } }
-          )
-            .then(user => {
-              user.oldbuzzes.push(oldBuzz);
-              user.save((err, user) => {
-                console.log("Moved buzz to old");
-              });
-            })
-            .then(
-              setTimeout(() => {
-                console.log("timeout");
-              }, 500)
-            );
-        }
-      }
+      totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
       if (total <= 0) {
@@ -362,41 +370,7 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
       durations = durationLoop(user);
-      for (i = 0; i < user.buzzes.length; i++) {
-        if (i == user.buzzes.length) {
-          buzzHours = 0;
-        } else {
-          buzzHours = durations[i];
-        }
-        buzzTotal = getBAC(
-          user.weight,
-          user.gender,
-          user.buzzes[i].numberOfDrinks,
-          user.buzzes[i].drinkType,
-          buzzHours
-        );
-        if (buzzTotal > 0) {
-          totals.push(buzzTotal);
-        }
-        if (buzzTotal <= 0) {
-          const oldBuzz = {
-            numberOfDrinks: 1,
-            drinkType: user.buzzes[i].drinkType,
-            hours: 1,
-            dateCreated: user.buzzes[i].dateCreated
-          };
-          const oldBuzzId = { _id: user.buzzes[i]._id };
-          User.findOneAndUpdate(
-            { _id: req.params.id },
-            { $pull: { buzzes: oldBuzzId } }
-          ).then(user => {
-            user.oldbuzzes.push(oldBuzz);
-            user.save((err, user) => {
-              console.log("Moved buzz to old");
-            });
-          });
-        }
-      }
+      totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
       if (total < 0) {
