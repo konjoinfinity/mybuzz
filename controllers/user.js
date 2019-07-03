@@ -146,10 +146,8 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         }
         if (hours == 0) {
           buzzDuration = minutes / 60 + seconds / 3600;
-          // buzzDuration = minutes / 60;
         } else {
           buzzDuration = hours + minutes / 60 + seconds / 3600;
-          // buzzDuration = hours + minutes / 60;
         }
         durations.push(buzzDuration);
       }
@@ -286,13 +284,14 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
           var days = dayHourMin[0];
           var hours = dayHourMin[1];
           var minutes = dayHourMin[2];
+          var seconds = dayHourMin[3];
           if (days >= 1) {
             hours = hours + days * 24;
           }
           if (hours == 0) {
-            buzzDuration = minutes / 60;
+            buzzDuration = minutes / 60 + seconds / 3600;
           } else {
-            buzzDuration = hours + minutes / 60;
+            buzzDuration = hours + minutes / 60 + seconds / 3600;
           }
           durations.push(buzzDuration);
         }
@@ -363,10 +362,8 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
         }
         if (hours == 0) {
           buzzDuration = minutes / 60 + seconds / 3600;
-          // buzzDuration = minutes / 60;
         } else {
           buzzDuration = hours + minutes / 60 + seconds / 3600;
-          // buzzDuration = hours + minutes / 60;
         }
         durations.push(buzzDuration);
       }
