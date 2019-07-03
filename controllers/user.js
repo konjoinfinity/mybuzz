@@ -193,6 +193,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
+      total = parseFloat(total.toFixed(6));
       if (total <= 0) {
         if (user.oldbuzzes.length >= 1) {
           User.findOne({ _id: req.params.id }).then(user => {
@@ -331,6 +332,7 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
           }
         }
         total = totals.reduce((a, b) => a + b, 0);
+        total = parseFloat(total.toFixed(6));
       }
       user.bac = total;
       user.save((err, user) => {
@@ -403,6 +405,7 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
         }
       }
       total = totals.reduce((a, b) => a + b, 0);
+      total = parseFloat(total.toFixed(6));
       if (total < 0) {
         user.bac = 0;
         user.save((err, user) => {
