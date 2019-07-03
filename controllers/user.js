@@ -122,6 +122,7 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 router.get("/", authenticatedUser, (req, res) => {
+  // Replace with something else later
   User.find({}).then(users => res.render("index", { users }));
 });
 
