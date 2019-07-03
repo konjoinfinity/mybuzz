@@ -63,9 +63,7 @@ zoom: 120%
       </nav>
       <ul class="sidenav" id="mobile-demo" class="navside">
         {{# if user.username}}
-        <li><a href="/">Home</a></li>
-        <li><a>Welcome</a></li>
-        <li><a>{{user.username}}</a></li>
+        <li><a href="/user/{{user.id}}">Home</a></li>
         <li><a href="/logout">Logout</a></li>
         {{else}}
         <li><a href="/login">Login</a></li>
