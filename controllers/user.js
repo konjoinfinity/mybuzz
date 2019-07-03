@@ -14,8 +14,17 @@ function getDayHourMin(date1, date2) {
   dateDiff = dateDiff / 60;
   var hours = Math.floor(dateDiff % 24);
   var days = Math.floor(dateDiff / 24);
-  console.log(days + " days " + hours + " hours " + minutes + " minutes");
-  return [days, hours, minutes];
+  console.log(
+    days +
+      " days " +
+      hours +
+      " hours " +
+      minutes +
+      " minutes and " +
+      seconds +
+      " seconds"
+  );
+  return [days, hours, minutes, seconds];
 }
 
 function getBAC(weight, gender, drinks, drinkType, hours) {
@@ -131,13 +140,16 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         var days = dayHourMin[0];
         var hours = dayHourMin[1];
         var minutes = dayHourMin[2];
+        var seconds = dayHourMin[3];
         if (days >= 1) {
           hours = hours + days * 24;
         }
         if (hours == 0) {
-          buzzDuration = minutes / 60;
+          buzzDuration = minutes / 60 + seconds / 3600;
+          // buzzDuration = minutes / 60;
         } else {
-          buzzDuration = hours + minutes / 60;
+          buzzDuration = hours + minutes / 60 + seconds / 3600;
+          // buzzDuration = hours + minutes / 60;
         }
         durations.push(buzzDuration);
       }
@@ -194,7 +206,8 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
             var days = dayHourMin[0];
             var hours = dayHourMin[1];
             var minutes = dayHourMin[2];
-            user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+            var seconds = dayHourMin[3];
+            user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
             user.bac = 0;
             user.save((err, user) => {
               res.render("user/show", { user, success: req.flash("success") });
@@ -227,10 +240,11 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
           var days = dayHourMin[0];
           var hours = dayHourMin[1];
           var minutes = dayHourMin[2];
+          var seconds = dayHourMin[3];
           if ((user.buzzes.length = 0)) {
             user.bac = 0;
           }
-          user.timeSince = `${days} days, ${hours} hours, and ${minutes} minutes`;
+          user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
           user.save((err, user) => {
             res.render("user/show", { user, success: req.flash("success") });
           });
@@ -343,13 +357,16 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
         var days = dayHourMin[0];
         var hours = dayHourMin[1];
         var minutes = dayHourMin[2];
+        var seconds = dayHourMin[3];
         if (days >= 1) {
           hours = hours + days * 24;
         }
         if (hours == 0) {
-          buzzDuration = minutes / 60;
+          buzzDuration = minutes / 60 + seconds / 3600;
+          // buzzDuration = minutes / 60;
         } else {
-          buzzDuration = hours + minutes / 60;
+          buzzDuration = hours + minutes / 60 + seconds / 3600;
+          // buzzDuration = hours + minutes / 60;
         }
         durations.push(buzzDuration);
       }

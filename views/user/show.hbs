@@ -73,9 +73,14 @@
               <h6>Congrats, keep up</h6>
               <h6>the good work!</h6>
               <br>
+              {{#if user.timeSince}}
                 <h6>It's been:
                 <h6 style="font-weight: bold">{{user.timeSince}}</h6>
                 <h6>since your last drink.</h6>
+                {{else}}
+                <h6 style="font-weight: bold">You haven't had</h6>
+                <h6 style="font-weight: bold">any drinks.</h6>
+                {{/if}}
               </div>
             </div>
                 {{/if}}
