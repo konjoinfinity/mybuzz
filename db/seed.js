@@ -277,7 +277,9 @@ setTimeout(() => {
       }
     }
   );
+}, 2000);
 
+setTimeout(() => {
   User.register(
     {
       username: "konjo@konjo.com",
@@ -314,4 +316,4 @@ setTimeout(() => {
       }
     }
   );
-}, 3000);
+}, 4000);
