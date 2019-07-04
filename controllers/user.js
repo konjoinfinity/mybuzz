@@ -27,11 +27,12 @@ function getDayHourMin(date1, date2) {
   return [days, hours, minutes, seconds];
 }
 
-function durationLoop(user) {
+function durationLoop(user, buzzLength) {
+  console.log(buzzLength);
   const currentTime = new Date();
-  var durations = [];
+  const durations = [];
   let buzzDuration;
-  for (i = 0; i < user.buzzes.length; i++) {
+  for (i = 0; i < buzzLength; i++) {
     var date2 = currentTime.getTime();
     var date1 = user.buzzes[i].dateCreated.getTime();
     var dayHourMin = getDayHourMin(date1, date2);
@@ -205,7 +206,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      durations = durationLoop(user);
+      durations = durationLoop(user, user.buzzes.length);
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
@@ -368,7 +369,7 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      durations = durationLoop(user);
+      durations = durationLoop(user, user.buzzes.length);
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
