@@ -206,8 +206,6 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
     if (user.buzzes.length >= 1) {
       const currentTime = new Date();
       durations = durationLoop(user, user.buzzes.length, currentTime);
-      // var date2 = currentTime.getTime();
-      // var date1 = user.buzzes[i].dateCreated.getTime();
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
@@ -359,8 +357,6 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
     if (user.buzzes.length >= 1) {
       const currentTime = new Date();
       durations = durationLoop(user, user.buzzes.length, currentTime);
-      // var date2 = currentTime.getTime();
-      // var date1 = user.buzzes[i].dateCreated.getTime();
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
