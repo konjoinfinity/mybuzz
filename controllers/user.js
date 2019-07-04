@@ -204,7 +204,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      const currentTime = new Date();
+      // const currentTime = new Date();
       durations = durationLoop(user, user.buzzes.length, currentTime);
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
@@ -355,7 +355,7 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      const currentTime = new Date();
+      // const currentTime = new Date();
       durations = durationLoop(user, user.buzzes.length, currentTime);
       totals = buzzLoop(user, req, durations);
       total = totals.reduce((a, b) => a + b, 0);
