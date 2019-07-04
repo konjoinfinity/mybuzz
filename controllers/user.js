@@ -28,8 +28,8 @@ function getDayHourMin(date1, date2) {
 }
 
 function durationLoop(user, buzzLength, timestamp2) {
-  const durations = [];
-  let buzzDuration;
+  var durations = [];
+  var buzzDuration;
   for (i = 0; i < buzzLength; i++) {
     var date2 = timestamp2.getTime();
     var date1 = user.buzzes[i].dateCreated.getTime();
@@ -52,7 +52,7 @@ function durationLoop(user, buzzLength, timestamp2) {
 }
 
 function buzzLoop(user, req, durations) {
-  let buzzHours;
+  var buzzHours;
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
     if (i == user.buzzes.length) {
@@ -71,13 +71,13 @@ function buzzLoop(user, req, durations) {
       totals.push(buzzTotal);
     }
     if (buzzTotal <= 0) {
-      const oldBuzz = {
+      var oldBuzz = {
         numberOfDrinks: 1,
         drinkType: user.buzzes[i].drinkType,
         hours: 1,
         dateCreated: user.buzzes[i].dateCreated
       };
-      const oldBuzzId = { _id: user.buzzes[i]._id };
+      var oldBuzzId = { _id: user.buzzes[i]._id };
       User.findOneAndUpdate(
         { _id: req.params.id },
         { $pull: { buzzes: oldBuzzId } }
@@ -196,10 +196,10 @@ router.get("/logout", authenticatedUser, (req, res) => {
 });
 
 router.get("/user/:id", authenticatedUser, (req, res) => {
-  const currentTime = new Date();
-  let total;
-  let buzzDuration;
-  let buzzHours;
+  var currentTime = new Date();
+  var total;
+  var buzzDuration;
+  var buzzHours;
   var durations = [];
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
@@ -285,9 +285,9 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     user.buzzes.push(newBuzz);
     user.save().then(user => {
-      let total;
-      let buzzDuration;
-      let buzzHours;
+      var total;
+      var buzzDuration;
+      var buzzHours;
       var durations = [];
       var totals = [];
       if (user.buzzes.length == 0) {
@@ -316,13 +316,13 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
             totals.push(buzzTotal);
           }
           if (buzzTotal <= 0) {
-            const oldBuzz = {
+            var oldBuzz = {
               numberOfDrinks: 1,
               drinkType: user.buzzes[i].drinkType,
               hours: 1,
               dateCreated: user.buzzes[i].dateCreated
             };
-            const oldBuzzId = { _id: user.buzzes[i]._id };
+            var oldBuzzId = { _id: user.buzzes[i]._id };
             User.findOneAndUpdate(
               { _id: req.params.id },
               { $pull: { buzzes: oldBuzzId } }
@@ -346,10 +346,10 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
 });
 
 router.get("/user/:id/bac", authenticatedUser, (req, res) => {
-  const currentTime = new Date();
-  let total;
-  let buzzDuration;
-  let buzzHours;
+  var currentTime = new Date();
+  var total;
+  var buzzDuration;
+  var buzzHours;
   var durations = [];
   var totals = [];
   User.findOne({ _id: req.params.id }).then(user => {
@@ -379,7 +379,7 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
 });
 
 router.put("/user/:id/del", authenticatedUser, (req, res) => {
-  const buzzId = { _id: req.body.index };
+  var buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { buzzes: buzzId } }
@@ -394,7 +394,7 @@ router.put("/user/:id/del", authenticatedUser, (req, res) => {
 });
 
 router.put("/user/:id/olddel", authenticatedUser, (req, res) => {
-  const buzzId = { _id: req.body.index };
+  var buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { oldbuzzes: buzzId } }
