@@ -9,7 +9,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const RememberMeStrategy = require("passport-remember-me").Strategy;
+// const RememberMeStrategy = require("passport-remember-me").Strategy;
 
 const app = express();
 
@@ -37,8 +37,13 @@ app.use(
 
 app.use(flash());
 app.use(passport.initialize());
-app.use(passport.session());
-app.use(passport.authenticate("remember-me"));
+app.use(
+  passport.session({
+    secret: prodDevSecret,
+    cookie: { secure: true, maxAge: 604800000 }
+  })
+);
+// app.use(passport.authenticate("remember-me"));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());

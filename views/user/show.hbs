@@ -22,7 +22,7 @@
           </form>
         </div>
         <div class="divcard teal lighten-5">
-<form action="/user/{{user.id}}" method="post" credentials='include'>
+<form action="/user/{{user.id}}" method="post">
   <h5>Add a Drink</h5>
   <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Beer">+1 Beer<i class="fas fa-beer right"></i></button>
@@ -30,7 +30,6 @@
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Wine">+1 Wine<i class="fas fa-wine-glass-alt right"></i></button>
   <br>
   <button style="margin:5px" class="btn waves-effect waves-light teal darken-1" type="submit" name="drinkType" value="Liquor">+1 Liquor<i class="fas fa-glass-whiskey right"></i></button>
-  <input type="hidden" name="remember_me" value="{{remeber_me}}" />
           </form>
           <br>
         </div>
