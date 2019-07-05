@@ -4,6 +4,55 @@ const mongoose = require("../db/connection");
 const User = require("../models/user");
 const passport = require("passport");
 const authenticatedUser = require("../auth/authuser");
+const RememberMeStrategy = require("passport-remember-me").Strategy;
+const utils = require("../utils");
+
+var tokens = {};
+
+function consumeRememberMeToken(token, fn) {
+  var uid = tokens[token];
+  // invalidate the single-use token
+  delete tokens[token];
+  return fn(null, uid);
+}
+
+function saveRememberMeToken(token, uid, fn) {
+  tokens[token] = uid;
+  return fn();
+}
+
+passport.use(
+  new RememberMeStrategy(function(token, done) {
+    consumeRememberMeToken(token, function(err, uid) {
+      if (err) {
+        return done(err);
+      }
+      if (!uid) {
+        return done(null, false);
+      }
+
+      User.findById(uid, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+    });
+  }, issueToken)
+);
+
+function issueToken(user, done) {
+  var token = utils.randomString(64);
+  saveRememberMeToken(token, user.id, function(err) {
+    if (err) {
+      return done(err);
+    }
+    return done(null, token);
+  });
+}
 
 function getDayHourMin(date1, date2) {
   var dateDiff = date2 - date1;
@@ -183,14 +232,29 @@ router.post("/login", (req, res, next) => {
         req.flash("error", err.message);
         return res.redirect("/user/login");
       }
-      req.flash("success", "You Successfully Logged In");
-      return res.redirect(`/user/${user._id}`);
+      if (!req.cookies.remember_me) {
+        issueToken(req.user, function(err, token) {
+          if (err) {
+            return next(err);
+          }
+          res.cookie("remember_me", token, {
+            path: "/",
+            httpOnly: true,
+            maxAge: 604800000
+          });
+          req.flash("success", "You Successfully Logged In");
+          return res.redirect(`/user/${user._id}`);
+        });
+      } else {
+        return res.redirect(`/user/${user._id}`);
+      }
     });
   });
   authenticate(req, res, next);
 });
 
 router.get("/logout", authenticatedUser, (req, res) => {
+  res.clearCookie("remember_me");
   req.logout();
   res.redirect("/");
 });
