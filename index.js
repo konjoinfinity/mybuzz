@@ -9,7 +9,6 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-// const RememberMeStrategy = require("passport-remember-me").Strategy;
 
 const app = express();
 
@@ -43,7 +42,6 @@ app.use(
     cookie: { secure: true, maxAge: 604800000 }
   })
 );
-// app.use(passport.authenticate("remember-me"));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
