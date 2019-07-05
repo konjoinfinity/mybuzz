@@ -15,7 +15,13 @@ const app = express();
 if (process.env.NODE_ENV == "production") {
   prodDevSecret = process.env.PROD_SECRET;
 } else {
-  prodDevSecret = "MyBuZzH3Lp5P30p13r3DuC3dR1nK!nG";
+  prodDevSecret = "MyBuZzH3Lp5P30p1312345678";
+}
+
+if (process.env.NODE_ENV == "production") {
+  pJsSecret = process.env.PJS_SECRET;
+} else {
+  pJsSecret = "MyBuZzH3Lp5P30p87654321";
 }
 
 app.set("view engine", "hbs");
@@ -38,7 +44,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(
   passport.session({
-    secret: prodDevSecret,
+    secret: pJsSecret,
     cookie: { secure: true, maxAge: 604800000 }
   })
 );
