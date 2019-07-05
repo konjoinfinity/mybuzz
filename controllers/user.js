@@ -349,7 +349,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
 });
 
 router.post("/user/:id", authenticatedUser, (req, res) => {
-  console.log(req.body);
+  console.log(req.cookies.remember_me);
   var dateTime = new Date();
   var newBuzz = {
     numberOfDrinks: 1,
