@@ -277,10 +277,12 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
 });
 
 router.post("/user/:id", authenticatedUser, (req, res) => {
+  var dateTime = new Date();
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
-    hours: 0
+    hours: 0,
+    dateCreated: dateTime
   };
   User.findOne({ _id: req.params.id }).then(user => {
     user.buzzes.push(newBuzz);
