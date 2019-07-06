@@ -310,9 +310,11 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
       var totals = [];
       var duration;
       if (user.buzzes.length == 0) {
+        console.log("len 0");
         total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
       }
       if (user.buzzes.length >= 1) {
+        console.log("len 1");
         durations = durationLoop(
           user,
           user.buzzes.length - 1,
@@ -320,9 +322,11 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
         );
         for (i = 0; i < user.buzzes.length; i++) {
           if (i == user.buzzes.length - 1) {
-            buzzHours = 0;
+            buzzHours = 0 - 0.33;
+            console.log(buzzHours + " user.buzzes.length - 1");
           } else {
-            buzzHours = durations[i];
+            buzzHours = durations - 0.33;
+            console.log(buzzHours + " else");
           }
           buzzTotal = getBAC(
             user.weight,
@@ -331,8 +335,14 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
             user.buzzes[i].drinkType,
             buzzHours
           );
+          console.log(buzzTotal);
           if (buzzTotal > 0) {
-            totals.push(buzzTotal);
+            console.log(durations);
+            if (durations <= 0.33) {
+              totals.push(0);
+            } else {
+              totals.push(buzzTotal);
+            }
           }
           if (buzzTotal <= 0) {
             var oldBuzz = {
