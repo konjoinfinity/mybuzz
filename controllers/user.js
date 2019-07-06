@@ -4,55 +4,6 @@ const mongoose = require("../db/connection");
 const User = require("../models/user");
 const passport = require("passport");
 const authenticatedUser = require("../auth/authuser");
-const RememberMeStrategy = require("passport-remember-me").Strategy;
-const utils = require("../utils");
-
-var tokens = {};
-
-function consumeRememberMeToken(token, fn) {
-  var uid = tokens[token];
-  // invalidate the single-use token
-  delete tokens[token];
-  return fn(null, uid);
-}
-
-function saveRememberMeToken(token, uid, fn) {
-  tokens[token] = uid;
-  return fn();
-}
-
-passport.use(
-  new RememberMeStrategy(function(token, done) {
-    consumeRememberMeToken(token, function(err, uid) {
-      if (err) {
-        return done(err);
-      }
-      if (!uid) {
-        return done(null, false);
-      }
-
-      User.findById(uid, function(err, user) {
-        if (err) {
-          return done(err);
-        }
-        if (!user) {
-          return done(null, false);
-        }
-        return done(null, user);
-      });
-    });
-  }, issueToken)
-);
-
-function issueToken(user, done) {
-  var token = utils.randomString(64);
-  saveRememberMeToken(token, user.id, function(err) {
-    if (err) {
-      return done(err);
-    }
-    return done(null, token);
-  });
-}
 
 function getDayHourMin(date1, date2) {
   var dateDiff = date2 - date1;
@@ -95,6 +46,7 @@ function durationLoop(user, buzzLength, timestamp2) {
     } else {
       buzzDuration = hours + minutes / 60 + seconds / 3600;
     }
+    console.log(buzzDuration);
     durations.push(buzzDuration);
   }
   return durations;
@@ -105,9 +57,10 @@ function buzzLoop(user, req, durations) {
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
     if (i == user.buzzes.length) {
-      buzzHours = 0;
+      buzzHours = 0 - 0.49;
     } else {
-      buzzHours = durations[i];
+      buzzHours = durations[i] - 0.49;
+      console.log(buzzHours);
     }
     buzzTotal = getBAC(
       user.weight,
@@ -117,7 +70,12 @@ function buzzLoop(user, req, durations) {
       buzzHours
     );
     if (buzzTotal > 0) {
-      totals.push(buzzTotal);
+      if (durations[i] <= 0.49) {
+        console.log(durations[i]);
+        totals.push(0);
+      } else {
+        totals.push(buzzTotal);
+      }
     }
     if (buzzTotal <= 0) {
       var oldBuzz = {
@@ -169,6 +127,8 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
   return bac;
 }
 
+// authenticatedUser,
+//res.json(users));
 router.get("/", authenticatedUser, (req, res) => {
   // Replace with something else later
   User.find({}).then(users => res.render("index", { users }));
@@ -259,7 +219,9 @@ router.get("/logout", authenticatedUser, (req, res) => {
   res.redirect("/");
 });
 
+//authenticatedUser,
 router.get("/user/:id", authenticatedUser, (req, res) => {
+  console.log("user req");
   var currentTime = new Date();
   var total;
   var buzzDuration;
@@ -287,6 +249,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
             user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
             user.bac = 0;
             user.save((err, user) => {
+              // res.json(user);
               res.render("user/show", { user, success: req.flash("success") });
             });
           });
@@ -295,6 +258,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
             user.bac = 0;
             user.timeSince = "";
             user.save((err, user) => {
+              // res.json(user);
               res.render("user/show", { user, success: req.flash("success") });
             });
           });
@@ -303,6 +267,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
         User.findOne({ _id: req.params.id }).then(user => {
           user.bac = total;
           user.save((err, user) => {
+            // res.json(user);
             res.render("user/show", { user, success: req.flash("success") });
           });
         });
@@ -324,6 +289,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
           }
           user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
           user.save((err, user) => {
+            // res.json(user);
             res.render("user/show", { user, success: req.flash("success") });
           });
         });
@@ -333,6 +299,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
           user.bac = 0;
         }
         user.save((err, user) => {
+          // res.json(user);
           res.render("user/show", { user, success: req.flash("success") });
         });
       }
@@ -356,6 +323,7 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
       var buzzHours;
       var durations = [];
       var totals = [];
+      var duration;
       if (user.buzzes.length == 0) {
         total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
       }
