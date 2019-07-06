@@ -192,29 +192,14 @@ router.post("/login", (req, res, next) => {
         req.flash("error", err.message);
         return res.redirect("/user/login");
       }
-      if (!req.cookies.remember_me) {
-        issueToken(req.user, function(err, token) {
-          if (err) {
-            return next(err);
-          }
-          res.cookie("remember_me", token, {
-            path: "/",
-            httpOnly: true,
-            maxAge: 604800000
-          });
-          req.flash("success", "You Successfully Logged In");
-          return res.redirect(`/user/${user._id}`);
-        });
-      } else {
-        return res.redirect(`/user/${user._id}`);
-      }
+      req.flash("success", "You Successfully Logged In");
+      return res.redirect(`/user/${user._id}`);
     });
   });
   authenticate(req, res, next);
 });
 
 router.get("/logout", authenticatedUser, (req, res) => {
-  res.clearCookie("remember_me");
   req.logout();
   res.redirect("/");
 });
