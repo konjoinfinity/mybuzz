@@ -57,9 +57,9 @@ function buzzLoop(user, req, durations) {
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
     if (i == user.buzzes.length) {
-      buzzHours = 0 - 0.49;
+      buzzHours = 0 - 0.33;
     } else {
-      buzzHours = durations[i] - 0.49;
+      buzzHours = durations[i] - 0.33;
       console.log(buzzHours);
     }
     buzzTotal = getBAC(
@@ -70,7 +70,7 @@ function buzzLoop(user, req, durations) {
       buzzHours
     );
     if (buzzTotal > 0) {
-      if (durations[i] <= 0.49) {
+      if (durations[i] <= 0.33) {
         console.log(durations[i]);
         totals.push(0);
       } else {
