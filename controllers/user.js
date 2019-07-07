@@ -86,6 +86,7 @@ function buzzLoop(user, req, durations) {
     if (i == user.buzzes.length) {
       buzzHours = 0 - 0.33;
     } else {
+      console.log("durations: " + durations[i] + ` - ${i}`);
       buzzHours = durations[i] - 0.33;
       console.log("Buzzloop buzzhours: " + buzzHours);
     }
@@ -99,7 +100,7 @@ function buzzLoop(user, req, durations) {
     console.log("Buzztotal: " + buzzTotal);
     if (buzzTotal > 0) {
       if (durations[i] <= 0.33) {
-        console.log("buzzloop durations[i]: " + durations[i]);
+        console.log("buzzloop durations[i]: " + durations[i] + ` - ${i}`);
         totals.push(0);
       } else {
         console.log("push buzztotal");
@@ -354,13 +355,13 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
           user.buzzes.length - 1,
           user.buzzes[user.buzzes.length - 1].dateCreated
         );
-        console.log("Durations: " + durations);
+        console.log("More than one Durations: " + durations);
         for (i = 0; i < user.buzzes.length; i++) {
           if (i == user.buzzes.length - 1) {
             buzzHours = 0 - 0.33;
             console.log("buzzhours user.buzzes.length - 1: " + buzzHours);
           } else {
-            console.log("Durations: " + durations[i]);
+            console.log("Durations: " + durations[i] + ` - ${i}`);
             buzzHours = durations[i] - 0.33;
             console.log("else buzzhours: " + buzzHours);
           }
@@ -373,14 +374,14 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
           );
           console.log("buzztotal: " + buzzTotal);
           if (buzzTotal > 0) {
-            console.log("durations: " + durations[i]);
-            if (durations[i] <= 0.33) {
+            console.log("durations: " + durations[i] + ` - ${i}`);
+            if (durations[i] <= 0.33 || durations[i] === undefined) {
               console.log("zero pushed");
               totals.push(0);
+            } else {
+              console.log("else - totals pushed");
+              totals.push(buzzTotal);
             }
-          } else {
-            console.log("else - totals pushed");
-            totals.push(buzzTotal);
           }
           if (buzzTotal <= 0) {
             var oldBuzz = {
@@ -401,8 +402,10 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
             });
           }
         }
+        console.log(totals);
         total = totals.reduce((a, b) => a + b, 0);
         total = parseFloat(total.toFixed(6));
+        console.log(total);
       }
       user.bac = total;
       user.save((err, user) => {
