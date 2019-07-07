@@ -102,10 +102,17 @@ function buzzLoop(user, req, durations) {
       if (durations[i] <= 0.33) {
         console.log("buzzloop durations[i]: " + durations[i] + ` - ${i}`);
         // adding placeholder amount until 20 mins have passed
-        totals.push(0.005);
+        // *** 0.026073287671232875 will have to be calculated for each user
+        var lessthan20 = 0.026073287671232875 - buzzTotal;
+        console.log(buzzTotal);
+        console.log(lessthan20);
+        totals.push(lessthan20);
       } else {
         if (i > 0 && durations[0] <= 0.99) {
-          totals.push(0.026073287671232875);
+          console.log(buzzTotal);
+          var morethan20 = 0.026073287671232875 - buzzTotal;
+          console.log(morethan20);
+          totals.push(morethan20);
         } else {
           console.log("else - totals pushed");
           totals.push(buzzTotal);
@@ -382,11 +389,17 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
             console.log("durations: " + durations[i] + ` - ${i}`);
             if (durations[i] <= 0.33 || durations[i] === undefined) {
               console.log("zero pushed");
+              console.log(buzzTotal);
               // adding placeholder amount until 20 mins have passed
-              totals.push(0.005);
+              var lessthan20 = 0.026073287671232875 - buzzTotal;
+              console.log(lessthan20);
+              totals.push(lessthan20);
             } else {
               if (i > 0 && durations[0] <= 0.99) {
-                totals.push(0.026073287671232875);
+                console.log(buzzTotal);
+                var morethan20 = 0.026073287671232875 - buzzTotal;
+                console.log(morethan20);
+                totals.push(morethan20);
               } else {
                 console.log("else - totals pushed");
                 totals.push(buzzTotal);
