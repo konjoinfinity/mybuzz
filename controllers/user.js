@@ -104,8 +104,12 @@ function buzzLoop(user, req, durations) {
         // adding placeholder amount until 20 mins have passed
         totals.push(0.005);
       } else {
-        console.log("push buzztotal");
-        totals.push(buzzTotal);
+        if (i > 0 && durations[0] <= 0.99) {
+          totals.push(0.026073287671232875);
+        } else {
+          console.log("else - totals pushed");
+          totals.push(buzzTotal);
+        }
       }
     }
     if (buzzTotal <= 0) {
@@ -381,8 +385,12 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
               // adding placeholder amount until 20 mins have passed
               totals.push(0.005);
             } else {
-              console.log("else - totals pushed");
-              totals.push(buzzTotal);
+              if (i > 0 && durations[0] <= 0.99) {
+                totals.push(0.026073287671232875);
+              } else {
+                console.log("else - totals pushed");
+                totals.push(buzzTotal);
+              }
             }
           }
           if (buzzTotal <= 0) {
