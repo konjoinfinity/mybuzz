@@ -101,7 +101,8 @@ function buzzLoop(user, req, durations) {
     if (buzzTotal > 0) {
       if (durations[i] <= 0.33) {
         console.log("buzzloop durations[i]: " + durations[i] + ` - ${i}`);
-        totals.push(0);
+        // adding placeholder amount until 20 mins have passed
+        totals.push(0.005);
       } else {
         console.log("push buzztotal");
         totals.push(buzzTotal);
@@ -250,10 +251,10 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
       durations = durationLoop(user, user.buzzes.length, currentTime);
       console.log("id show buzz durations: " + durations);
       totals = buzzLoop(user, req, durations);
-      console.log("id show buzzloop totals: " + totals);
+      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
-      console.log("id show total: " + total);
+      console.log(total);
       if (total <= 0) {
         if (user.oldbuzzes.length >= 1) {
           User.findOne({ _id: req.params.id }).then(user => {
@@ -377,7 +378,8 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
             console.log("durations: " + durations[i] + ` - ${i}`);
             if (durations[i] <= 0.33 || durations[i] === undefined) {
               console.log("zero pushed");
-              totals.push(0);
+              // adding placeholder amount until 20 mins have passed
+              totals.push(0.005);
             } else {
               console.log("else - totals pushed");
               totals.push(buzzTotal);
@@ -426,8 +428,10 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
     if (user.buzzes.length >= 1) {
       durations = durationLoop(user, user.buzzes.length, currentTime);
       totals = buzzLoop(user, req, durations);
+      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
+      console.log(total);
       if (total < 0) {
         user.bac = 0;
         user.save((err, user) => {
