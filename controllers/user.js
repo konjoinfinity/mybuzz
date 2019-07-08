@@ -99,14 +99,16 @@ function buzzLoop(user, req, durations) {
     );
     console.log("Buzztotal: " + buzzTotal);
     if (buzzTotal > 0) {
-      if (durations[i] <= 0.33) {
+      // Increase only for the first buzz/drink
+      if (durations[i] <= 0.33 && i == 0) {
         console.log("buzzloop durations[i]: " + durations[i] + ` - ${i}`);
         // adding placeholder amount until 20 mins have passed
         // *** 0.026073287671232875 will have to be calculated for each user
+        // consider adding another conditional to check [i]
         console.log("less than 20 mins");
         var lessthan20 = 0.026073287671232875 - buzzTotal;
-        console.log(buzzTotal);
-        console.log(lessthan20);
+        console.log("Buzztotal: " + buzzTotal);
+        console.log("Lessthan20: " + lessthan20);
         totals.push(lessthan20);
       } else {
         if (i > 0 && durations[0] <= 0.99) {
