@@ -77,6 +77,12 @@ function durationLoop(user, buzzLength, timestamp2) {
   return durations;
 }
 
+// New field will have to be created for buzzes - holdtime which is plus one hour
+// from buzz[0].dateCreated, this will become the new (invisible) dateCreated for
+// that buzz, all calculations are made from that timestamp, will need to Calculate
+// this new timestamp when a new buzz is added from the holdtime property of the
+// last buzz in the array
+
 function buzzLoop(user, req, durations, ilength) {
   var maxBac = getBAC(user.weight, user.gender, 1, "Beer", -0.33);
   var buzzHours;
