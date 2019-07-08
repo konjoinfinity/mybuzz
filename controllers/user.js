@@ -112,9 +112,15 @@ function buzzLoop(user, req, durations) {
         totals.push(lessthan20);
       } else {
         if (i > 0 && durations[0] <= 0.99) {
-          console.log("more than 20 mins");
-          console.log(buzzTotal);
-          totals.push(0.026073287671232875);
+          if (durations[i] <= 0.33) {
+            console.log("more than one drink, less than 20 mins");
+            console.log(buzzTotal);
+            totals.push(0.005);
+          } else {
+            console.log("more than one drink, more than 20 mins");
+            console.log(buzzTotal);
+            totals.push(0.026073287671232875);
+          }
         } else {
           console.log("else - totals pushed");
           totals.push(buzzTotal);
