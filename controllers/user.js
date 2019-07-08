@@ -84,7 +84,6 @@ function buzzLoop(user, req, durations, ilength) {
   var buzzHours;
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
-    // user.buzzes.length
     if (i == ilength) {
       buzzHours = 0 - 0.33;
     } else {
