@@ -27,10 +27,19 @@
             <h6 style="font-weight: bold;">{{user.bac}}</h6>
             </div>
             {{/ifCond}}
+            {{#ifCond user.bac '>=' 0.02}}
             {{#ifCond user.bac '<' 0.04}}
+            <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: #2DB900; color: white">
+            <h6 style="font-weight: bold">{{user.bac}}</h6>
+            </div>
+            {{/ifCond}}
+            {{/ifCond}}
+            {{#ifCond user.bac '>=' 0.00}}
+            {{#ifCond user.bac '<' 0.02}}
             <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: white; color: teal">
             <h6 style="font-weight: bold">{{user.bac}}</h6>
             </div>
+            {{/ifCond}}
             {{/ifCond}}
           {{else}}
           <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: white; color: teal">
