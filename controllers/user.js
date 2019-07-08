@@ -27,8 +27,6 @@ function getDayHourMin(date1, date2) {
   return [days, hours, minutes, seconds];
 }
 
-// create new duration loop to check if time is less than 0.33
-
 function durationLoop(user, buzzLength, timestamp2) {
   console.log("durloop");
   console.log(buzzLength);
@@ -130,6 +128,11 @@ function buzzLoop(user, req, durations, ilength) {
             totals.push(twoThirdsMaxBac);
           }
         } else {
+          // add conditional to check durations[1], if (durations[1] is present) {
+          //  secondDrink = getBAC(user.weight, user.gender, 1, user.buzzes[1].drinkType, 0);
+          //    }  Might have to add a new property to the buzz, start bac countdown (after one hour)
+          // Create a new duration function to get the timestamp from bac countdown, subtract current time
+          // from bac countdown
           console.log("else - totals pushed");
           totals.push(buzzTotal);
         }
