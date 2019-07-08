@@ -102,7 +102,6 @@ function buzzLoop(user, req, durations, ilength) {
       if (durations[i] <= 0.33 && i == 0) {
         console.log("buzzloop durations[i]: " + durations[i] + ` - ${i}`);
         // adding placeholder amount until 20 mins have passed
-        // *** 0.026073287671232875 will have to be calculated for each user
         // consider adding another conditional to check [i]
         console.log("less than 20 mins");
         console.log(maxBac);

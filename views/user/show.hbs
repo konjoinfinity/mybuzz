@@ -8,9 +8,30 @@
 <p>Weight - {{user.weight}} lbs.</p>
           <h5>Current BAC</h5>
           {{#if user.bac}}
-          <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: white; color: teal">
+            {{#ifCond user.bac '>=' 0.04}}
+            {{#ifCond user.bac '<' 0.06}}
+            <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: yellow; color: teal">
+            <h6 style="font-weight: bold;">{{user.bac}}</h6>
+            </div>
+            {{/ifCond}}
+            {{/ifCond}}
+            {{#ifCond user.bac '>=' 0.06}}
+            {{#ifCond user.bac '<' 0.08}}
+            <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: orange; color: teal">
+            <h6 style="font-weight: bold;">{{user.bac}}</h6>
+            </div>
+            {{/ifCond}}
+            {{/ifCond}}
+            {{#ifCond user.bac '>=' 0.08}}
+            <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: #AE0000; color: white">
+            <h6 style="font-weight: bold;">{{user.bac}}</h6>
+            </div>
+            {{/ifCond}}
+            {{#ifCond user.bac '<' 0.04}}
+            <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: white; color: teal">
             <h6 style="font-weight: bold">{{user.bac}}</h6>
-          </div>
+            </div>
+            {{/ifCond}}
           {{else}}
           <div style="border-radius: 15px; border: solid teal 2px; padding: 10px; background: white; color: teal">
             <h6 style="font-weight: bold">0.0</h6>

@@ -21,15 +21,4 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 console.log(getBAC(180, "Male", 1, "Wine", 0));
-console.log(getBAC(180, "Male", 1, "Wine", 1));
-console.log(getBAC(180, "Male", 1, "Beer", 0));
-console.log(getBAC(180, "Male", 1, "Beer", 1));
-console.log(getBAC(180, "Male", 1, "Liquor", 0));
-console.log(getBAC(180, "Male", 1, "Liquor", 1));
-
-console.log(getBAC(150, "Female", 1, "Wine", 0));
-console.log(getBAC(150, "Female", 1, "Wine", 1));
-console.log(getBAC(150, "Female", 1, "Beer", 0));
-console.log(getBAC(150, "Female", 1, "Beer", 1));
-console.log(getBAC(150, "Female", 1, "Liquor", 0));
-console.log(getBAC(150, "Female", 1, "Liquor", 1));
+console.log(getBAC(180, "Male", 1, "Wine", 0.33));
