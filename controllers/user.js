@@ -466,4 +466,31 @@ router.put("/user/:id/olddel", authenticatedUser, (req, res) => {
   });
 });
 
+router.put("/user/:id/delall", authenticatedUser, (req, res) => {
+  User.findOneAndUpdate({ _id: req.params.id }, { $pull: { buzzes: {} } }).then(
+    user => {
+      if (user.buzzes.length == 1) {
+        user.bac = 0;
+      }
+      user.save((err, user) => {
+        res.redirect("back");
+      });
+    }
+  );
+});
+
+router.put("/user/:id/olddelall", authenticatedUser, (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { oldbuzzes: {} } }
+  ).then(user => {
+    if (user.buzzes.length == 1) {
+      user.bac = 0;
+    }
+    user.save((err, user) => {
+      res.redirect("back");
+    });
+  });
+});
+
 module.exports = router;
