@@ -80,7 +80,7 @@ function durationLoop(user, buzzLength, timestamp2) {
 }
 
 function buzzLoop(user, req, durations, ilength) {
-  var maxBac = getBAC(user.weight, user.gender, 1, "Beer", 0);
+  var maxBac = getBAC(user.weight, user.gender, 1, "Beer", -0.33);
   var buzzHours;
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
@@ -108,18 +108,22 @@ function buzzLoop(user, req, durations, ilength) {
         // *** 0.026073287671232875 will have to be calculated for each user
         // consider adding another conditional to check [i]
         console.log("less than 20 mins");
+        console.log(maxBac);
         var lessthan20 = maxBac - buzzTotal;
         console.log("Buzztotal: " + buzzTotal);
         console.log("Lessthan20: " + lessthan20);
         totals.push(lessthan20);
       } else {
         if (i > 0 && durations[0] <= 0.99) {
-          if (durations[i] <= 0.33) {
+          if (durations[i] <= 0.33 || durations[i] === undefined) {
+            console.log("durations[i]: " + durations[i]);
             console.log("more than one drink, less than 20 mins");
             console.log(buzzTotal);
             var halfMaxBac = maxBac / 2;
+            console.log(halfMaxBac);
             totals.push(halfMaxBac);
           } else {
+            console.log("durations[i]: " + durations[i]);
             console.log("more than one drink, more than 20 mins");
             console.log(buzzTotal);
             totals.push(maxBac);
