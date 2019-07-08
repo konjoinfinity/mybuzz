@@ -32,6 +32,8 @@ app.use(parser.json());
 app.use(methodOverride("_method"));
 app.use(cookieParser());
 
+// Discovered production warning in heroku logs, this will be fixed by upgrading
+// to jwt authentication, verified no warnings with other jwt auth app
 app.use(
   session({
     secret: prodDevSecret,
