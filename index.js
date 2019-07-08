@@ -30,7 +30,6 @@ app.use(cors());
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
 app.use(methodOverride("_method"));
-
 app.use(cookieParser());
 
 app.use(
