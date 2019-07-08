@@ -9,6 +9,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const Handlebars = require("hbs");
 
 const app = express();
 
@@ -59,18 +60,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-var Handlebars = require("hbs");
-
 Handlebars.registerHelper("ifCond", function(v1, operator, v2, options) {
   switch (operator) {
-    case "==":
-      return v1 == v2 ? options.fn(this) : options.inverse(this);
-    case "===":
-      return v1 === v2 ? options.fn(this) : options.inverse(this);
-    case "!=":
-      return v1 != v2 ? options.fn(this) : options.inverse(this);
-    case "!==":
-      return v1 !== v2 ? options.fn(this) : options.inverse(this);
     case "<":
       return v1 < v2 ? options.fn(this) : options.inverse(this);
     case "<=":
@@ -79,10 +70,6 @@ Handlebars.registerHelper("ifCond", function(v1, operator, v2, options) {
       return v1 > v2 ? options.fn(this) : options.inverse(this);
     case ">=":
       return v1 >= v2 ? options.fn(this) : options.inverse(this);
-    case "&&":
-      return v1 && v2 ? options.fn(this) : options.inverse(this);
-    case "||":
-      return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
   }
