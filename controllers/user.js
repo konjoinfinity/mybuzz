@@ -119,14 +119,16 @@ function buzzLoop(user, req, durations, ilength) {
             console.log("durations[i]: " + durations[i]);
             console.log("more than one drink, less than 20 mins");
             console.log(buzzTotal);
-            var halfMaxBac = maxBac / 2;
-            console.log(halfMaxBac);
-            totals.push(halfMaxBac);
+            var oneThirdMaxBac = maxBac * (1 / 3);
+            console.log(oneThirdMaxBac);
+            totals.push(oneThirdMaxBac);
           } else {
             console.log("durations[i]: " + durations[i]);
             console.log("more than one drink, more than 20 mins");
             console.log(buzzTotal);
-            totals.push(maxBac);
+            var twoThirdsMaxBac = maxBac * (2 / 3);
+            console.log(twoThirdsMaxBac);
+            totals.push(twoThirdsMaxBac);
           }
         } else {
           console.log("else - totals pushed");
