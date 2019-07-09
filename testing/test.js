@@ -127,6 +127,6 @@ function buzzLoop(user, req, durations, ilength) {
 var currentTime = new Date();
 console.log(currentTime);
 
-currentTime.setHours(currentTime.getHours() + 1);
+currentTime.setHours(currentTime.getHours() + 1); // adds 1 hour in the future
 
 console.log(currentTime);
