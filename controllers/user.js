@@ -380,6 +380,8 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
       console.log(previousDrinkDate);
       previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
       console.log(previousDrinkDate);
+      console.log(user.buzzes[user.buzzes.length - 1].dateCreated);
+      // ?????????????????????
       var newBuzzWithHold = {
         numberOfDrinks: 1,
         drinkType: req.body.drinkType,
