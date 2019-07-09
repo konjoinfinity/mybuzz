@@ -36,7 +36,13 @@ function durationLoop(user, buzzLength, timestamp2) {
   for (i = 0; i < buzzLength; i++) {
     console.log("inside dur loop");
     var date2 = timestamp2.getTime();
-    var date1 = user.buzzes[i].dateCreated.getTime();
+    console.log("holdTime: " + user.buzzes[i].holdTime);
+    var date1;
+    if (user.buzzes[i].holdTime === undefined) {
+      date1 = user.buzzes[i].dateCreated.getTime();
+    } else {
+      date1 = user.buzzes[i].holdTime.getTime();
+    }
     var dayHourMin = getDayHourMin(date1, date2);
     var days = dayHourMin[0];
     var hours = dayHourMin[1];
