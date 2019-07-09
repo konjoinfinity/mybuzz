@@ -26,7 +26,8 @@ const User = new Schema({
   },
   buzzes: [Buzz],
   oldbuzzes: [Buzz],
-  timeSince: String
+  timeSince: String,
+  holdTime: Date
 });
 
 User.plugin(passportLocalMongoose);

@@ -77,11 +77,12 @@ function durationLoop(user, buzzLength, timestamp2) {
   return durations;
 }
 
-// New field will have to be created for buzzes - holdtime which is plus one hour
+// New field will have to be created for buzzes - holdTime which is plus one hour
 // from buzz[0].dateCreated, this will become the new (invisible) dateCreated for
 // that buzz, all calculations are made from that timestamp, will need to Calculate
-// this new timestamp when a new buzz is added from the holdtime property of the
-// last buzz in the array
+// this new timestamp when a new buzz is added from the holdTime property of the
+// last buzz in the array -
+// holdTime = user.buzzes[current array position - 1].dateCreated - 1.0 (1 hour)
 
 function buzzLoop(user, req, durations, ilength) {
   var maxBac = getBAC(user.weight, user.gender, 1, "Beer", -0.33);
@@ -160,6 +161,7 @@ function buzzLoop(user, req, durations, ilength) {
           user.oldbuzzes.push(oldBuzz);
           user.save((err, user) => {
             console.log("Moved buzz to old");
+            // still not rendering, buzzes are no longer shown but do not appear in oldbuzzes
           });
         })
         .then(
@@ -196,10 +198,10 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 }
 
 // authenticatedUser,
-// res.render("index", { users }));
-router.get("/", (req, res) => {
+// res.json(users));
+router.get("/", authenticatedUser, (req, res) => {
   // Replace with something else later, used for testing
-  User.find({}).then(users => res.json(users));
+  User.find({}).then(users => res.render("index", { users }));
 });
 
 router.get("/about", (req, res) => {
@@ -273,7 +275,7 @@ router.get("/logout", authenticatedUser, (req, res) => {
 });
 
 //authenticatedUser,
-router.get("/user/:id", (req, res) => {
+router.get("/user/:id", authenticatedUser, (req, res) => {
   console.log("user req");
   var currentTime = new Date();
   var total;
@@ -305,8 +307,8 @@ router.get("/user/:id", (req, res) => {
             user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
             user.bac = 0;
             user.save((err, user) => {
-              res.json(user);
-              // res.render("user/show", { user, success: req.flash("success") });
+              // res.json(user);
+              res.render("user/show", { user, success: req.flash("success") });
             });
           });
         } else {
@@ -314,8 +316,8 @@ router.get("/user/:id", (req, res) => {
             user.bac = 0;
             user.timeSince = "";
             user.save((err, user) => {
-              res.json(user);
-              // res.render("user/show", { user, success: req.flash("success") });
+              // res.json(user);
+              res.render("user/show", { user, success: req.flash("success") });
             });
           });
         }
@@ -323,8 +325,8 @@ router.get("/user/:id", (req, res) => {
         User.findOne({ _id: req.params.id }).then(user => {
           user.bac = total;
           user.save((err, user) => {
-            res.json(user);
-            // res.render("user/show", { user, success: req.flash("success") });
+            // res.json(user);
+            res.render("user/show", { user, success: req.flash("success") });
           });
         });
       }
@@ -345,8 +347,8 @@ router.get("/user/:id", (req, res) => {
           }
           user.timeSince = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
           user.save((err, user) => {
-            res.json(user);
-            // res.render("user/show", { user, success: req.flash("success") });
+            // res.json(user);
+            res.render("user/show", { user, success: req.flash("success") });
           });
         });
       } else {
@@ -355,8 +357,8 @@ router.get("/user/:id", (req, res) => {
           user.bac = 0;
         }
         user.save((err, user) => {
-          res.json(user);
-          // res.render("user/show", { user, success: req.flash("success") });
+          // res.json(user);
+          res.render("user/show", { user, success: req.flash("success") });
         });
       }
     }
@@ -364,7 +366,7 @@ router.get("/user/:id", (req, res) => {
 });
 
 // authenticatedUser,
-router.post("/user/:id", (req, res) => {
+router.post("/user/:id", authenticatedUser, (req, res) => {
   var dateTime = new Date();
   var newBuzz = {
     numberOfDrinks: 1,
@@ -373,7 +375,24 @@ router.post("/user/:id", (req, res) => {
     dateCreated: dateTime
   };
   User.findOne({ _id: req.params.id }).then(user => {
-    user.buzzes.push(newBuzz);
+    if (user.buzzes.length >= 1) {
+      var previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
+      console.log(previousDrinkDate);
+      previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
+      console.log(previousDrinkDate);
+      var newBuzzWithHold = {
+        numberOfDrinks: 1,
+        drinkType: req.body.drinkType,
+        hours: 0,
+        dateCreated: dateTime,
+        holdTime: previousDrinkDate
+      };
+      console.log(newBuzzWithHold);
+      user.buzzes.push(newBuzzWithHold);
+    } else {
+      console.log(newBuzz);
+      user.buzzes.push(newBuzz);
+    }
     user.save().then(user => {
       var total;
       var buzzDuration;
@@ -401,8 +420,8 @@ router.post("/user/:id", (req, res) => {
       }
       user.bac = total;
       user.save((err, user) => {
-        res.json(user);
-        // res.render("user/show", { user });
+        // res.json(user);
+        res.render("user/show", { user });
       });
     });
   });
@@ -410,7 +429,7 @@ router.post("/user/:id", (req, res) => {
 
 // add time since conditional to this route
 //  authenticatedUser,
-router.get("/user/:id/bac", (req, res) => {
+router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   var currentTime = new Date();
   var total;
   var buzzDuration;
@@ -428,28 +447,28 @@ router.get("/user/:id/bac", (req, res) => {
       if (total < 0) {
         user.bac = 0;
         user.save((err, user) => {
-          res.json(user);
-          // res.render("user/show", { user });
+          // res.json(user);
+          res.render("user/show", { user });
         });
       } else {
         user.bac = total;
         user.save((err, user) => {
-          res.json(user);
-          // res.render("user/show", { user });
+          // res.json(user);
+          res.render("user/show", { user });
         });
       }
     } else {
       user.bac = total;
       user.save((err, user) => {
-        res.json(user);
-        // res.render("user/show", { user });
+        // res.json(user);
+        res.render("user/show", { user });
       });
     }
   });
 });
 
 // authenticatedUser,
-router.put("/user/:id/del", (req, res) => {
+router.put("/user/:id/del", authenticatedUser, (req, res) => {
   var buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },
@@ -459,14 +478,14 @@ router.put("/user/:id/del", (req, res) => {
       user.bac = 0;
     }
     user.save((err, user) => {
-      res.json(user);
-      // res.redirect("back");
+      // res.json(user);
+      res.redirect("back");
     });
   });
 });
 
 // authenticatedUser,
-router.put("/user/:id/olddel", (req, res) => {
+router.put("/user/:id/olddel", authenticatedUser, (req, res) => {
   var buzzId = { _id: req.body.index };
   User.findOneAndUpdate(
     { _id: req.params.id },
@@ -476,27 +495,27 @@ router.put("/user/:id/olddel", (req, res) => {
       user.bac = 0;
     }
     user.save((err, user) => {
-      res.json(user);
-      // res.redirect("back");
+      // res.json(user);
+      res.redirect("back");
     });
   });
 });
 
 // authenticatedUser,
-router.put("/user/:id/delall", (req, res) => {
+router.put("/user/:id/delall", authenticatedUser, (req, res) => {
   User.findOneAndUpdate({ _id: req.params.id }, { $pull: { buzzes: {} } }).then(
     user => {
       user.bac = 0;
       user.save((err, user) => {
-        res.json(user);
-        // res.redirect("back");
+        // res.json(user);
+        res.redirect("back");
       });
     }
   );
 });
 
 // authenticatedUser,
-router.put("/user/:id/olddelall", (req, res) => {
+router.put("/user/:id/olddelall", authenticatedUser, (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { oldbuzzes: {} } }
@@ -505,8 +524,8 @@ router.put("/user/:id/olddelall", (req, res) => {
       user.bac = 0;
     }
     user.save((err, user) => {
-      res.json(user);
-      // res.redirect("back");
+      // res.json(user);
+      res.redirect("back");
     });
   });
 });
