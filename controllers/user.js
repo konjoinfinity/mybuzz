@@ -387,7 +387,6 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
   });
 });
 
-// add time since conditional to this route
 //  authenticatedUser,
 router.get("/user/:id/bac", authenticatedUser, (req, res) => {
   var currentTime = new Date();
