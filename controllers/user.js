@@ -368,6 +368,13 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
 // authenticatedUser,
 router.post("/user/:id", authenticatedUser, (req, res) => {
   var dateTime = new Date();
+  var previousDrinkDate;
+  User.findOne({ _id: req.params.id }).then(user => {
+    if (user.buzzes.length >= 1) {
+      previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
+      previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
+    }
+  });
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
@@ -376,12 +383,6 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
   };
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      var previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
-      console.log(previousDrinkDate);
-      previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
-      console.log(previousDrinkDate);
-      console.log(user.buzzes[user.buzzes.length - 1].dateCreated);
-      // ?????????????????????
       var newBuzzWithHold = {
         numberOfDrinks: 1,
         drinkType: req.body.drinkType,
@@ -389,10 +390,8 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
         dateCreated: dateTime,
         holdTime: previousDrinkDate
       };
-      console.log(newBuzzWithHold);
       user.buzzes.push(newBuzzWithHold);
     } else {
-      console.log(newBuzz);
       user.buzzes.push(newBuzz);
     }
     user.save().then(user => {

@@ -9,7 +9,8 @@ const Buzz = new Schema({
   dateCreated: {
     type: Date,
     default: Date.now()
-  }
+  },
+  holdTime: Date
 });
 
 const User = new Schema({
@@ -26,8 +27,7 @@ const User = new Schema({
   },
   buzzes: [Buzz],
   oldbuzzes: [Buzz],
-  timeSince: String,
-  holdTime: Date
+  timeSince: String
 });
 
 User.plugin(passportLocalMongoose);
