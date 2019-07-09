@@ -123,3 +123,10 @@ function buzzLoop(user, req, durations, ilength) {
   console.log("totals: " + totals);
   return totals;
 }
+
+var currentTime = new Date();
+console.log(currentTime);
+
+currentTime.setHours(currentTime.getHours() + 1);
+
+console.log(currentTime);
