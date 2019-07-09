@@ -122,19 +122,12 @@ function buzzLoop(user, req, durations, ilength) {
       User.findOneAndUpdate(
         { _id: req.params.id },
         { $pull: { buzzes: oldBuzzId } }
-      )
-        .then(user => {
-          user.oldbuzzes.push(oldBuzz);
-          user.save((err, user) => {
-            console.log("Moved buzz to old");
-            // Still not rendering after move
-          });
-        })
-        .then(
-          setTimeout(() => {
-            console.log("timeout");
-          }, 500)
-        );
+      ).then(user => {
+        user.oldbuzzes.push(oldBuzz);
+        user.save((err, user) => {
+          console.log("Moved buzz to old");
+        });
+      });
     }
   }
   console.log(totals);
@@ -332,59 +325,62 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
 router.post("/user/:id", authenticatedUser, (req, res) => {
   var dateTime = new Date();
   var previousDrinkDate;
-  User.findOne({ _id: req.params.id }).then(user => {
-    if (user.buzzes.length >= 1) {
-      previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
-      previousDrinkDate.setHours(previousDrinkDate.getHours() - 1);
-    }
-  });
-  var newBuzz = {
-    numberOfDrinks: 1,
-    drinkType: req.body.drinkType,
-    hours: 0,
-    dateCreated: dateTime
-  };
-  User.findOne({ _id: req.params.id }).then(user => {
-    if (user.buzzes.length >= 1) {
-      var newBuzzWithHold = {
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      if (user.buzzes.length >= 1) {
+        previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
+        previousDrinkDate.setHours(previousDrinkDate.getHours() - 1);
+      }
+    })
+    .then(e => {
+      var newBuzz = {
         numberOfDrinks: 1,
         drinkType: req.body.drinkType,
         hours: 0,
-        dateCreated: dateTime,
-        holdTime: previousDrinkDate
+        dateCreated: dateTime
       };
-      user.buzzes.push(newBuzzWithHold);
-    } else {
-      user.buzzes.push(newBuzz);
-    }
-    user.save().then(user => {
-      var total;
-      var buzzDuration;
-      var buzzHours;
-      var durations = [];
-      var totals = [];
-      var duration;
-      if (user.buzzes.length == 0) {
-        total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
-      }
-      if (user.buzzes.length >= 1) {
-        durations = durationLoop(
-          user,
-          user.buzzes.length - 1,
-          user.buzzes[user.buzzes.length - 1].dateCreated
-        );
-        totals = buzzLoop(user, req, durations, user.buzzes.length - 1);
-        total = totals.reduce((a, b) => a + b, 0);
-        total = parseFloat(total.toFixed(6));
-        console.log(total);
-      }
-      user.bac = total;
-      user.save((err, user) => {
-        // res.json(user);
-        res.render("user/show", { user });
+      User.findOne({ _id: req.params.id }).then(user => {
+        if (user.buzzes.length >= 1) {
+          var newBuzzWithHold = {
+            numberOfDrinks: 1,
+            drinkType: req.body.drinkType,
+            hours: 0,
+            dateCreated: dateTime,
+            holdTime: previousDrinkDate
+          };
+          user.buzzes.push(newBuzzWithHold);
+        } else {
+          user.buzzes.push(newBuzz);
+        }
+        user.save().then(user => {
+          var total;
+          var buzzDuration;
+          var buzzHours;
+          var durations = [];
+          var totals = [];
+          var duration;
+          if (user.buzzes.length == 0) {
+            total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
+          }
+          if (user.buzzes.length >= 1) {
+            durations = durationLoop(
+              user,
+              user.buzzes.length - 1,
+              user.buzzes[user.buzzes.length - 1].dateCreated
+            );
+            totals = buzzLoop(user, req, durations, user.buzzes.length - 1);
+            total = totals.reduce((a, b) => a + b, 0);
+            total = parseFloat(total.toFixed(6));
+            console.log(total);
+          }
+          user.bac = total;
+          user.save((err, user) => {
+            // res.json(user);
+            res.render("user/show", { user });
+          });
+        });
       });
     });
-  });
 });
 
 //  authenticatedUser,
