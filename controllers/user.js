@@ -14,27 +14,13 @@ function getDayHourMin(date1, date2) {
   dateDiff = dateDiff / 60;
   var hours = Math.floor(dateDiff % 24);
   var days = Math.floor(dateDiff / 24);
-  console.log(
-    days +
-      " days " +
-      hours +
-      " hours " +
-      minutes +
-      " minutes and " +
-      seconds +
-      " seconds"
-  );
   return [days, hours, minutes, seconds];
 }
 
 function durationLoop(user, buzzLength, timestamp2) {
-  console.log("durloop");
-  console.log(buzzLength);
-  console.log(timestamp2);
   var durations = [];
   var buzzDuration;
   for (i = 0; i < buzzLength; i++) {
-    console.log("inside dur loop");
     var date2 = timestamp2.getTime();
     var date1 = user.buzzes[i].dateCreated.getTime();
     var dayHourMin = getDayHourMin(date1, date2);
@@ -50,9 +36,6 @@ function durationLoop(user, buzzLength, timestamp2) {
     } else {
       buzzDuration = hours + minutes / 60 + seconds / 3600;
     }
-    console.log(
-      "Duration Loop Buzzduration - More than one buzz: " + buzzDuration
-    );
     durations.push(buzzDuration);
   }
   if (buzzLength == 0) {
@@ -71,7 +54,6 @@ function durationLoop(user, buzzLength, timestamp2) {
     } else {
       buzzDuration = hours + minutes / 60 + seconds / 3600;
     }
-    console.log("Duration Loop Buzzduration - One buzz: " + buzzDuration);
     durations.push(buzzDuration);
   }
   return durations;
@@ -82,12 +64,10 @@ function buzzLoop(user, req, durations, ilength) {
   var buzzHours;
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
-    console.log("Durations[i]: " + durations[i] + ` - ${i}`);
     if (i == ilength) {
       buzzHours = 0;
     } else {
       buzzHours = durations[i];
-      console.log("BuzzHours: " + buzzHours);
     }
     buzzTotal = getBAC(
       user.weight,
@@ -96,16 +76,13 @@ function buzzLoop(user, req, durations, ilength) {
       user.buzzes[i].drinkType,
       buzzHours
     );
-    console.log("Buzztotal: " + buzzTotal + ` - ${i}`);
     if (buzzTotal > 0) {
       if (i == 0) {
         totals.push(buzzTotal);
       } else {
         if (i > 0 && durations[i - 1] <= 0.99) {
-          console.log("Less than one hour: " + maxBac + ` - ${i}`);
           totals.push(maxBac);
         } else {
-          console.log("Loop: " + `${i}`);
           var holdDate = new Date();
           var date2 = holdDate.getTime();
           var date1 = user.buzzes[i].holdTime.getTime();
@@ -122,7 +99,6 @@ function buzzLoop(user, req, durations, ilength) {
           } else {
             buzzDuration = hours + minutes / 60 + seconds / 3600;
           }
-          console.log("Duration - One buzz: " + buzzDuration + ` - ${i}`);
           decayHours = buzzDuration - 1;
           buzzDecay = getBAC(
             user.weight,
@@ -131,13 +107,11 @@ function buzzLoop(user, req, durations, ilength) {
             user.buzzes[i].drinkType,
             decayHours
           );
-          console.log(buzzDecay);
           totals.push(buzzDecay);
         }
       }
     }
     if (buzzTotal <= 0) {
-      console.log("Old Buzz");
       var oldBuzz = {
         numberOfDrinks: 1,
         drinkType: user.buzzes[i].drinkType,
@@ -268,7 +242,6 @@ router.get("/logout", authenticatedUser, (req, res) => {
 
 //authenticatedUser,
 router.get("/user/:id", authenticatedUser, (req, res) => {
-  console.log("user req");
   var currentTime = new Date();
   var total;
   var buzzDuration;
@@ -278,9 +251,7 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
       durations = durationLoop(user, user.buzzes.length, currentTime);
-      console.log("id show buzz durations: " + durations);
       totals = buzzLoop(user, req, durations, user.buzzes.length);
-      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
       console.log(total);
@@ -394,19 +365,15 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
       var totals = [];
       var duration;
       if (user.buzzes.length == 0) {
-        console.log("len 0");
         total = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
       }
       if (user.buzzes.length >= 1) {
-        console.log("len 1");
         durations = durationLoop(
           user,
           user.buzzes.length - 1,
           user.buzzes[user.buzzes.length - 1].dateCreated
         );
-        console.log("More than one Durations: " + durations);
         totals = buzzLoop(user, req, durations, user.buzzes.length - 1);
-        console.log(totals);
         total = totals.reduce((a, b) => a + b, 0);
         total = parseFloat(total.toFixed(6));
         console.log(total);
@@ -433,7 +400,6 @@ router.get("/user/:id/bac", authenticatedUser, (req, res) => {
     if (user.buzzes.length >= 1) {
       durations = durationLoop(user, user.buzzes.length, currentTime);
       totals = buzzLoop(user, req, durations, user.buzzes.length);
-      console.log(totals);
       total = totals.reduce((a, b) => a + b, 0);
       total = parseFloat(total.toFixed(6));
       console.log(total);
