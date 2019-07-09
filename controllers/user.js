@@ -78,7 +78,7 @@ function durationLoop(user, buzzLength, timestamp2) {
 }
 
 function buzzLoop(user, req, durations, ilength) {
-  var maxBac = getBAC(user.weight, user.gender, 1, "Beer", -0.33);
+  var maxBac = getBAC(user.weight, user.gender, 1, "Beer", 0);
   var buzzHours;
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
