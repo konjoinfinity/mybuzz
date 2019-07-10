@@ -318,8 +318,12 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
   var previousDrinkDate;
   User.findOne({ _id: req.params.id })
     .then(user => {
-      if (user.buzzes.length >= 1) {
+      if (user.buzzes.length == 1) {
         previousDrinkDate = user.buzzes[user.buzzes.length - 1].dateCreated;
+        previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
+      }
+      if (user.buzzes.length > 1) {
+        previousDrinkDate = user.buzzes[user.buzzes.length - 1].holdTime;
         previousDrinkDate.setHours(previousDrinkDate.getHours() + 1);
       }
     })
