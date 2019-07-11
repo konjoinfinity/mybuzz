@@ -114,36 +114,41 @@ function buzzLoop(user, req, durations, ilength) {
           console.log("maxBac" + ` - ${i}`);
           totals.push(maxBac);
         } else {
-          console.log("holdTime BAC" + ` - ${i}`);
-          // singleDuration function
-          var decayHours = singleDuration(user.buzzes[i].holdTime);
-          // var buzzDuration;
-          // var holdDate = new Date();
-          // var date2 = holdDate.getTime();
-          // var date1 = user.buzzes[i].holdTime.getTime();
-          // var dayHourMin = getDayHourMin(date1, date2);
-          // var days = dayHourMin[0];
-          // var hours = dayHourMin[1];
-          // var minutes = dayHourMin[2];
-          // var seconds = dayHourMin[3];
-          // if (days >= 1) {
-          //   hours = hours + days * 24;
-          // }
-          // if (hours == 0) {
-          //   buzzDuration = minutes / 60 + seconds / 3600;
-          // } else {
-          //   buzzDuration = hours + minutes / 60 + seconds / 3600;
-          // }
-          // decayHours = buzzDuration;
-          console.log("decayhours: " + decayHours + ` - ${i}`);
-          buzzDecay = getBAC(
-            user.weight,
-            user.gender,
-            user.buzzes[i].numberOfDrinks,
-            user.buzzes[i].drinkType,
-            decayHours
-          );
-          totals.push(buzzDecay);
+          if (durations[i] <= 0) {
+            totals.push(maxBac);
+          } else {
+            console.log("durations[i]: " + durations[i] + ` - ${i}`);
+            console.log("holdTime BAC" + ` - ${i}`);
+            // singleDuration function
+            var decayHours = singleDuration(user.buzzes[i].holdTime);
+            // var buzzDuration;
+            // var holdDate = new Date();
+            // var date2 = holdDate.getTime();
+            // var date1 = user.buzzes[i].holdTime.getTime();
+            // var dayHourMin = getDayHourMin(date1, date2);
+            // var days = dayHourMin[0];
+            // var hours = dayHourMin[1];
+            // var minutes = dayHourMin[2];
+            // var seconds = dayHourMin[3];
+            // if (days >= 1) {
+            //   hours = hours + days * 24;
+            // }
+            // if (hours == 0) {
+            //   buzzDuration = minutes / 60 + seconds / 3600;
+            // } else {
+            //   buzzDuration = hours + minutes / 60 + seconds / 3600;
+            // }
+            // decayHours = buzzDuration;
+            console.log("decayhours: " + decayHours + ` - ${i}`);
+            buzzDecay = getBAC(
+              user.weight,
+              user.gender,
+              user.buzzes[i].numberOfDrinks,
+              user.buzzes[i].drinkType,
+              decayHours
+            );
+            totals.push(buzzDecay);
+          }
         }
       }
     }
