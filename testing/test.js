@@ -180,3 +180,142 @@ User.findOne({ username: "konjo@konjo.com" }).then(user => {
 // currentTime.setHours(currentTime.getHours() + 1); // adds 1 hour in the future
 //
 // console.log(currentTime);
+
+function buzzLoop(user, req, durations, ilength) {
+  var maxBac = getBAC(user.weight, user.gender, 1, "Beer", 0);
+  var buzzHours;
+  var totals = [];
+  console.log(durations);
+  for (i = 0; i < user.buzzes.length; i++) {
+    if (i == ilength) {
+      // add conditional to check for holdTime
+      // if (user.buzzes[i].holdTime) {
+      //
+      //  }
+      console.log("array[0]");
+      buzzHours = 0;
+    } else {
+      buzzHours = durations[i];
+    }
+    buzzTotal = getBAC(
+      user.weight,
+      user.gender,
+      user.buzzes[i].numberOfDrinks,
+      user.buzzes[i].drinkType,
+      buzzHours
+    );
+    if (buzzTotal > 0) {
+      if (i == 0) {
+        console.log("buzzTotal" + ` - ${i}`);
+        totals.push(buzzTotal);
+      } else {
+        if (i > 0 && durations[i - 1] <= 1) {
+          console.log("maxBac" + ` - ${i}`);
+          totals.push(maxBac);
+        } else {
+          console.log(
+            "holdtimeduration: " + singleDuration(user.buzzes[i].holdTime)
+          );
+          if (singleDuration(user.buzzes[i].holdTime) <= 1) {
+            // ????????
+            totals.push(maxBac);
+          } else {
+            console.log("durations[i]: " + durations[i] + ` - ${i}`);
+            console.log("holdTime BAC" + ` - ${i}`);
+            // singleDuration function
+            var decayHours = singleDuration(user.buzzes[i].holdTime);
+            // var buzzDuration;
+            // var holdDate = new Date();
+            // var date2 = holdDate.getTime();
+            // var date1 = user.buzzes[i].holdTime.getTime();
+            // var dayHourMin = getDayHourMin(date1, date2);
+            // var days = dayHourMin[0];
+            // var hours = dayHourMin[1];
+            // var minutes = dayHourMin[2];
+            // var seconds = dayHourMin[3];
+            // if (days >= 1) {
+            //   hours = hours + days * 24;
+            // }
+            // if (hours == 0) {
+            //   buzzDuration = minutes / 60 + seconds / 3600;
+            // } else {
+            //   buzzDuration = hours + minutes / 60 + seconds / 3600;
+            // }
+            // decayHours = buzzDuration;
+            console.log("decayhours: " + decayHours + ` - ${i}`);
+            buzzDecay = getBAC(
+              user.weight,
+              user.gender,
+              user.buzzes[i].numberOfDrinks,
+              user.buzzes[i].drinkType,
+              decayHours
+            );
+            totals.push(buzzDecay);
+          }
+        }
+      }
+    }
+    if (buzzTotal <= 0) {
+      var oldBuzz = {
+        numberOfDrinks: 1,
+        drinkType: user.buzzes[i].drinkType,
+        hours: 1,
+        dateCreated: user.buzzes[i].dateCreated
+      };
+      var oldBuzzId = { _id: user.buzzes[i]._id };
+      User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { buzzes: oldBuzzId } }
+      ).then(user => {
+        user.oldbuzzes.push(oldBuzz);
+        user.save((err, user) => {
+          console.log("Moved buzz to old");
+        });
+      });
+    }
+  }
+  console.log(totals);
+  return totals;
+}
+
+function durationLoop(user, buzzLength, timestamp2) {
+  var durations = [];
+  var buzzDuration;
+  for (i = 0; i < buzzLength; i++) {
+    var date2 = timestamp2.getTime();
+    var date1 = user.buzzes[i].dateCreated.getTime();
+    var dayHourMin = getDayHourMin(date1, date2);
+    var days = dayHourMin[0];
+    var hours = dayHourMin[1];
+    var minutes = dayHourMin[2];
+    var seconds = dayHourMin[3];
+    if (days >= 1) {
+      hours = hours + days * 24;
+    }
+    if (hours == 0) {
+      buzzDuration = minutes / 60 + seconds / 3600;
+    } else {
+      buzzDuration = hours + minutes / 60 + seconds / 3600;
+    }
+    durations.push(buzzDuration);
+  }
+  if (buzzLength == 0) {
+    var date2 = timestamp2.getTime();
+    var date1 = user.buzzes[i].dateCreated.getTime();
+    var dayHourMin = getDayHourMin(date1, date2);
+    var days = dayHourMin[0];
+    var hours = dayHourMin[1];
+    var minutes = dayHourMin[2];
+    var seconds = dayHourMin[3];
+    if (days >= 1) {
+      hours = hours + days * 24;
+    }
+    if (hours == 0) {
+      buzzDuration = minutes / 60 + seconds / 3600;
+    } else {
+      buzzDuration = hours + minutes / 60 + seconds / 3600;
+    }
+    durations.push(buzzDuration);
+  }
+  return durations;
+}
