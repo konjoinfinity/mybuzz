@@ -402,32 +402,35 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
 });
 
 router.get("/user/:id/bac", authenticatedUser, (req, res) => {
-  var currentTime = new Date();
-  var total;
-  var buzzDuration;
-  var buzzHours;
-  var durations = [];
-  var totals = [];
+  var totalBac;
+  var duration;
   User.findOne({ _id: req.params.id }).then(user => {
     if (user.buzzes.length >= 1) {
-      durations = durationLoop(user, user.buzzes.length, currentTime);
-      totals = buzzLoop(user, req, durations, user.buzzes.length);
-      total = totals.reduce((a, b) => a + b, 0);
-      total = parseFloat(total.toFixed(6));
-      console.log(total);
-      if (total < 0) {
+      duration = singleDuration(user.buzzes[0].dateCreated);
+      console.log(duration);
+      totalBac = getBAC(
+        user.weight,
+        user.gender,
+        user.buzzes.length,
+        "Liquor",
+        duration
+      );
+      console.log(totalBac);
+      totalBac = parseFloat(totalBac.toFixed(6));
+      console.log(totalBac);
+      if (totalBac < 0) {
         user.bac = 0;
         user.save((err, user) => {
           res.render("user/show", { user });
         });
       } else {
-        user.bac = total;
+        user.bac = totalBac;
         user.save((err, user) => {
           res.render("user/show", { user });
         });
       }
     } else {
-      user.bac = total;
+      user.bac = totalBac;
       user.save((err, user) => {
         res.render("user/show", { user });
       });
