@@ -37,8 +37,8 @@ function getBAC(weight, gender, drinks, drinkType, hours) {
 
 function singleDuration(initialbuzz) {
   var duration;
-  var holdDate = new Date();
-  var date2 = holdDate.getTime();
+  var currentDate = new Date();
+  var date2 = currentDate.getTime();
   var date1 = initialbuzz.getTime();
   var dayHourMin = getDayHourMin(date1, date2);
   var days = dayHourMin[0];
