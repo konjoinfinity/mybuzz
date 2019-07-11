@@ -86,12 +86,14 @@ function buzzLoop(user, req, durations, ilength) {
   var maxBac = getBAC(user.weight, user.gender, 1, "Beer", 0);
   var buzzHours;
   var totals = [];
+  console.log(durations);
   for (i = 0; i < user.buzzes.length; i++) {
     if (i == ilength) {
       // add conditional to check for holdTime
       // if (user.buzzes[i].holdTime) {
       //
       //  }
+      console.log("array[0]");
       buzzHours = 0;
     } else {
       buzzHours = durations[i];
@@ -105,11 +107,14 @@ function buzzLoop(user, req, durations, ilength) {
     );
     if (buzzTotal > 0) {
       if (i == 0) {
+        console.log("buzzTotal" + ` - ${i}`);
         totals.push(buzzTotal);
       } else {
         if (i > 0 && durations[i - 1] <= 1) {
+          console.log("maxBac" + ` - ${i}`);
           totals.push(maxBac);
         } else {
+          console.log("holdTime BAC" + ` - ${i}`);
           // singleDuration function
           var decayHours = singleDuration(user.buzzes[i].holdTime);
           // var buzzDuration;
