@@ -22,6 +22,8 @@ function singleDuration(userbuzzholdtime) {
   // user.buzzes[i].holdTime
   var duration;
   var holdDate = new Date();
+  console.log(holdDate);
+  console.log(userbuzzholdtime);
   var date2 = holdDate.getTime();
   var date1 = userbuzzholdtime.getTime();
   var dayHourMin = getDayHourMin(date1, date2);
@@ -114,7 +116,11 @@ function buzzLoop(user, req, durations, ilength) {
           console.log("maxBac" + ` - ${i}`);
           totals.push(maxBac);
         } else {
-          if (durations[i] <= 0) {
+          console.log(
+            "holdtimeduration: " + singleDuration(user.buzzes[i].holdTime)
+          );
+          if (singleDuration(user.buzzes[i].holdTime) <= 1) {
+            // ????????
             totals.push(maxBac);
           } else {
             console.log("durations[i]: " + durations[i] + ` - ${i}`);
