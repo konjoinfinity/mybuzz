@@ -238,6 +238,8 @@ router.get("/user/:id", authenticatedUser, (req, res) => {
 
 router.post("/user/:id", authenticatedUser, (req, res) => {
   var dateTime = new Date();
+  var totalBac;
+  var duration;
   var newBuzz = {
     numberOfDrinks: 1,
     drinkType: req.body.drinkType,
@@ -247,8 +249,6 @@ router.post("/user/:id", authenticatedUser, (req, res) => {
   User.findOne({ _id: req.params.id }).then(user => {
     user.buzzes.push(newBuzz);
     user.save().then(user => {
-      var totalBac;
-      var duration;
       if (user.buzzes.length == 0) {
         totalBac = getBAC(user.weight, user.gender, 1, req.body.drinkType, 0);
       }
