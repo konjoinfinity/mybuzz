@@ -17,6 +17,29 @@ function getDayHourMin(date1, date2) {
   return [days, hours, minutes, seconds];
 }
 
+function singleDuration(userbuzzholdtime) {
+  console.log("userbuzzholdtime: " + userbuzzholdtime);
+  // user.buzzes[i].holdTime
+  var duration;
+  var holdDate = new Date();
+  var date2 = holdDate.getTime();
+  var date1 = userbuzzholdtime.getTime();
+  var dayHourMin = getDayHourMin(date1, date2);
+  var days = dayHourMin[0];
+  var hours = dayHourMin[1];
+  var minutes = dayHourMin[2];
+  var seconds = dayHourMin[3];
+  if (days >= 1) {
+    hours = hours + days * 24;
+  }
+  if (hours == 0) {
+    duration = minutes / 60 + seconds / 3600;
+  } else {
+    duration = hours + minutes / 60 + seconds / 3600;
+  }
+  return duration;
+}
+
 function durationLoop(user, buzzLength, timestamp2) {
   var durations = [];
   var buzzDuration;
@@ -65,6 +88,10 @@ function buzzLoop(user, req, durations, ilength) {
   var totals = [];
   for (i = 0; i < user.buzzes.length; i++) {
     if (i == ilength) {
+      // add conditional to check for holdTime
+      // if (user.buzzes[i].holdTime) {
+      //
+      //  }
       buzzHours = 0;
     } else {
       buzzHours = durations[i];
@@ -83,23 +110,27 @@ function buzzLoop(user, req, durations, ilength) {
         if (i > 0 && durations[i - 1] <= 1) {
           totals.push(maxBac);
         } else {
-          var holdDate = new Date();
-          var date2 = holdDate.getTime();
-          var date1 = user.buzzes[i].holdTime.getTime();
-          var dayHourMin = getDayHourMin(date1, date2);
-          var days = dayHourMin[0];
-          var hours = dayHourMin[1];
-          var minutes = dayHourMin[2];
-          var seconds = dayHourMin[3];
-          if (days >= 1) {
-            hours = hours + days * 24;
-          }
-          if (hours == 0) {
-            buzzDuration = minutes / 60 + seconds / 3600;
-          } else {
-            buzzDuration = hours + minutes / 60 + seconds / 3600;
-          }
-          decayHours = buzzDuration;
+          // singleDuration function
+          var decayHours = singleDuration(user.buzzes[i].holdTime);
+          // var buzzDuration;
+          // var holdDate = new Date();
+          // var date2 = holdDate.getTime();
+          // var date1 = user.buzzes[i].holdTime.getTime();
+          // var dayHourMin = getDayHourMin(date1, date2);
+          // var days = dayHourMin[0];
+          // var hours = dayHourMin[1];
+          // var minutes = dayHourMin[2];
+          // var seconds = dayHourMin[3];
+          // if (days >= 1) {
+          //   hours = hours + days * 24;
+          // }
+          // if (hours == 0) {
+          //   buzzDuration = minutes / 60 + seconds / 3600;
+          // } else {
+          //   buzzDuration = hours + minutes / 60 + seconds / 3600;
+          // }
+          // decayHours = buzzDuration;
+          console.log("decayhours: " + decayHours + ` - ${i}`);
           buzzDecay = getBAC(
             user.weight,
             user.gender,
